@@ -1,1 +1,5 @@
 rootProject.name = 'cconnect-app'
+
+include("payment-schedule-calculator-api")
+include("payment-schedule-calculator-client")
+include("payment-schedule-calculator-service")
