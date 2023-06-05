@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CconnectAppApplication {
-//tst
+
 	public static void main(String[] args) {
 		SpringApplication.run(CconnectAppApplication.class, args);
 	}
