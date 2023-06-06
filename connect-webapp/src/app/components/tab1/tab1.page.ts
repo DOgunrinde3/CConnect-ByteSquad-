@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthService} from "../../services/auth.service";
 import {NgIf} from "@angular/common";
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {UserLoginModel} from "../../model/user-login.model";
 
 @Component({
   selector: 'app-tab1',
@@ -44,6 +45,10 @@ export class Tab1Page implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+
+    const userLoginInformation = this.loginForm.getRawValue() as UserLoginModel;
+
+    this.authService.login(userLoginInformation).subscribe((value) => console.log(value));
 
 
     // You can send a request to your backend for authentication

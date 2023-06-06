@@ -1,4 +1,4 @@
-package dtos;
+package com.bytesquad.CConnect.cconnectapp.dtos;
 
 
 import lombok.Data;

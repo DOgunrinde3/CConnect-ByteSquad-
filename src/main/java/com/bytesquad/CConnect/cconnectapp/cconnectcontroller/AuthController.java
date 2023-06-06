@@ -1,10 +1,10 @@
-package cconnectcontroller;
+package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
-import dtos.UserInformationDto;
-import dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
 
 import java.util.UUID;
 

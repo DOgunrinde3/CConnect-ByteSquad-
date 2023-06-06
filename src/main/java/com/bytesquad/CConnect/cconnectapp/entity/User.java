@@ -1,4 +1,4 @@
-package entity;
+package com.bytesquad.CConnect.cconnectapp.entity;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

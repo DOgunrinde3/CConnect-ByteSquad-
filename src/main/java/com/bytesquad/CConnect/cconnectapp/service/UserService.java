@@ -1,17 +1,17 @@
-package service;
+package com.bytesquad.CConnect.cconnectapp.service;
 
 
-import assembler.UserAssembler;
-import dtos.UserInformationDto;
-import dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
 import lombok.RequiredArgsConstructor;
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
 //import repository.UserRepository;
 
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
   //  private final UserRepository userRepository;

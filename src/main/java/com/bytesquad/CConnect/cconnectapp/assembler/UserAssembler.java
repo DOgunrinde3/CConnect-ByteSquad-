@@ -1,11 +1,12 @@
-package assembler;
+package com.bytesquad.CConnect.cconnectapp.assembler;
 
-import dtos.UserLoginDto;
-import entity.User;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserAssembler {
+
 
     public UserLoginDto assemble(User user){
         return new UserLoginDto();

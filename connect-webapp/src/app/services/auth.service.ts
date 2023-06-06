@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {UserModel} from "../model/user.model";
 import {UserLoginModel} from "../model/user-login.model";
 
-const BASE_URI = './api/auth';
+const BASE_URI = 'http://localhost:8080/api/v1/auth';
 
 @Injectable({
   providedIn: 'root'
