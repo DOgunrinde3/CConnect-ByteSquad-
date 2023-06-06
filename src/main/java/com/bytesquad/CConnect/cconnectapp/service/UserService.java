@@ -23,7 +23,7 @@ public class UserService {
 
   private MongoTemplate mongoTemplate;
 
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
     private final UserAssembler userAssembler;
     public UserInformationDto login(UserLoginDto userLoginDto){
@@ -44,18 +44,23 @@ public class UserService {
 
         }
 
-        return userAssembler.assemble(user);
+        return loginUser(user);
 
     }
 
-    public UserLoginDto register(UserLoginDto userLoginDto){
+    private UserInformationDto loginUser(User user){
+        return userAssembler.assemble(user);
+    }
+
+    public UserInformationDto register(UserLoginDto userLoginDto){
         //we need to get the company code the user inputed and check the company database table to see if this exists.
         //if it exists, we then need to check the list of unregisteredUsers on the Company Entity and check to see if a user with the same first name and last name exists
         // if the user exists, then we want to assemble that as the user Login
-//        User user = userAssembler.disassemble(userDto);
-//        userRepository.save(user);
-//        return userAssembler.assemble(user);
-        return null;
+         User user = userAssembler.disassemble(userLoginDto);
+            userRepository.insert(user);
+
+       return loginUser(user);
+
     }
 
     public UserLoginDto getUser(UUID userId){

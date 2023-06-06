@@ -10,6 +10,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class UserInformationDto {
     private UUID userId;
+    private String username;
+    private String companyCode;
     private String bio;
     private String firstName;
     private String lastName;

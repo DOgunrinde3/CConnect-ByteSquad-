@@ -14,10 +14,17 @@ public class UserAssembler {
     }
 
     public User disassemble(UserLoginDto userLoginDto){
-        return new User();
+        return disassembleInto(User.newInstance(), userLoginDto);
     }
 
-    public User disassembleInto(User entity, UserLoginDto userLoginDto){
-        return new User();
+    public User disassembleInto(User user, UserLoginDto userLoginDto){
+
+        return user
+                .setBio(userLoginDto.getUserInformationDto().getBio())
+                .setEmail(userLoginDto.getUserInformationDto().getEmail())
+                .setPassword(userLoginDto.getPassword())
+                .setIsAdmin(userLoginDto.getUserInformationDto().getIsAdmin())
+                .setPhoneNumber(userLoginDto.getUserInformationDto().getPhoneNumber())
+                .setCompanyCode(userLoginDto.getCompanyCode());
     }
 }

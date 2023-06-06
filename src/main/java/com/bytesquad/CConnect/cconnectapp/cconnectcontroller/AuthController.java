@@ -1,7 +1,9 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
+import com.bytesquad.CConnect.cconnectapp.dtos.CompanyRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.service.CompanyService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +16,16 @@ import java.util.UUID;
 public class AuthController {
 
     private final UserService userService;
+    private final CompanyService companyService;
 
     @PostMapping("/login")
     public UserInformationDto login(@RequestBody UserLoginDto userLoginDto){
         return userService.login(userLoginDto);
     }
 
-    @PostMapping("/register")
-    public UserLoginDto register(@RequestBody UserLoginDto userLoginDto){
-        return userService.register(userLoginDto);
+    @PostMapping("/create-company")
+    public UserInformationDto createCompany(@RequestBody CompanyRegistrationDto companyRegistrationDto){
+        return companyService.create(companyRegistrationDto);
     }
 
     @GetMapping("/{userId}")

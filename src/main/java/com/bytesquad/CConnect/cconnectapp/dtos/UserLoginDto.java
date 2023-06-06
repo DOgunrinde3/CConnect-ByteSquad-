@@ -11,6 +11,6 @@ public class UserLoginDto {
     private String username;
     private String password;
     private Integer companyCode;
-    private Optional<UserInformationDto> userInformationDto;
+    private UserInformationDto userInformationDto;
 
 }
