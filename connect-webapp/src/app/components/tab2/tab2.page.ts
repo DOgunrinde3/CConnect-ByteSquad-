@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserModel} from "../../model/user.model";
+import {UserInformationService} from "../../services/user-information.service";
 
 @Component({
   selector: 'app-tab2',
@@ -12,8 +13,24 @@ import {UserModel} from "../../model/user.model";
 })
 export class Tab2Page {
 
-  @Input() userInformation : UserModel;
+  userInformation: UserModel;
 
-  constructor() {}
+  constructor(private userInformationService: UserInformationService) {
+  }
 
+
+  ngOnInit() {
+    this.userInformationService.userInformation$.subscribe(
+      value => {
+
+        if (value != null) {
+          this.userInformation = value
+        }
+      },
+      error => {
+        // Handle errors if necessary
+      }
+    );
+
+  }
 }

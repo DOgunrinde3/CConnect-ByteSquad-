@@ -5,6 +5,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthService} from "../../services/auth.service";
 import {NgIf} from "@angular/common";
+import{UserInformationService} from "../../services/user-information.service";
+import { NavController, Platform } from '@ionic/angular';
+
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 import {UserLoginModel} from "../../model/user-login.model";
 
@@ -21,20 +24,23 @@ export class Tab1Page implements OnInit {
 
 
   constructor(private authService: AuthService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private platform: Platform,
+              private navCtrl: NavController,
+              private userInformationService: UserInformationService) {
 
   }
 
   ngOnInit(){
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required]],
       password: ['', Validators.required],
       companyCode: ['', Validators.required]
     });
 }
 
-  get email() {
-    return this.loginForm.get('email');
+  get username() {
+    return this.loginForm.get('username');
   }
 
   get password() {
@@ -48,7 +54,21 @@ export class Tab1Page implements OnInit {
 
     const userLoginInformation = this.loginForm.getRawValue() as UserLoginModel;
 
-    this.authService.login(userLoginInformation).subscribe((value) => console.log(value));
+    this.authService.login(userLoginInformation).subscribe(
+      (value) =>{
+
+        this.userInformationService.setUserInformation(value)
+
+        this.platform.ready().then(() => {
+          this.navCtrl.navigateRoot('/home');
+        });
+
+      },
+      error => {
+        // Handle errors if necessary
+      }
+
+    );
 
 
     // You can send a request to your backend for authentication

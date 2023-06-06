@@ -1,5 +1,9 @@
 export class UserModel{
-  username: string;
-  password: string;
-  companyCode: number;
+  userId: string;
+  bio: string;
+  firstName: string;
+  lastName: string;
+  isAdmin: boolean;
+  phoneNumber: number;
+  email: string;
 }
