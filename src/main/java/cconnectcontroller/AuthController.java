@@ -1,6 +1,7 @@
 package cconnectcontroller;
 
-import dtos.UserDto;
+import dtos.UserInformationDto;
+import dtos.UserLoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
@@ -14,18 +15,18 @@ public class AuthController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
-    public UserDto login(@RequestBody UserDto userDto){
-        return userService.login(userDto);
+    @PostMapping("/login")
+    public UserInformationDto login(@RequestBody UserLoginDto userLoginDto){
+        return userService.login(userLoginDto);
     }
 
     @PostMapping("/register")
-    public UserDto register(@RequestBody UserDto userDto){
-        return userService.register(userDto);
+    public UserLoginDto register(@RequestBody UserLoginDto userLoginDto){
+        return userService.register(userLoginDto);
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUser(@PathVariable UUID userId){
+    public UserLoginDto getUser(@PathVariable UUID userId){
         return userService.getUser(userId);
     }
 

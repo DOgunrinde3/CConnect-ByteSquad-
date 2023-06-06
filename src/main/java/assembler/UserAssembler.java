@@ -1,21 +1,21 @@
 package assembler;
 
-import dtos.UserDto;
+import dtos.UserLoginDto;
 import entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserAssembler {
 
-    public UserDto assemble(User user){
-        return new UserDto();
+    public UserLoginDto assemble(User user){
+        return new UserLoginDto();
     }
 
-    public User disassemble(UserDto userDto){
+    public User disassemble(UserLoginDto userLoginDto){
         return new User();
     }
 
-    public User disassembleInto(User entity, UserDto userDto){
+    public User disassembleInto(User entity, UserLoginDto userLoginDto){
         return new User();
     }
 }

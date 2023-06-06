@@ -16,6 +16,8 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
     "target": "es2022",
     "module": "es2020",
     "lib": ["es2018", "dom"],

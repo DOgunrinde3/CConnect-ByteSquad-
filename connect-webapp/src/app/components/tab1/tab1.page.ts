@@ -1,26 +1,51 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms"
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AuthService} from "../../services/auth.service";
+import {NgIf} from "@angular/common";
+import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, FormsModule],
+  imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf],
 })
-export class Tab1Page {
-  email: string = "";
-  password: string = "";
+export class Tab1Page implements OnInit {
+  loginForm: FormGroup;
 
 
-  constructor() {}
+
+  constructor(private authService: AuthService,
+              private formBuilder: FormBuilder) {
+
+  }
+
+  ngOnInit(){
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      companyCode: ['', Validators.required]
+    });
+}
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
 
   login() {
-    // Perform login logic here
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+
     // You can send a request to your backend for authentication
     // and handle the response accordingly
   }

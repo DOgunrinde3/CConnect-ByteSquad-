@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import {UserModel} from "../../model/user.model";
 
 @Component({
   selector: 'app-tab2',
@@ -10,6 +11,8 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
   imports: [IonicModule, ExploreContainerComponent]
 })
 export class Tab2Page {
+
+  @Input() userInformation : UserModel;
 
   constructor() {}
 
