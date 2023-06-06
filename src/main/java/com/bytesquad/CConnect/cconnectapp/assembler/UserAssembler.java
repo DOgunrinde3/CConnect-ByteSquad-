@@ -1,5 +1,6 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
+import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import org.springframework.stereotype.Component;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class UserAssembler {
 
 
-    public UserLoginDto assemble(User user){
-        return new UserLoginDto();
+    public UserInformationDto assemble(User user){
+        return new UserInformationDto();
     }
 
     public User disassemble(UserLoginDto userLoginDto){
