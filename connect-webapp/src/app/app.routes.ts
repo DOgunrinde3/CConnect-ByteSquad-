@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import {Tab1Page} from "./components/tab1/tab1.page";
 import {Tab2Page} from "./components/tab2/tab2.page";
 import {CreateCompanyPage} from "./components/create-company/create-company.page";
+import {RegisterUserPage} from "./components/register-user/register-user.page";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -10,5 +11,8 @@ export const routes: Routes = [
   { path: 'home', component: Tab2Page },
   {
     path: 'create-company', component: CreateCompanyPage
+  },
+  {
+    path: 'register-user', component: RegisterUserPage
   },
 ];

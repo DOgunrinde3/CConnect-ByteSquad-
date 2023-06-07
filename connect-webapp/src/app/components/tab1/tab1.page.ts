@@ -44,6 +44,12 @@ export class Tab1Page implements OnInit {
     return this.loginForm.get('password');
   }
 
+  createCompany(): void{
+    this.platform.ready().then(() => {
+      this.navCtrl.navigateRoot('/create-company');
+    });
+  }
+
   login() {
     if (this.loginForm.invalid) {
       return;
@@ -66,8 +72,6 @@ export class Tab1Page implements OnInit {
       }
 
     );
-
-
     // You can send a request to your backend for authentication
     // and handle the response accordingly
   }

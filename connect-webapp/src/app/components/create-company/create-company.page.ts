@@ -5,7 +5,9 @@ import {IonicModule, NavController, Platform} from '@ionic/angular';
 import {AuthService} from "../../services/auth.service";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserLoginModel} from "../../model/user-login.model";
-import {CompanyRegistrationModel} from "../../model/company-registration.model";
+import {CompanyModel} from "../../model/company.model";
+import {UserInformationModel} from "../../model/user-information.model";
+import {CompanyInformationService} from "../../services/company-information.service";
 
 @Component({
   selector: 'app-create-company',
@@ -20,51 +22,17 @@ export class CreateCompanyPage implements OnInit {
               private formBuilder: FormBuilder,
               private platform: Platform,
               private navCtrl: NavController,
-              private userInformationService: UserInformationService) {
+              private companyInformationService: CompanyInformationService) {
 
   }
 
   ngOnInit(){
     this.registrationForm = this.formBuilder.group({
-      companyName: ['', [Validators.required]],
-      userLoginInfo: this.formBuilder.group({
-        password: ['', [Validators.required]],
-      }),
-      userInfo: this.formBuilder.group({
-        firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
-        companyName: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
-        phoneNumber: ['', [Validators.required]],
-        bio: ['', [Validators.maxLength(50)]]
-      })
+      companyName: ['', [Validators.required]]
     });
   }
 
-  get email() {
-    return this.registrationForm.get('email');
-  }
 
-  get password() {
-    return this.registrationForm.get('password');
-  }
-
-
-  get phoneNumber() {
-    return this.registrationForm.get('phoneNumber');
-  }
-
-  get bio() {
-    return this.registrationForm.get('bio');
-  }
-
-  get firstName() {
-    return this.registrationForm.get('firstName');
-  }
-
-  get lastName() {
-    return this.registrationForm.get('lastName');
-  }
 
   get companyName() {
     return this.registrationForm.get('companyName');
@@ -78,34 +46,16 @@ export class CreateCompanyPage implements OnInit {
     // if (this.registrationForm.invalid || this.passwordMatch()) {
     //   return;
     // }
-    const formValue =  this.registrationForm.getRawValue() ;
-
-    console.log(formValue.userLoginInfo.password);
-
-    // @ts-ignore
-    const userLoginInfo: UserLoginModel = {
-      username: null,
-      password: formValue.userLoginInfo.password,
-      companyCode: null,
-      userInfo: formValue.userInfo
-    }
-
-    const companyRegistration: CompanyRegistrationModel = {
-      companyName: formValue.companyName,
-      userLoginInfo: userLoginInfo,
-
-    }
-
-
+    const companyRegistration =  this.registrationForm.getRawValue() as CompanyModel;
 
     // Perform registration logic here
     this.authService.createCompany(companyRegistration).subscribe(
       (value) =>{
 
-        this.userInformationService.setUserInformation(value)
+        this.companyInformationService.setCompanyInformation(value)
 
         this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/home');
+          this.navCtrl.navigateRoot('/register-user');
         });
 
       },

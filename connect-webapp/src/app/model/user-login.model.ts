@@ -1,8 +1,8 @@
-import {UserModel} from "./user.model";
+import {UserInformationModel} from "./user-information.model";
 
 export class UserLoginModel{
-  username: number | null
+  username: number | null;
   password: string;
-  companyCode: number | null
-  userInfo: UserModel
+  companyCode: number | null;
+
 }

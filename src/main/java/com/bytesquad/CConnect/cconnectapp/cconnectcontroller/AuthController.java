@@ -1,8 +1,9 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.CompanyRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.CompanyDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.service.CompanyService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,13 @@ public class AuthController {
     }
 
     @PostMapping("/create-company")
-    public UserInformationDto createCompany(@RequestBody CompanyRegistrationDto companyRegistrationDto, @RequestBody UserLoginDto userLoginDto){
-        return companyService.create(companyRegistrationDto);
+    public CompanyDto createCompany(@RequestBody CompanyDto companyDto){
+        return companyService.create(companyDto);
+    }
+
+    @PostMapping("/register-user")
+    public UserInformationDto registerUser(@RequestBody UserRegistrationDto userRegistrationDto){
+        return userService.register(userRegistrationDto);
     }
 
     @GetMapping("/{userId}")

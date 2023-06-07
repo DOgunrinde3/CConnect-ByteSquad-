@@ -30,19 +30,13 @@ public class User {
     private String username;
     private String password;
     private Integer companyCode;
+    private Boolean completedRegistration;
 
     public static User newInstance(){
         User newInstance = new User();
         newInstance.userId = UUID.randomUUID().toString();
-        newInstance.setUsername(generateUsername(newInstance().getFirstName(), newInstance.getLastName()));
         return newInstance;
     }
 
-    private static String generateUsername(String firstName, String lastName) {
-        String firstLetter = firstName.substring(0, 1).toLowerCase();
-        String generatedName = firstLetter + lastName.toLowerCase();
-        String randomDigits = String.format("%02d", new Random().nextInt(100));
-        generatedName += randomDigits;
-        return generatedName;
-    }
+
 }

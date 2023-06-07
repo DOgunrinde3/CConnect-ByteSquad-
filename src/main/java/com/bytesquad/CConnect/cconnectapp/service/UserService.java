@@ -4,6 +4,7 @@ package com.bytesquad.CConnect.cconnectapp.service;
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,13 +53,9 @@ public class UserService {
         return userAssembler.assemble(user);
     }
 
-    public UserInformationDto register(UserLoginDto userLoginDto){
-        //we need to get the company code the user inputed and check the company database table to see if this exists.
-        //if it exists, we then need to check the list of unregisteredUsers on the Company Entity and check to see if a user with the same first name and last name exists
-        // if the user exists, then we want to assemble that as the user Login
-         User user = userAssembler.disassemble(userLoginDto);
+    public UserInformationDto register(UserRegistrationDto userRegistrationDto){
+         User user = userAssembler.disassemble(userRegistrationDto);
             userRepository.insert(user);
-
        return loginUser(user);
 
     }

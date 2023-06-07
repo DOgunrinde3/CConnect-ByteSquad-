@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {UserModel} from "../model/user.model";
+import {UserInformationModel} from "../model/user-information.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserInformationService {
   // @ts-ignore
-  private userInformationSubject = new BehaviorSubject<UserModel>(null);
+  private userInformationSubject = new BehaviorSubject<UserInformationModel>(null);
   userInformation$ = this.userInformationSubject.asObservable();
 
-  setUserInformation(userInformation: UserModel) {
+  setUserInformation(userInformation: UserInformationModel) {
     this.userInformationSubject.next(userInformation);
   }
 }

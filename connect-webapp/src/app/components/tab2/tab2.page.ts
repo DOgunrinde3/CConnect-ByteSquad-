@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import {UserModel} from "../../model/user.model";
+import {UserInformationModel} from "../../model/user-information.model";
 import {UserInformationService} from "../../services/user-information.service";
+import {CompanyModel} from "../../model/company.model";
 
 @Component({
   selector: 'app-tab2',
@@ -13,7 +14,8 @@ import {UserInformationService} from "../../services/user-information.service";
 })
 export class Tab2Page {
 
-  userInformation: UserModel;
+  userInformation: UserInformationModel;
+  companyInformation: CompanyModel;
 
   constructor(private userInformationService: UserInformationService) {
   }
@@ -33,4 +35,5 @@ export class Tab2Page {
     );
 
   }
+
 }

@@ -27,7 +27,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer companyCode;
     private String companyName;
-    private List<UnregisteredUser> unregisteredUsers;
+
 
     public static Company newInstance(String companyName) {
         Company newInstance = new Company();

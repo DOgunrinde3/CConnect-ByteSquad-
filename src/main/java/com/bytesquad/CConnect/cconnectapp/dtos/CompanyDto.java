@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class CompanyRegistrationDto {
+public class CompanyDto {
     private String companyName;
-    private UserLoginDto userLoginInfo;
+    private Integer companyCode;
 }
