@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/create-company")
-    public UserInformationDto createCompany(@RequestBody CompanyRegistrationDto companyRegistrationDto){
+    public UserInformationDto createCompany(@RequestBody CompanyRegistrationDto companyRegistrationDto, @RequestBody UserLoginDto userLoginDto){
         return companyService.create(companyRegistrationDto);
     }
 

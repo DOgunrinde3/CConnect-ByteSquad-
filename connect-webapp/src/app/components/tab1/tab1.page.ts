@@ -20,9 +20,6 @@ import {UserLoginModel} from "../../model/user-login.model";
 })
 export class Tab1Page implements OnInit {
   loginForm: FormGroup;
-
-
-
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
               private platform: Platform,

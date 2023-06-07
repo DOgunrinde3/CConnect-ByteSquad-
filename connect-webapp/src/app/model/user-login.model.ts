@@ -1,6 +1,8 @@
+import {UserModel} from "./user.model";
 
 export class UserLoginModel{
-  username: string;
+  username: number | null
   password: string;
-  companyCode: number;
+  companyCode: number | null
+  userInfo: UserModel
 }

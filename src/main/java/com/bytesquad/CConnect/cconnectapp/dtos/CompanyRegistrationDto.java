@@ -8,5 +8,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CompanyRegistrationDto {
     private String companyName;
-    private UserLoginDto companyAdmin;
+    private UserLoginDto userLoginInfo;
 }

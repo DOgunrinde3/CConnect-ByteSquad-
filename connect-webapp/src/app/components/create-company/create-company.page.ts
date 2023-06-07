@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {IonicModule, NavController, Platform} from '@ionic/angular';
 import {AuthService} from "../../services/auth.service";
 import {UserInformationService} from "../../services/user-information.service";
+import {UserLoginModel} from "../../model/user-login.model";
+import {CompanyRegistrationModel} from "../../model/company-registration.model";
 
 @Component({
   selector: 'app-create-company',
@@ -24,14 +26,18 @@ export class CreateCompanyPage implements OnInit {
 
   ngOnInit(){
     this.registrationForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
       companyName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      bio: ['', [Validators.maxLength(50)]]
+      userLoginInfo: this.formBuilder.group({
+        password: ['', [Validators.required]],
+      }),
+      userInfo: this.formBuilder.group({
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        companyName: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        phoneNumber: ['', [Validators.required]],
+        bio: ['', [Validators.maxLength(50)]]
+      })
     });
   }
 
@@ -43,9 +49,6 @@ export class CreateCompanyPage implements OnInit {
     return this.registrationForm.get('password');
   }
 
-  get confirmPassword() {
-    return this.registrationForm.get('confirmPassword');
-  }
 
   get phoneNumber() {
     return this.registrationForm.get('phoneNumber');
@@ -55,17 +58,62 @@ export class CreateCompanyPage implements OnInit {
     return this.registrationForm.get('bio');
   }
 
-  passwordMatch(): boolean {
-    return this.password?.value !== this.confirmPassword?.value;
+  get firstName() {
+    return this.registrationForm.get('firstName');
   }
 
+  get lastName() {
+    return this.registrationForm.get('lastName');
+  }
+
+  get companyName() {
+    return this.registrationForm.get('companyName');
+  }
+
+  // passwordMatch(): boolean {
+  //   return this.password?.value !== this.confirmPassword?.value;
+  // }
+
   register(): void {
-    if (this.registrationForm.invalid || this.passwordMatch()) {
-      return;
+    // if (this.registrationForm.invalid || this.passwordMatch()) {
+    //   return;
+    // }
+    const formValue =  this.registrationForm.getRawValue() ;
+
+    console.log(formValue.userLoginInfo.password);
+
+    // @ts-ignore
+    const userLoginInfo: UserLoginModel = {
+      username: null,
+      password: formValue.userLoginInfo.password,
+      companyCode: null,
+      userInfo: formValue.userInfo
     }
 
+    const companyRegistration: CompanyRegistrationModel = {
+      companyName: formValue.companyName,
+      userLoginInfo: userLoginInfo,
+
+    }
+
+
+
     // Perform registration logic here
-    console.log('Registration successful!', this.registrationForm.value);
+    this.authService.createCompany(companyRegistration).subscribe(
+      (value) =>{
+
+        this.userInformationService.setUserInformation(value)
+
+        this.platform.ready().then(() => {
+          this.navCtrl.navigateRoot('/home');
+        });
+
+      },
+      error => {
+        // Handle errors if necessary
+      }
+
+    );
   }
 
 }

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-  private MongoTemplate mongoTemplate;
+  private final MongoTemplate mongoTemplate;
 
   private final UserRepository userRepository;
 
