@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registration Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="registrationForm" (ngSubmit)="register()">
+
+    <ion-item>
+      <ion-label position="floating">Company Name</ion-label>
+      <ion-input type="text" formControlName="companyName"></ion-input>
+      <ion-text color="danger" *ngIf="companyName?.invalid && (companyName?.dirty || companyName?.touched)">Company name is required.</ion-text>
+    </ion-item>
+
+
+    <ion-button expand="full" type="submit" >Get Started!</ion-button>
+  </form>
+</ion-content>

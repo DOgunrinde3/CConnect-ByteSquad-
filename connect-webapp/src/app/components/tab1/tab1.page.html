@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Tab 1
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Username</ion-label>
+        <ion-input type="username" formControlName="username"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="username?.invalid && username?.touched">
+        <ion-text color="danger" class="ion-padding-start">
+          <small>
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Please enter a valid username address.
+          </small>
+        </ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="password?.invalid && password?.touched">
+        <ion-text color="danger" class="ion-padding-start">
+          <small>
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Password is required.
+          </small>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Company Code</ion-label>
+        <ion-input type="number" formControlName="companyCode"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="full" type="submit" [disabled]="loginForm.invalid">Login</ion-button>
+  </form>
+</ion-content>
+
+<ion-content>
+  <ion-button expand="full" color="primary" (click)="createCompany()">Create Company</ion-button>
+</ion-content>
