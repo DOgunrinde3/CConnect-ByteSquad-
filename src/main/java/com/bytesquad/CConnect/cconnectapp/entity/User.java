@@ -1,8 +1,8 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
 import lombok.*;
+
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Type;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 

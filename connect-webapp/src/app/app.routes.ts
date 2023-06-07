@@ -7,4 +7,8 @@ export const routes: Routes = [
   { path: 'login', component: Tab1Page },
   // Add more routes for other pages
   { path: 'home', component: Tab2Page },
+  {
+    path: 'create-company',
+    loadComponent: () => import('./components/create-company/create-company.page').then( m => m.CreateCompanyPage)
+  },
 ];
