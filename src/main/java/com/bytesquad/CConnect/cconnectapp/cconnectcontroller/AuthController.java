@@ -16,6 +16,7 @@ import java.util.UUID;
 public class AuthController {
 
     private final UserService userService;
+    private final StaffService staffService;
 
     @PostMapping("/login")
     public UserDto login(@RequestBody UserLoginDto userLoginDto){
@@ -30,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register-doctor")
     public StaffInformationDto registerDoctor(@RequestBody RegistrationDto registrationDto){
-        return userService.register(registrationDto);
+        return staffService.register(registrationDto);
     }
 
     @GetMapping("/{userId}")
