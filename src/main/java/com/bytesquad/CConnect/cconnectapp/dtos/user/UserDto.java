@@ -1,19 +1,21 @@
-package com.bytesquad.CConnect.cconnectapp.dtos;
+package com.bytesquad.CConnect.cconnectapp.dtos.user;
 
 
+import com.bytesquad.CConnect.cconnectapp.enums.Gender;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.UUID;
+import java.time.LocalDate;
+
 
 @Data
 @Accessors(chain = true)
-public class UserInformationDto {
+public class UserDto {
     private String userId;
-    private String bio;
     private String firstName;
     private String lastName;
-    private Boolean isAdmin;
     private String phoneNumber;
+    private LocalDate birthDate;
     private String email;
+    private Gender gender;
 }

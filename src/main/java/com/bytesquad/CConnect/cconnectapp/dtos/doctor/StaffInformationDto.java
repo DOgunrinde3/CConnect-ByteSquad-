@@ -1,17 +1,16 @@
-package com.bytesquad.CConnect.cconnectapp.dtos;
+package com.bytesquad.CConnect.cconnectapp.dtos.doctor;
+
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserRegistrationDto {
+public class StaffInformationDto {
+    private String Id;
     private String bio;
     private String firstName;
     private String lastName;
-    private Boolean isAdmin;
     private String phoneNumber;
     private String email;
-    private String password;
-    private Integer companyCode;
 }

@@ -2,9 +2,9 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 //import repository.UserRepository;
 
 import javax.ws.rs.NotFoundException;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -27,7 +27,9 @@ public class UserService {
   private final UserRepository userRepository;
 
     private final UserAssembler userAssembler;
-    public UserInformationDto login(UserLoginDto userLoginDto){
+
+    private LocalDate minYear = LocalDate.now().minusYears(18);
+    public UserDto login(UserLoginDto userLoginDto){
         Query query = new Query();
         query.addCriteria(Criteria.where("username").is(userLoginDto.getUsername()));
 
@@ -40,7 +42,7 @@ public class UserService {
             throw new IllegalStateException("found duplicate username" + userLoginDto.getUsername());
         }
 
-        if (!user.getPassword().equals(userLoginDto.getPassword()) || !user.getCompanyCode().equals(userLoginDto.getCompanyCode())){
+        if (!user.getPassword().equals(userLoginDto.getPassword())){
             throw new NotFoundException("Invalid username or password");
 
         }
@@ -49,12 +51,15 @@ public class UserService {
 
     }
 
-    private UserInformationDto loginUser(User user){
+    private UserDto loginUser(User user){
         return userAssembler.assemble(user);
     }
 
-    public UserInformationDto register(UserRegistrationDto userRegistrationDto){
-         User user = userAssembler.disassemble(userRegistrationDto);
+    public UserDto register(RegistrationDto registrationDto){
+         User user = userAssembler.disassemble(registrationDto);
+         if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
+             throw new RuntimeException("User is too young");
+         }
             userRepository.insert(user);
        return loginUser(user);
 

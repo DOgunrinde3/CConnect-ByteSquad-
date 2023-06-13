@@ -1,4 +1,4 @@
-package com.bytesquad.CConnect.cconnectapp.dtos;
+package com.bytesquad.CConnect.cconnectapp.dtos.user;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

@@ -1,17 +1,50 @@
-<ion-header [translucent]="true">
+<!-- home.page.html -->
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Booking Calendar
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="calendar">
+    <div class="month">
+      <div class="month-header">
+        <ion-button (click)="prevMonth()">Previous</ion-button>
+        <h2>{{ currentMonth }}</h2>
+        <ion-button (click)="nextMonth()">Next</ion-button>
+      </div>
+      <div class="days">
+        <div class="day" *ngFor="let day of daysInMonth">
+          {{ day }}
+        </div>
+      </div>
+      <ion-grid class="weeks">
+        <ion-row *ngFor="let week of calendar">
+          <ion-col *ngFor="let day of week">
+            <ion-button (click)="selectDate(day)">{{ day.day }}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+  <div class="booking">
+    <h2>Booking Details</h2>
+    <ion-item *ngIf="selectedDate">
+      <ion-label>Date:</ion-label>
+      <ion-input value="{{ selectedDate.date }}" readonly></ion-input>
+    </ion-item>
+    <ion-item *ngIf="selectedDate">
+      <ion-label>Time:</ion-label>
+      <ion-input [(ngModel)]="selectedDate.time"></ion-input>
+    </ion-item>
+    <ion-button (click)="bookAppointment()" expand="full" [disabled]="!selectedDate">
+      Book Appointment
+    </ion-button>
+  </div>
 
   <app-explore-container name="Tab 3 page"></app-explore-container>
+
 </ion-content>
+
