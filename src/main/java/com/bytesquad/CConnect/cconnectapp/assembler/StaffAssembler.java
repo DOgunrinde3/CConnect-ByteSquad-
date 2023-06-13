@@ -1,6 +1,6 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffInformationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import org.springframework.stereotype.Component;
@@ -11,8 +11,8 @@ import java.util.Random;
 public class StaffAssembler {
 
 
-    public StaffInformationDto assemble(Staff staff){
-        return new StaffInformationDto()
+    public StaffDto assemble(Staff staff){
+        return new StaffDto()
                 .setUserId(staff.getUserId())
                 .setPhoneNumber(staff.getPhoneNumber())
                 .setEmail(staff.getEmail())

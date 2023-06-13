@@ -1,9 +1,10 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.doctor.StaffInformationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class AuthController {
     private final StaffService staffService;
 
     @PostMapping("/login")
-    public UserDto login(@RequestBody UserLoginDto userLoginDto){
-        return userService.login(userLoginDto);
+    public UserDto login(@RequestBody LoginDto loginDto){
+        return userService.login(loginDto);
     }
 
 
@@ -30,12 +31,12 @@ public class AuthController {
     }
 
     @PostMapping("/register-doctor")
-    public StaffInformationDto registerDoctor(@RequestBody RegistrationDto registrationDto){
+    public StaffDto registerDoctor(@RequestBody RegistrationDto registrationDto){
         return staffService.register(registrationDto);
     }
 
     @GetMapping("/{userId}")
-    public UserLoginDto getUser(@PathVariable UUID userId){
+    public LoginDto getUser(@PathVariable UUID userId){
         return userService.getUser(userId);
     }
 

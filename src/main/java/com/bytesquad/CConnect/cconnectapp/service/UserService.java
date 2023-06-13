@@ -3,7 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.UserLoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
@@ -29,9 +29,9 @@ public class UserService {
     private final UserAssembler userAssembler;
 
     private LocalDate minYear = LocalDate.now().minusYears(18);
-    public UserDto login(UserLoginDto userLoginDto){
+    public UserDto login(LoginDto loginDto){
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(userLoginDto.getUsername()));
+        query.addCriteria(Criteria.where("username").is(loginDto.getUsername()));
 
         User user = mongoTemplate.find(query, User.class)
                 .stream()
@@ -39,10 +39,10 @@ public class UserService {
                 .orElseThrow(NotFoundException::new);
 
         if (mongoTemplate.find(query, User.class).size() > 1){
-            throw new IllegalStateException("found duplicate username" + userLoginDto.getUsername());
+            throw new IllegalStateException("found duplicate username" + loginDto.getUsername());
         }
 
-        if (!user.getPassword().equals(userLoginDto.getPassword())){
+        if (!user.getPassword().equals(loginDto.getPassword())){
             throw new NotFoundException("Invalid username or password");
 
         }
@@ -65,7 +65,7 @@ public class UserService {
 
     }
 
-    public UserLoginDto getUser(UUID userId){
+    public LoginDto getUser(UUID userId){
 //        User user = userRepository.findById(userId).orElseThrow();
 //        return userAssembler.assemble(user);
         return null;
