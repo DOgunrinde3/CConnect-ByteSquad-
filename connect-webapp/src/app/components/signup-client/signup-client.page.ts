@@ -40,24 +40,8 @@ export class SignupClient implements OnInit {
 
     });
 
-    this.getCompanyInfo();
-
   }
 
-  getCompanyInfo(){
-    this.companyInformationService.companyInformation$.subscribe(
-      value => {
-
-        if (value != null) {
-
-        }
-      },
-      error => {
-        // Handle errors if necessary
-      }
-    );
-
-  }
 
 
   get email() {
