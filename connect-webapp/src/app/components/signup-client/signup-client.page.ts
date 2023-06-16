@@ -6,13 +6,13 @@ import {UserInformationService} from "../../services/user-information.service";
 import {CompanyModel} from "../../model/company.model";
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-signup-client',
+  templateUrl: 'signup-client.page.html',
+  styleUrls: ['signup-client.page.scss'],
   standalone: true,
   imports: [IonicModule, ExploreContainerComponent]
 })
-export class Tab2Page {
+export class SignupClient {
 
   userInformation: UserInformationModel;
   companyInformation: CompanyModel;

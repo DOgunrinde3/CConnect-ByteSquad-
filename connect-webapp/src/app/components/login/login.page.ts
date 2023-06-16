@@ -12,13 +12,13 @@ import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 import {UserLoginModel} from "../../model/user-login.model";
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-login',
+  templateUrl: 'login.page.html',
+  styleUrls: ['login.page.scss'],
   standalone: true,
   imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf],
 })
-export class Tab1Page implements OnInit {
+export class LoginPage implements OnInit {
   loginForm: FormGroup;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
