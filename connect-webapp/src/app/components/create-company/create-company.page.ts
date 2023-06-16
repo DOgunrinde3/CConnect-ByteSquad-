@@ -4,9 +4,9 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {IonicModule, NavController, Platform} from '@ionic/angular';
 import {AuthService} from "../../services/auth.service";
 import {UserInformationService} from "../../services/user-information.service";
-import {UserLoginModel} from "../../model/user-login.model";
+import {LoginModel} from "../../model/Login.model";
 import {CompanyModel} from "../../model/company.model";
-import {UserInformationModel} from "../../model/user-information.model";
+import {UserModel} from "../../model/User.model";
 import {CompanyInformationService} from "../../services/company-information.service";
 
 @Component({

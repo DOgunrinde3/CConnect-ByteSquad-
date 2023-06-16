@@ -4,11 +4,11 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {IonicModule, NavController, Platform} from '@ionic/angular';
  import {AuthService} from "../../services/auth.service";
  import {UserInformationService} from "../../services/user-information.service";
- import {UserInformationModel} from "../../model/user-information.model";
- import {UserLoginModel} from "../../model/user-login.model";
+ import {UserModel} from "../../model/User.model";
+ import {LoginModel} from "../../model/Login.model";
  import {CompanyModel} from "../../model/company.model";
  import {CompanyInformationService} from "../../services/company-information.service";
- import {UserRegistrationModel} from "../../model/user-registration.model";
+ import {RegistrationModel} from "../../model/Registration.model";
 
 @Component({
   selector: 'app-register-user',
@@ -99,7 +99,7 @@ export class RegisterUserPage implements OnInit {
     const formValue =  this.userRegistrationForm.getRawValue();
 
 
-    const userRegistrationInformation: UserRegistrationModel = {
+    const userRegistrationInformation: RegistrationModel = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       password: formValue.password,

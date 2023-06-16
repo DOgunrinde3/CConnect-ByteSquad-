@@ -1,9 +1,9 @@
-export class UserInformationModel {
+export class UserModel {
   userId: string;
-  bio: string;
   firstName: string;
   lastName: string;
-  isAdmin: boolean;
   phoneNumber: string;
+  birthDate: Date;
   email: string;
+  gender: string;
 }

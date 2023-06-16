@@ -1,10 +1,9 @@
-export class UserRegistrationModel {
-  bio: string;
+export class RegistrationModel {
   firstName: string;
   lastName: string;
-  isAdmin: boolean;
   phoneNumber: string;
   email: string;
   password: string;
-  companyCode: number;
+  birthDate: Date;
+  gender: string;
 }
