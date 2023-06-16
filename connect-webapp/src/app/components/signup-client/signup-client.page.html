@@ -6,39 +6,61 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ userInformation.firstName }} {{ userInformation.lastName }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-icon name="person"></ion-icon>
-        <ion-label>{{ userInformation.bio }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="mail"></ion-icon>
-        <ion-label>{{ userInformation.email }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="call"></ion-icon>
-        <ion-label>{{ userInformation.phoneNumber }}</ion-label>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+<ion-content class="ion-padding back">
+  <div class="container">
+    <ion-card mode="ios">
+      <ion-card-header>
+        <ion-card-title>User Registration</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="userRegistrationForm" (ngSubmit)="register()">
+
+          <ion-item>
+            <ion-label position="floating">First Name</ion-label>
+            <ion-input type="text" formControlName="firstName"></ion-input>
+            <ion-text color="danger" *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)">First name is required.</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Last Name</ion-label>
+            <ion-input type="text" formControlName="lastName"></ion-input>
+            <ion-text color="danger" *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)">Last name is required.</ion-text>
+          </ion-item>
+
+
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+
+          <ion-item *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+            <ion-text color="danger" *ngIf="email?.errors?. ['required']">Email is required.</ion-text>
+            <ion-text color="danger" *ngIf="email?.errors?.['email']">Please enter a valid email address.</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input type="text" formControlName="phoneNumber"></ion-input>
+            <ion-text color="danger" *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">Phone number is required.</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Bio (Max 50 characters)</ion-label>
+            <ion-textarea formControlName="bio"></ion-textarea>
+            <ion-text color="danger" *ngIf="bio?.invalid && (bio?.dirty || bio?.touched)">
+              <div *ngIf="bio?.errors?.['maxLength']">Bio cannot exceed 50 characters.</div>
+            </ion-text>
+          </ion-item>
+
+
+          <ion-button expand="full" type="submit" >Register</ion-button>
+        </form>      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
 
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-
-    <ion-tab-button tab="signup-client">
-      <ion-icon aria-hidden="true" name="ellipse"></ion-icon>
-      <ion-label></ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="tab3">
-      <ion-icon aria-hidden="true" name="square"></ion-icon>
-      <ion-label>Tab 3</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
