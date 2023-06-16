@@ -2,11 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule, NavController, Platform} from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
-import {CompanyModel} from "../../model/company.model";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {CompanyInformationService} from "../../services/company-information.service";
-import {UserRegistrationModel} from "../../model/user-registration.model";
 import {NgIf} from "@angular/common";
 
 @Component({
@@ -20,7 +18,6 @@ export class SignupClient implements OnInit {
 
 
   userRegistrationForm: FormGroup;
-  companyInformation: CompanyModel;
 
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
@@ -52,7 +49,7 @@ export class SignupClient implements OnInit {
       value => {
 
         if (value != null) {
-          this.companyInformation = value
+
         }
       },
       error => {
@@ -99,16 +96,6 @@ export class SignupClient implements OnInit {
     const formValue =  this.userRegistrationForm.getRawValue();
 
 
-    const userRegistrationInformation: UserRegistrationModel = {
-      firstName: formValue.firstName,
-      lastName: formValue.lastName,
-      password: formValue.password,
-      companyCode: this.companyInformation?.companyCode,
-      bio: formValue.bio,
-      isAdmin: true,
-      phoneNumber: formValue.phoneNumber,
-      email: formValue.email
-    }
 
     // @ts-ignore
     // Perform registration logic here

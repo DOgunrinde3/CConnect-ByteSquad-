@@ -9,7 +9,8 @@ import{UserInformationService} from "../../services/user-information.service";
 import { NavController, Platform } from '@ionic/angular';
 
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
-import {UserLoginModel} from "../../model/user-login.model";
+import {UserModel} from "../../model/User.model";
+import {LoginModel} from "../../model/Login.model";
 
 @Component({
   selector: 'app-login',
@@ -55,7 +56,7 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    const userLoginInformation = this.loginForm.getRawValue() as UserLoginModel;
+    const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
     this.authService.login(userLoginInformation).subscribe(
       (value) =>{
