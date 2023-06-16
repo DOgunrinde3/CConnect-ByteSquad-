@@ -31,25 +31,24 @@ export class LoginPage implements OnInit {
 
   ngOnInit(){
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      password: ['', Validators.required],
-      companyCode: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
     });
 }
 
-  get username() {
-    return this.loginForm.get('username');
+  get email() {
+    return this.loginForm.get('email');
   }
 
   get password() {
     return this.loginForm.get('password');
   }
 
-  createCompany(): void{
-    this.platform.ready().then(() => {
-      this.navCtrl.navigateRoot('/create-company');
-    });
-  }
+  // createCompany(): void{
+  //   this.platform.ready().then(() => {
+  //     this.navCtrl.navigateRoot('/create-company');
+  //   });
+  // }
 
   login() {
     if (this.loginForm.invalid) {
