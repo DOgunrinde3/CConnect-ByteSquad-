@@ -4,6 +4,6 @@ export class RegistrationModel {
   phoneNumber: string;
   email: string;
   password: string;
-  birthDate: Date;
+  birthDate: string;
   gender: string;
 }

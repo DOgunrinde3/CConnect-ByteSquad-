@@ -40,6 +40,28 @@
           <ion-item>
             <ion-input type="date" formControlName="birthdate"></ion-input>
           </ion-item>
+          <ion-list>
+            <ion-radio-group formControlName="gender">
+              <ion-list-header>
+                <ion-label>Gender</ion-label>
+              </ion-list-header>
+
+              <ion-item>
+                <ion-label>Male</ion-label>
+                <ion-radio slot="start" value="male" color="danger"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Female</ion-label>
+                <ion-radio slot="start" value="female" color="success"></ion-radio>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Prefer Not to Say</ion-label>
+                <ion-radio slot="start" value="other" color="primary"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
 
 
 
@@ -51,5 +73,8 @@
         </form>      </ion-card-content>
     </ion-card>
   </div>
+
+
 </ion-content>
+
 

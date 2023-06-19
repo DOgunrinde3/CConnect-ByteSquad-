@@ -31,12 +31,13 @@ export class SignupClient implements OnInit {
 
   ngOnInit(){
     this.userRegistrationForm = this.formBuilder.group({
-      password: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      birthdate: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      birthdate: ['', [Validators.required]],
+      gender: ['', [Validators.required]]
 
     });
 
@@ -83,7 +84,7 @@ export class SignupClient implements OnInit {
 
     const userRegistrationInformation =  this.userRegistrationForm.getRawValue() as RegistrationModel;
 
-
+console.log(userRegistrationInformation)
     // @ts-ignore
     // Perform registration logic here
     this.authService.registerUser(userRegistrationInformation).subscribe(

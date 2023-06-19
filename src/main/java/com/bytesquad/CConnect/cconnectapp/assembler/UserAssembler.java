@@ -5,6 +5,7 @@ import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 @Component
@@ -17,7 +18,9 @@ public class UserAssembler {
                 .setPhoneNumber(user.getPhoneNumber())
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName());
+                .setLastName(user.getLastName())
+                .setBirthDate(user.getBirthdate())
+                .setGender(user.getGender());
     }
 
     public User disassemble(RegistrationDto registrationDto){
@@ -30,11 +33,14 @@ public class UserAssembler {
                 registrationDto.getFirstName(), registrationDto.getLastName()
         );
 
+        LocalDate date = LocalDate.parse(registrationDto.getBirthdate());
+
+
         return user
                 .setUsername(username)
                 .setFirstName(registrationDto.getFirstName())
                 .setLastName(registrationDto.getLastName())
-                .setBirthdate(registrationDto.getBirthDate())
+                .setBirthdate(date)
                 .setEmail(registrationDto.getEmail())
                 .setPassword(registrationDto.getPassword())
                 .setPhoneNumber(registrationDto.getPhoneNumber());

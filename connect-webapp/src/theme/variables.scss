@@ -187,7 +187,7 @@
 
   .ios ion-modal {
     --ion-background-color: var(--ion-color-step-100);
-    --ion-toolbar-background: var(--ion-color-step-150);
+    --ion-toolbar-background: none;
     --ion-toolbar-border-color: var(--ion-color-step-250);
   }
 
@@ -229,7 +229,7 @@
 
     --ion-item-background: #1e1e1e;
 
-    --ion-toolbar-background: #1f1f1f;
+    --ion-toolbar-background: none;
 
     --ion-tab-bar-background: #1f1f1f;
 

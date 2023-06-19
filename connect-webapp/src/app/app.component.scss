@@ -13,3 +13,18 @@ ion-nav-link{
 ion-nav-link:hover{
 color: #3880ff;
 }
+
+
+ion-content {
+  position: relative;
+}
+
+ion-footer{
+height: 5rem;
+  display: flex;
+  align-items: center;
+
+}
+
+ion-header{
+}

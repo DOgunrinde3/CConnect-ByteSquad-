@@ -15,7 +15,6 @@ public class RegistrationDto {
     private String phoneNumber;
     private String email;
     private String password;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
-    private Gender gender;
+    private String birthdate;
+    private String gender;
 }

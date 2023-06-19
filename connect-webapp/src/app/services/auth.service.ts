@@ -22,6 +22,7 @@ export class AuthService{
 
 
   registerUser(userRegistration: RegistrationModel): Observable<UserModel>{
+    console.log(userRegistration)
     return this.http.post<UserModel>(`${BASE_URI}/register-user`, userRegistration);
   }
 }
