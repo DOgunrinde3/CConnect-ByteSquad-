@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+ion-card{
+  min-width: 50% !important;
+  margin-top: 5%;
+  --ion-background-color: #ffffff !important;
+
+}

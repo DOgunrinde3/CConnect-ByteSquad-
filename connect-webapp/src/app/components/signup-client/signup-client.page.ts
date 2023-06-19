@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {AuthService} from "../../services/auth.service";
 import {CompanyInformationService} from "../../services/company-information.service";
 import {NgIf} from "@angular/common";
+import {RegistrationModel} from "../../model/Registration.model";
 
 @Component({
   selector: 'app-signup-client',
@@ -33,10 +34,9 @@ export class SignupClient implements OnInit {
       password: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      companyName: ['', [Validators.required]],
+      birthdate: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required]],
-      bio: ['', [Validators.maxLength(50)]]
 
     });
 
@@ -69,6 +69,10 @@ export class SignupClient implements OnInit {
     return this.userRegistrationForm.get('lastName');
   }
 
+  get birthdate() {
+    return this.userRegistrationForm.get('birthdate');
+  }
+
 
 
   // passwordMatch(): boolean {
@@ -77,8 +81,7 @@ export class SignupClient implements OnInit {
 
   register(): void {
 
-    const formValue =  this.userRegistrationForm.getRawValue();
-
+    const userRegistrationInformation =  this.userRegistrationForm.getRawValue() as RegistrationModel;
 
 
     // @ts-ignore
@@ -86,10 +89,11 @@ export class SignupClient implements OnInit {
     this.authService.registerUser(userRegistrationInformation).subscribe(
       (value) =>{
 
+
         this.userInformationService.setUserInformation(value)
 
         this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/home');
+          this.navCtrl.navigateRoot('/book');
         });
 
       },

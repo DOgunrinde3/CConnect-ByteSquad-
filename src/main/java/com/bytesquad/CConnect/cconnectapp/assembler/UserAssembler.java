@@ -34,7 +34,7 @@ public class UserAssembler {
                 .setUsername(username)
                 .setFirstName(registrationDto.getFirstName())
                 .setLastName(registrationDto.getLastName())
-
+                .setBirthdate(registrationDto.getBirthDate())
                 .setEmail(registrationDto.getEmail())
                 .setPassword(registrationDto.getPassword())
                 .setPhoneNumber(registrationDto.getPhoneNumber());

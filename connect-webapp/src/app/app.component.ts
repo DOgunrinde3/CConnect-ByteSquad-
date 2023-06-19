@@ -2,6 +2,7 @@ import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -13,5 +14,15 @@ import {FormsModule} from "@angular/forms";
 export class AppComponent {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  routeToSignup(){
+    this.router.navigate(["/signup-client"]);
+
+  }
+
+  routeToLogin(){
+    this.router.navigate(["/login"])
+
+  }
 }

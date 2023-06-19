@@ -1,6 +1,7 @@
 package com.bytesquad.CConnect.cconnectapp.dtos;
 
 import com.bytesquad.CConnect.cconnectapp.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -14,6 +15,7 @@ public class RegistrationDto {
     private String phoneNumber;
     private String email;
     private String password;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private Gender gender;
 }
