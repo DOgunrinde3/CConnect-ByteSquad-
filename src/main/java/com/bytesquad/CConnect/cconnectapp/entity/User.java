@@ -26,11 +26,10 @@ public class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @Indexed(unique=true)
     private String email;
     private Gender gender;
     private LocalDate birthdate;
-    @Indexed(unique=true)
-    private String username;
     private String password;
 
     public static User newInstance(){

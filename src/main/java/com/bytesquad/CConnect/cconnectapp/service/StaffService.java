@@ -31,7 +31,7 @@ public class StaffService {
     private LocalDate minYear = LocalDate.now().minusYears(18);
     public StaffDto login(LoginDto staffLoginDto){
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(staffLoginDto.getUsername()));
+        query.addCriteria(Criteria.where("username").is(staffLoginDto.getEmail()));
 
         Staff staff = mongoTemplate.find(query, Staff.class)
                 .stream()
@@ -39,7 +39,7 @@ public class StaffService {
                 .orElseThrow(NotFoundException::new);
 
         if (mongoTemplate.find(query, Staff.class).size() > 1){
-            throw new IllegalStateException("found duplicate username" + staffLoginDto.getUsername());
+            throw new IllegalStateException("found duplicate username" + staffLoginDto.getEmail());
         }
 
         if (!staff.getPassword().equals(staffLoginDto.getPassword())){

@@ -63,7 +63,7 @@ export class LoginPage implements OnInit {
         this.userInformationService.setUserInformation(value)
 
         this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/home');
+          this.navCtrl.navigateRoot('/book');
         });
 
       },

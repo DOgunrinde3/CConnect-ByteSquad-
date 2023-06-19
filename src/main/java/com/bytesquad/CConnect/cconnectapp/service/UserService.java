@@ -31,7 +31,7 @@ public class UserService {
     private LocalDate minYear = LocalDate.now().minusYears(18);
     public UserDto login(LoginDto loginDto){
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(loginDto.getUsername()));
+        query.addCriteria(Criteria.where("email").is(loginDto.getEmail()));
 
         User user = mongoTemplate.find(query, User.class)
                 .stream()
@@ -39,11 +39,11 @@ public class UserService {
                 .orElseThrow(NotFoundException::new);
 
         if (mongoTemplate.find(query, User.class).size() > 1){
-            throw new IllegalStateException("found duplicate username" + loginDto.getUsername());
+            throw new IllegalStateException("found duplicate email" + loginDto.getEmail());
         }
 
         if (!user.getPassword().equals(loginDto.getPassword())){
-            throw new NotFoundException("Invalid username or password");
+            throw new NotFoundException("Invalid email or password");
 
         }
 
