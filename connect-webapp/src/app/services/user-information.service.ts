@@ -13,4 +13,5 @@ export class UserInformationService {
   setUserInformation(userInformation: UserModel) {
     this.userInformationSubject.next(userInformation);
   }
+
 }

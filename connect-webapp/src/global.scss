@@ -37,7 +37,10 @@
 
 ion-header, ion-footer{
   --ion-background-color: transparent !important;
-  box-shadow: none!important;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: none !important;
   padding-inline: 5%;
 }
 
