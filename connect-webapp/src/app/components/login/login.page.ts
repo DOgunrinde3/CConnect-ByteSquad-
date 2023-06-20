@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {IonicModule, ViewWillEnter} from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,9 +8,8 @@ import {NgIf} from "@angular/common";
 import{UserInformationService} from "../../services/user-information.service";
 import { NavController, Platform } from '@ionic/angular';
 
-import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
-import {UserModel} from "../../model/User.model";
 import {LoginModel} from "../../model/Login.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -21,19 +20,22 @@ import {LoginModel} from "../../model/Login.model";
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
+  isAuthenticated = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
-              private platform: Platform,
-              private navCtrl: NavController,
+              private router: Router,
               private userInformationService: UserInformationService) {
 
   }
 
   ngOnInit(){
+
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+
+
 }
 
   get email() {
@@ -44,11 +46,6 @@ export class LoginPage implements OnInit {
     return this.loginForm.get('password');
   }
 
-  // createCompany(): void{
-  //   this.platform.ready().then(() => {
-  //     this.navCtrl.navigateRoot('/create-company');
-  //   });
-  // }
 
   login() {
     if (this.loginForm.invalid) {
@@ -59,12 +56,10 @@ export class LoginPage implements OnInit {
 
     this.authService.login(userLoginInformation).subscribe(
       (value) =>{
+        this.authService.setAuthenticationState(true);
+        this.userInformationService.setUserInformation(value);
 
-        this.userInformationService.setUserInformation(value)
-
-        this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/bio');
-        });
+        this.router.navigate(["/bio"]);
 
       },
       error => {

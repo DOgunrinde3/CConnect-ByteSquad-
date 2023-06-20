@@ -27,6 +27,8 @@ export class SignupClient implements OnInit {
               private companyInformationService: CompanyInformationService,
               private userInformationService: UserInformationService) {
 
+
+
   }
 
   ngOnInit(){

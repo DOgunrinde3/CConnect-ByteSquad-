@@ -1,8 +1,9 @@
-import { Component, EnvironmentInjector, inject } from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnInit} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
+import {AuthService} from "./services/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -11,20 +12,34 @@ import {Router} from "@angular/router";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
+  isAuthenticated = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.isAuthenticated = isAuthenticated;
+    });
+  }
 
   routeToSignup(){
     this.router.navigate(["/signup-client"]);
 
   }
 
-  routeToLogin(){
-    this.router.navigate(["/login"])
+  logout(){
+    this.authService.logout().subscribe(() => {
+      this.routeToLogin();});
 
   }
+
+  routeToLogin(){
+    this.router.navigate(["/login"]);
+  }
+
 
 
 

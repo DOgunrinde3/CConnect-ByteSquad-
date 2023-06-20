@@ -2,19 +2,23 @@
 <ion-app>
 
   <ion-header  class="ion-padding-top">
-    <ion-toolbar>
+
 
     <div class="header-nav">
       <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
-      <div>
-        <ion-nav-link class="ion-margin-end" (click)="routeToLogin()">
+      <div *ngIf="!isAuthenticated">
+        <ion-nav-link class="ion-margin-end" (click)="routeToLogin()" >
           Login
         </ion-nav-link >
         <ion-nav-link (click)="routeToSignup()">
           Signup
         </ion-nav-link></div>
+
+      <ion-nav-link (click)="logout() " *ngIf="isAuthenticated">
+        Logout
+      </ion-nav-link>
     </div>
-    </ion-toolbar>
+
   </ion-header>
   <ion-content>
 

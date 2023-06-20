@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-tab3',
@@ -18,7 +19,7 @@ export class Tab3Page {
   daysInMonth: number[];
   calendar: any[][];
   selectedDate: { date: string, time: string};
-    constructor() {const date = new Date();
+    constructor(private authService: AuthService) {const date = new Date();
       // this.currentMonth = this.getMonthName(date.getMonth());
       // this.daysInMonth = this.getDaysInMonth(date.getMonth(), date.getFullYear());
       // this.calendar = this.generateCalendar(date.getMonth(), date.getFullYear());
