@@ -18,10 +18,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({}), IonicStorageModule.forRoot({
-      name: 'testdb',
-      driverOrder: [Drivers.IndexedDB]
-    })),
+    importProvidersFrom(IonicModule.forRoot({}), IonicStorageModule.forRoot()),
     provideRouter(routes),
     provideHttpClient(
     ),
