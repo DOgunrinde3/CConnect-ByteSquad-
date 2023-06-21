@@ -4,13 +4,15 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
+import {HeaderPage} from "../header/header.page";
+import {FooterPage} from "../footer/footer.page";
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, FormsModule, NgForOf, NgIf, ReactiveFormsModule],
+  imports: [IonicModule, ExploreContainerComponent, FormsModule, NgForOf, NgIf, ReactiveFormsModule, HeaderPage, FooterPage],
 })
 export class Tab3Page {
 

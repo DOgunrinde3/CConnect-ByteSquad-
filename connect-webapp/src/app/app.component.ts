@@ -1,5 +1,5 @@
 import {Component, EnvironmentInjector, inject, OnInit} from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -16,8 +16,9 @@ export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
   isAuthenticated = false;
 
+
   constructor(private router: Router,
-              private authService: AuthService) {}
+              private authService: AuthService){}
 
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
@@ -25,19 +26,22 @@ export class AppComponent implements OnInit {
     });
   }
 
-  routeToSignup(){
-    this.router.navigate(["/signup-client"]);
-
-  }
-
   logout(){
     this.authService.logout().subscribe(() => {
-      this.routeToLogin();});
+      this.router.navigate(["/login"]);
+
+    });
+
+
 
   }
 
-  routeToLogin(){
-    this.router.navigate(["/login"]);
+  routeToBook(){
+    this.router.navigate(["/book"]);
+  }
+
+  routeToBio(){
+    this.router.navigate(["/bio"]);
   }
 
 

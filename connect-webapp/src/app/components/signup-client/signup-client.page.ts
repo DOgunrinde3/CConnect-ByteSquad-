@@ -7,13 +7,15 @@ import {AuthService} from "../../services/auth.service";
 import {CompanyInformationService} from "../../services/company-information.service";
 import {NgIf} from "@angular/common";
 import {RegistrationModel} from "../../model/Registration.model";
+import {FooterPage} from "../footer/footer.page";
+import {HeaderPage} from "../header/header.page";
 
 @Component({
   selector: 'app-signup-client',
   templateUrl: 'signup-client.page.html',
   styleUrls: ['signup-client.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf]
+  imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage]
 })
 export class SignupClient implements OnInit {
 
@@ -102,6 +104,7 @@ console.log(userRegistrationInformation)
       },
       error => {
         // Handle errors if necessary
+
       }
 
     );

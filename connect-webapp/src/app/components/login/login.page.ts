@@ -10,13 +10,15 @@ import { NavController, Platform } from '@ionic/angular';
 
 import {LoginModel} from "../../model/Login.model";
 import {Router} from "@angular/router";
+import {HeaderPage} from "../header/header.page";
+import {FooterPage} from "../footer/footer.page";
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf],
+  imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf, HeaderPage, FooterPage],
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;

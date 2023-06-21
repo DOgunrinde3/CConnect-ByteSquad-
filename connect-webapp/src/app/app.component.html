@@ -1,33 +1,26 @@
 
 <ion-app>
-
-  <ion-header mode="ios">
-
-
-    <div class="header-nav">
-      <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
-      <div *ngIf="!isAuthenticated">
-        <ion-nav-link class="ion-margin-end" (click)="routeToLogin()" >
-          Login
-        </ion-nav-link >
-        <ion-nav-link (click)="routeToSignup()">
-          Signup
-        </ion-nav-link></div>
-
-      <ion-nav-link (click)="logout() " *ngIf="isAuthenticated">
-        Logout
-      </ion-nav-link>
-    </div>
-
-  </ion-header>
-  <ion-content>
-
-  <ion-router-outlet>
-
+  <ion-router-outlet id="main-content">
   </ion-router-outlet>
-  </ion-content>
-  <ion-footer>
-  <ion-text>Copyright © 2023 MacPaw Inc. 601 Montgomery Street, Suite 1400, San Francisco, CA 94111 tel: +1-(877)-5-MACPAW</ion-text>
-</ion-footer>
+
+  <ion-menu contentId="main-content" class="menu" side="end">
+    <ion-header>
+      <ion-toolbar>
+        <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-menu-toggle auto-hide="true" >
+          <ion-item><ion-icon name="home"></ion-icon>Home</ion-item>
+          <ion-item><ion-icon ios="apps"></ion-icon>Services</ion-item>
+          <ion-item (click)="routeToBook()"><ion-icon name="calender"></ion-icon>My Bookings</ion-item>
+          <ion-item (click)="routeToBio()"><ion-icon name="contact"></ion-icon>Profile</ion-item>
+          <ion-item (click)="logout()"><ion-icon name="log-out"></ion-icon>Logout</ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+    </ion-content>
+  </ion-menu>
 </ion-app>
 
