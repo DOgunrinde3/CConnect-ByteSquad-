@@ -7,12 +7,15 @@
     <div class="header-nav">
       <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
       <div *ngIf="!isAuthenticated">
-        <ion-nav-link class="ion-margin-end" (click)="routeToLogin()" >
+        <ion-nav-link class="ion-margin-end" (click)="routeToLogin()">
           Login
-        </ion-nav-link >
+        </ion-nav-link>
         <ion-nav-link (click)="routeToSignup()">
           Signup
         </ion-nav-link></div>
+      <ion-nav-link class="ion-margin-end" (click)="routeToHome()" >
+        Home
+      </ion-nav-link>
 
       <ion-nav-link (click)="logout() " *ngIf="isAuthenticated">
         Logout
@@ -27,7 +30,7 @@
   </ion-router-outlet>
   </ion-content>
   <ion-footer>
-  <ion-text>Copyright © 2023 MacPaw Inc. 601 Montgomery Street, Suite 1400, San Francisco, CA 94111 tel: +1-(877)-5-MACPAW</ion-text>
+  <ion-text>Copyright © 2023 ByteSquad University of Regina, SK. </ion-text>
 </ion-footer>
 </ion-app>
 

@@ -30,6 +30,11 @@ export class AppComponent implements OnInit {
 
   }
 
+  routeToHome(){
+      this.router.navigate(["/home"]);
+
+    }
+
   logout(){
     this.authService.logout().subscribe(() => {
       this.routeToLogin();});
