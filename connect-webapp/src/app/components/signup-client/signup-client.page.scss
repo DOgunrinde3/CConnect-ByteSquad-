@@ -10,20 +10,27 @@ ion-card{
 
 }
 
+ion-list ion-item {
+color: #205083;
+font-size: 16px;
+font-weight: bold;
+--background: white;
+}
+
 .cssbuttons-io-button {
-  background: #0000FF;
+  background: #639cd9;
   color: white;
   font-family: inherit;
   padding: 0.35em;
   padding-left: 1.2em;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: bold;
   border-radius: 0.9em;
   border: none;
   letter-spacing: 0.05em;
   display: flex;
   align-items: center;
-  box-shadow: inset 0 0 1.6em -0.6em #0000FF;
+  box-shadow: inset 0 0 1.6em -0.6em #3771AF;
   overflow: hidden;
   position: relative;
   height: 2.8em;
@@ -42,7 +49,7 @@ ion-card{
   height: 2.2em;
   width: 2.2em;
   border-radius: 0.7em;
-  box-shadow: 0.1em 0.1em 0.6em 0.2em #0000FF;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #3771AF;
   right: 0.3em;
   transition: all 0.3s;
 }
@@ -54,7 +61,7 @@ ion-card{
 .cssbuttons-io-button .icon svg {
   width: 1.1em;
   transition: transform 0.3s;
-  color: #0000FF;
+  color: #205083;
 }
 
 .cssbuttons-io-button:hover .icon svg {
