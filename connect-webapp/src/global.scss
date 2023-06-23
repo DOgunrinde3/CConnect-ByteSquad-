@@ -28,7 +28,7 @@
 
 
 .logo{
-  max-width: 200px !important;
+  max-width: 250px !important;
   cursor: pointer;
 }
 :root{
@@ -43,6 +43,10 @@ ion-header, ion-footer{
   align-items: center;
   box-shadow: none !important;
   padding-inline: 5%;
+  font-family: 'Poppins';
+  border-bottom: solid;
+  border-bottom-color: white;
+  border-bottom-size: 10px;
 }
 
 
@@ -51,6 +55,7 @@ ion-header, ion-footer{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: 'Poppins';
 
 }
 
