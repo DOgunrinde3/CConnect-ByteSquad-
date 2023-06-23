@@ -8,26 +8,28 @@ import {NgModule} from "@angular/core";
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {BioPage} from "./components/bio/bio.page";
 import {loggedInGuard, notLoggedInGuard} from "./services/auth.guard";
+import {BookAppointmentPage} from "./components/book-appointment/book-appointment.page";
+import {NgCalendarModule} from "ionic7-calendar";
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [loggedInGuard]},
   // Add more routes for other pages
   { path: 'signup-client', component: SignupClient, canActivate: [loggedInGuard] },
-  { path: 'book', component: Tab3Page, canActivate: [notLoggedInGuard] },
+  { path: 'book', component: BookAppointmentPage, canActivate: [notLoggedInGuard] },
   {
     path: 'bio', component: BioPage, canActivate: [notLoggedInGuard]
   },
   {
     path: 'home', component: HomePage, canActivate: [notLoggedInGuard]
-  },
+  }
 
 
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),  IonicStorageModule.forRoot()],
-  exports: [RouterModule, IonicStorageModule],
+  imports: [RouterModule.forRoot(routes),  IonicStorageModule.forRoot(), NgCalendarModule],
+  exports: [RouterModule, IonicStorageModule, NgCalendarModule],
 })
 
 export class AppRoutes {}

@@ -1,0 +1,40 @@
+<ion-content [fullscreen]="true">
+<app-header>
+  </app-header>
+  <ion-content >
+    <ion-card class="card-calender">
+<!--    <calendar (onEventSelected)="onDateSelected($event)"-->
+<!--              [calendarMode]="calendar.mode">-->
+<!--    </calendar>-->
+
+      <ion-datetime></ion-datetime>
+    </ion-card>
+
+
+
+
+    <ion-card class="card-time-schedule" *ngIf="appointmentAvailable">
+
+    <ion-segment color="primary" (ionChange)="shiftSelected($event)" [ngModel]="appointmentTimeShifts">
+
+      <ion-segment-button *ngFor="let shift of appointmentTimeShifts" [value]="shift">
+        {{shift}}
+      </ion-segment-button>
+
+    </ion-segment>
+
+
+    <ion-row>
+      <ion-col col-4 *ngFor="let time of selectedShiftTime">
+        <button ion-button outline round color="secondary">
+          {{time}}
+        </button>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-card>
+
+</ion-content>
+  <app-footer></app-footer>
+</ion-content>
