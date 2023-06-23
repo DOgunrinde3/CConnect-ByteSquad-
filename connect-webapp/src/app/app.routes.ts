@@ -18,7 +18,7 @@ export const routes: Routes = [
     path: 'bio', component: BioPage, canActivate: [notLoggedInGuard]
   },
   {
-    path: 'home', component: HomePage, canActivate: [notLoggedInGuard]
+    path: 'home', component: HomePage
   },
 
 
