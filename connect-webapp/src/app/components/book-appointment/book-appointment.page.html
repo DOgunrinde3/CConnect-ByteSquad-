@@ -1,17 +1,13 @@
 <ion-content [fullscreen]="true">
 <app-header>
   </app-header>
-  <ion-content >
+  <ion-content class="container">
     <ion-card class="card-calender">
-<!--    <calendar (onEventSelected)="onDateSelected($event)"-->
-<!--              [calendarMode]="calendar.mode">-->
-<!--    </calendar>-->
 
-      <ion-datetime></ion-datetime>
+    <calendar (onEventSelected)="onDateSelected($event)"
+              [calendarMode]="calendar.mode">
+    </calendar>
     </ion-card>
-
-
-
 
     <ion-card class="card-time-schedule" *ngIf="appointmentAvailable">
 
