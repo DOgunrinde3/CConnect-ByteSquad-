@@ -1,0 +1,215 @@
+.blank {
+  height: 70px;
+  text-align: right;
+  margin-right: 3%;
+  margin-top: 15px;
+  font-family: Bahnschrift;
+}
+
+.imgDefault {
+  pointer-events: none;
+}
+
+.imgEdit {
+  opacity: 0.5;
+}
+
+.pencilIcon {
+  position: absolute;
+  top: 85%;
+  left: 95%;
+  transform: translate(-40%, -40%);
+  font-size: 25px;
+  color: darkblue;
+  background-color: whitesmoke;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.emailInput {
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
+.pNumberInput {
+  margin-bottom: 26px;
+}
+
+.saveButton {
+  position: relative;
+  left: 50%;
+  font-size: 20px;
+}
+
+@media (max-width: 296px) {
+  .allContent {
+    display: none;
+  }
+}
+
+@media (min-width: 296px) and (max-width: 575px) {
+
+  .emailInput {
+    margin-top: -3px;
+    margin-bottom: 9px;
+  }
+
+  .pNumberInput {
+    margin-bottom: 13px;
+  }
+
+  .saveButton {
+    position: relative;
+    left: 40%;
+    font-size: 20px;
+  }
+
+  .profileImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .pencilIcon {
+    position: absolute;
+    top: 85%;
+    left: 70%;
+    font-size: 150%;
+  }
+
+  .title {
+    font-size: 35px;
+    text-align: center;
+    font-family: "Franklin Gothic light";
+  }
+
+  .titleCol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 15vh;
+  }
+
+  .titleCol::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 12.5%;
+    width: 75%;
+    height: 1.5px;
+    background-color: lightsteelblue;
+  }
+
+  ion-img {
+    width: 50%;
+    height: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .info1Col {
+    font-family: Bahnschrift;
+    font-size: 15px;
+  }
+
+  .info2Col {
+    font-family: Bahnschrift;
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 575px) and (max-width: 992px) {
+
+  .profileImg {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    transform: translate(0%, 30%);
+  }
+
+  .title {
+    font-size: 40px;
+    font-family: "Franklin Gothic light";
+  }
+
+  .titleCol {
+    position: relative;
+  }
+
+  .titleCol::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 75%;
+    height: 1.5px;
+    background-color: lightsteelblue;
+  }
+
+  ion-img {
+    width: 160px;
+    height: 160px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .info1Col {
+    font-family: Bahnschrift;
+    font-size: 18px;
+  }
+
+  .info2Col {
+    font-family: Bahnschrift;
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 992px) {
+
+  .profileImg {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    transform: translate(0%, 30%);
+  }
+
+  .titleCol {
+    position: relative;
+  }
+
+  .titleCol::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 75%;
+    height: 1.5px;
+    background-color: lightsteelblue;
+  }
+
+  .title {
+    font-size: 50px;
+    font-family: "Franklin Gothic light";
+  }
+
+  ion-img {
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .info1Col {
+    font-family: Bahnschrift;
+    font-size: 18px;
+  }
+
+  .info2Col {
+    font-family: Bahnschrift;
+    font-size: 18px;
+  }
+}
