@@ -7,9 +7,7 @@
   <ion-content>
 
     <ion-header [translucent]="true">
-      <ion-toolbar>
-        <ion-title>Home</ion-title>
-      </ion-toolbar>
+    HomePage
     </ion-header>
 
     <div class="welcome-section">
@@ -31,7 +29,7 @@
     </div>
 
     <div class="services-section">
-      <img src="assets/homepage.jpg" alt="Services Photo">
+      <img src="assets/services.jpg" alt="Services Photo">
       <div class="services-container">
         <button class="cssbuttons-io-button" type="submit">View All Services
         </button>
@@ -42,7 +40,7 @@
       <ion-row>
         <ion-col size="12" size-sm="6" size-lg="4">
           <div class="testimonial-card">
-            <img src="testimonial1.jpg" alt="Testimonial 1 Image">
+            <img src="assets/test1.PNG" alt="Testimonial 1 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">John Doe</h3>
               <p class="testimonial-designation">Patient</p>
@@ -53,7 +51,7 @@
 
         <ion-col size="12" size-sm="6" size-lg="4">
           <div class="testimonial-card">
-            <img src="testimonial2.jpg" alt="Testimonial 2 Image">
+            <img src="assets/test2.PNG" alt="Testimonial 2 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">Jane Smith</h3>
               <p class="testimonial-designation">Patient</p>
@@ -64,7 +62,7 @@
 
         <ion-col size="12" size-sm="6" size-lg="4">
           <div class="testimonial-card">
-            <img src="testimonial3.jpg" alt="Testimonial 3 Image">
+            <img src="assets/test3.PNG" alt="Testimonial 3 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">Sarah Johnson</h3>
               <p class="testimonial-designation">Patient</p>
@@ -102,7 +100,33 @@
       </div>
     </div>
 
+    <div class="contact-section">
+      <ion-card>
+      <h3>Contact Us</h3>
+      <ion-card-content>
+      <form>
+        <div class="form-group">
+          <ion-list>
+          <ion-item>
+          <ion-label for="name">Name:</ion-label>
+          <input type="text" id="name" name="name" required>
+          </ion-item>
+            <ion-item>
+              <ion-label for="message">Message:</ion-label>
+              <input type="text" id="message" name="message" required>
+            </ion-item>
+          </ion-list>
+        </div>
+        <button class="cssbuttons-io-button" type="submit">
+          Submit
+        </button>
+      </form>
+      </ion-card-content>
+      </ion-card>
+    </div>
+
     <div id="map" class="clinic-map"></div>
+
 
     <script>
 function initMap() {
@@ -125,6 +149,7 @@ function initMap() {
 
 initMap(); // Call the function to initialize the map
 </script>
+
 
   </ion-content>
 
