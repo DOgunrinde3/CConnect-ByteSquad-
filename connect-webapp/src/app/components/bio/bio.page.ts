@@ -7,6 +7,8 @@ import {Router} from "@angular/router";
 import {HeaderPage} from "../header/header.page";
 import {FooterPage} from "../footer/footer.page";
 import { ActionSheetController } from '@ionic/angular';
+import {UserInformationService} from "../../services/user-information.service";
+import {UserModel} from "../../model/User.model";
 
 @Component({
   selector: 'app-bio',
@@ -18,6 +20,7 @@ import { ActionSheetController } from '@ionic/angular';
 export class BioPage implements OnInit {
   isAuthenticated = false;
   editToggle: boolean = false;
+  user: UserModel;
 
   firstNameTemp: string = '';
   lastNameTemp: string = '';
@@ -32,7 +35,8 @@ export class BioPage implements OnInit {
   gender: string = 'Male';
   photo = './assets/icon/defaultPic.jpg';
   constructor(private authService: AuthService,
-              private router: Router, private actionSheetController: ActionSheetController) {
+              private router: Router, private actionSheetController: ActionSheetController,
+              private userService: UserInformationService) {
 
     this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;
@@ -40,6 +44,9 @@ export class BioPage implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.userInformation$.subscribe((user) => {
+      this.user = user;
+    });
   }
 
   async editImg() {

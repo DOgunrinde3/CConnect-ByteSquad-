@@ -23,7 +23,7 @@
             <ion-input [(ngModel)]="firstNameTemp" placeholder="First Name"></ion-input>
             <ion-input [(ngModel)]="lastNameTemp" placeholder="Last Name"></ion-input>
           </div>
-          <div class="title" *ngIf="!editToggle">{{ firstName }} {{ lastName}}</div>
+          <div class="title" *ngIf="!editToggle">{{ user?.firstName }} {{ user?.lastName}}</div>
         </ion-col>
       </ion-row>
 
@@ -41,9 +41,9 @@
             <ion-input [(ngModel)]="genderTemp" placeholder="Gender"></ion-input>
           </div>
           <div *ngIf="!editToggle">
-            <p> {{ email }}  </p> <br/>
-            <p> {{ phoneNumber }} </p>  <br/>
-            <p> {{ gender }} </p> <br/>
+            <p> {{ user?.email }}  </p> <br/>
+            <p> {{ user?.phoneNumber }} </p>  <br/>
+            <p> {{ user?.gender }} </p> <br/>
           </div>
         </ion-col>
       </ion-row>

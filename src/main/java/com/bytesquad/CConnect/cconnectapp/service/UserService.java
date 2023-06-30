@@ -65,9 +65,15 @@ public class UserService {
 
     }
 
-    public LoginDto getUser(UUID userId){
-//        User user = userRepository.findById(userId).orElseThrow();
-//        return userAssembler.assemble(user);
-        return null;
+    public UserDto getUser(String userId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+
+        User user = mongoTemplate.find(query, User.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return userAssembler.assemble(user);
     }
 }

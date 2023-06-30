@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
 
     this.authService.login(userLoginInformation).subscribe(
       (value) =>{
-        this.authService.setAuthenticationState(true);
+        this.authService.setAuthenticationState(true, value.userId);
         this.userInformationService.setUserInformation(value);
 
         this.router.navigate(["/bio"]);

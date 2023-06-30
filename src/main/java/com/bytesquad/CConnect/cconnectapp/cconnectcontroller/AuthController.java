@@ -35,8 +35,8 @@ public class AuthController {
         return staffService.register(registrationDto);
     }
 
-    @GetMapping("/{userId}")
-    public LoginDto getUser(@PathVariable UUID userId){
+    @GetMapping("/user/{userId}")
+    public UserDto getUser(@PathVariable String userId){
         return userService.getUser(userId);
     }
 

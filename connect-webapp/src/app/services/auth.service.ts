@@ -15,6 +15,7 @@ const BASE_URI = 'http://localhost:8080/api/v1/auth';
 export class AuthService{
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private
 
   get isAuthenticated$() {
     return this.isAuthenticatedSubject.asObservable();
@@ -23,18 +24,23 @@ export class AuthService{
   constructor(private http: HttpClient) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     this.isAuthenticatedSubject.next(isAuthenticated);
+
+    if (isAuthenticated){
+    }
   }
 
-   setAuthenticationState(isAuthenticated: boolean) {
+   setAuthenticationState(isAuthenticated: boolean, userId: string) {
     this.isAuthenticatedSubject.next(isAuthenticated);
-    this.updateLocalStorage(isAuthenticated);
+    this.updateLocalStorage(isAuthenticated, userId);
   }
 
-  private updateLocalStorage(isAuthenticated: boolean) {
+  private updateLocalStorage(isAuthenticated: boolean, userId: string) {
     if (isAuthenticated) {
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userId', userId);
     } else {
       localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userId');
     }
   }
   login(loginDetails: LoginModel): Observable<UserModel>{
@@ -45,7 +51,7 @@ export class AuthService{
     // Your logout logic here
 
     // Update authentication state
-    this.setAuthenticationState(false);
+    this.setAuthenticationState(false, '');
 
 
     return of();
