@@ -9,8 +9,6 @@ import java.util.Random;
 
 @Component
 public class StaffAssembler {
-
-
     public StaffDto assemble(Staff staff){
         return new StaffDto()
                 .setUserId(staff.getUserId())
