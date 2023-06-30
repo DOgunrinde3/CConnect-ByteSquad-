@@ -1,20 +1,18 @@
 <head>
-  <!-- Other meta tags and stylesheets -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBskB00czEFFzkHapONNb3vWwxihcNnfg&libraries=places"></script>
   <link href="https://fonts.googleapis.com/css2?family=San+Francisco+Display&display=swap" rel="stylesheet">
 </head>
 
+
   <ion-content>
 
-    <ion-header [translucent]="true">
-    HomePage
-    </ion-header>
+    <app-header></app-header>
 
     <div class="welcome-section">
       <img src="assets/doctor.png" alt="Picture of Doctor">
       <div class="welcome-container">
         <div class="welcome-content">
-          <h2>Where your satisfaction matters</h2>
+          <h2>Where your health matters</h2>
           <ion-img src="/assets/logo-transparent-png.png" alt="Logo"></ion-img>
         </div>
         <button class="cssbuttons-io-button" type="submit">Book Now</button>
@@ -76,7 +74,7 @@
     <div class="clinic-section">
       <h2 class="section-title">The Clinic</h2>
       <div class="clinic-info">
-        <ion-card>
+        <ion-card mode="ios">
           <ion-card-content>
             <h3 class="clinic-subtitle">Location & Hours</h3>
             <ion-item>
@@ -101,7 +99,7 @@
     </div>
 
     <div class="contact-section">
-      <ion-card>
+      <ion-card mode="ios">
       <h3>Contact Us</h3>
       <ion-card-content>
       <form>
