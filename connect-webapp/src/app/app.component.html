@@ -1,3 +1,26 @@
+
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-router-outlet id="main-content">
+  </ion-router-outlet>
+
+  <ion-menu contentId="main-content" class="menu" side="end">
+    <ion-header>
+      <ion-toolbar>
+        <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-menu-toggle auto-hide="true" >
+          <ion-item><ion-icon name="home"></ion-icon>Home</ion-item>
+          <ion-item><ion-icon ios="apps"></ion-icon>Services</ion-item>
+          <ion-item (click)="routeToBook()"><ion-icon name="calender"></ion-icon>My Bookings</ion-item>
+          <ion-item (click)="routeToBio()"><ion-icon name="contact"></ion-icon>Profile</ion-item>
+          <ion-item (click)="logout()"><ion-icon name="log-out"></ion-icon>Logout</ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+    </ion-content>
+  </ion-menu>
 </ion-app>
+

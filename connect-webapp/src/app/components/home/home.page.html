@@ -1,0 +1,155 @@
+<head>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBskB00czEFFzkHapONNb3vWwxihcNnfg&libraries=places"></script>
+  <link href="https://fonts.googleapis.com/css2?family=San+Francisco+Display&display=swap" rel="stylesheet">
+</head>
+
+
+  <ion-content>
+
+    <app-header></app-header>
+
+    <div class="welcome-section">
+      <img src="assets/doctor.png" alt="Picture of Doctor">
+      <div class="welcome-container">
+        <div class="welcome-content">
+          <h2>Where your health matters</h2>
+          <ion-img src="/assets/logo-transparent-png.png" alt="Logo"></ion-img>
+        </div>
+        <button class="cssbuttons-io-button" type="submit">Book Now</button>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <h3>About Us</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan ipsum vitae nunc efficitur, ut blandit leo
+        iaculis. Aenean sodales varius leo, eget condimentum purus pellentesque vitae. Duis tristique malesuada augue vitae semper. Donec posuere
+        faucibus felis, a cursus nunc bibendum in. Nulla facilisi.</p>
+    </div>
+
+    <div class="services-section">
+      <img src="assets/services.jpg" alt="Services Photo">
+      <div class="services-container">
+        <button class="cssbuttons-io-button" type="submit">View All Services
+        </button>
+      </div>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-sm="6" size-lg="4">
+          <div class="testimonial-card">
+            <img src="assets/test1.PNG" alt="Testimonial 1 Image">
+            <div class="testimonial-content">
+              <h3 class="testimonial-name">John Doe</h3>
+              <p class="testimonial-designation">Patient</p>
+              <p class="testimonial-message">Dr. Smith and his team at the family doctor clinic provided exceptional care for my family. They are highly knowledgeable, compassionate, and always available to answer our questions. I highly recommend their services!</p>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="12" size-sm="6" size-lg="4">
+          <div class="testimonial-card">
+            <img src="assets/test2.PNG" alt="Testimonial 2 Image">
+            <div class="testimonial-content">
+              <h3 class="testimonial-name">Jane Smith</h3>
+              <p class="testimonial-designation">Patient</p>
+              <p class="testimonial-message">I've been going to this family doctor clinic for years, and I'm always impressed by the level of care I receive. The staff is friendly and professional, and Dr. Smith takes the time to listen to my concerns. I couldn't ask for a better healthcare provider!</p>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="12" size-sm="6" size-lg="4">
+          <div class="testimonial-card">
+            <img src="assets/test3.PNG" alt="Testimonial 3 Image">
+            <div class="testimonial-content">
+              <h3 class="testimonial-name">Sarah Johnson</h3>
+              <p class="testimonial-designation">Patient</p>
+              <p class="testimonial-message">The family doctor clinic has been a lifesaver for me and my family. Dr. Smith and his team have helped us navigate through various health issues with care and expertise. They create a welcoming and comforting environment that puts us at ease. I highly recommend their services!</p>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="clinic-section">
+      <h2 class="section-title">The Clinic</h2>
+      <div class="clinic-info">
+        <ion-card mode="ios">
+          <ion-card-content>
+            <h3 class="clinic-subtitle">Location & Hours</h3>
+            <ion-item>
+              <ion-icon slot="start" name="location-outline"></ion-icon>
+              <ion-label>Your Clinic Address</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="time-outline"></ion-icon>
+              <ion-label>Monday to Friday: 9:00 AM - 5:00 PM</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="time-outline"></ion-icon>
+              <ion-label>Saturday: 9:00 AM - 12:00 PM</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="time-outline"></ion-icon>
+              <ion-label>Sunday: Closed</ion-label>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <ion-card mode="ios">
+      <h3>Contact Us</h3>
+      <ion-card-content>
+      <form>
+        <div class="form-group">
+          <ion-list>
+          <ion-item>
+          <ion-label for="name">Name:</ion-label>
+          <input type="text" id="name" name="name" required>
+          </ion-item>
+            <ion-item>
+              <ion-label for="message">Message:</ion-label>
+              <input type="text" id="message" name="message" required>
+            </ion-item>
+          </ion-list>
+        </div>
+        <button class="cssbuttons-io-button" type="submit">
+          Submit
+        </button>
+      </form>
+      </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div id="map" class="clinic-map"></div>
+
+
+    <script>
+function initMap() {
+  // Define the coordinates of your clinic's location
+  var clinicLocation = { lat: 50.451191, lng: -104.616623 };
+
+  // Create a map centered at the clinic's location
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: clinicLocation,
+    zoom: 15
+  });
+
+  // Add a marker for the clinic's location
+  var marker = new google.maps.Marker({
+    position: clinicLocation,
+    map: map,
+    title: 'Your Clinic'
+  });
+}
+
+initMap(); // Call the function to initialize the map
+</script>
+
+
+  </ion-content>
+
+
+

@@ -2,9 +2,9 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 //import repository.UserRepository;
 
 import javax.ws.rs.NotFoundException;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -27,9 +27,11 @@ public class UserService {
   private final UserRepository userRepository;
 
     private final UserAssembler userAssembler;
-    public UserInformationDto login(UserLoginDto userLoginDto){
+
+    private LocalDate minYear = LocalDate.now().minusYears(18);
+    public UserDto login(LoginDto loginDto){
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(userLoginDto.getUsername()));
+        query.addCriteria(Criteria.where("email").is(loginDto.getEmail()));
 
         User user = mongoTemplate.find(query, User.class)
                 .stream()
@@ -37,11 +39,11 @@ public class UserService {
                 .orElseThrow(NotFoundException::new);
 
         if (mongoTemplate.find(query, User.class).size() > 1){
-            throw new IllegalStateException("found duplicate username" + userLoginDto.getUsername());
+            throw new IllegalStateException("found duplicate email" + loginDto.getEmail());
         }
 
-        if (!user.getPassword().equals(userLoginDto.getPassword()) || !user.getCompanyCode().equals(userLoginDto.getCompanyCode())){
-            throw new NotFoundException("Invalid username or password");
+        if (!user.getPassword().equals(loginDto.getPassword())){
+            throw new NotFoundException("Invalid email or password");
 
         }
 
@@ -49,18 +51,21 @@ public class UserService {
 
     }
 
-    private UserInformationDto loginUser(User user){
+    private UserDto loginUser(User user){
         return userAssembler.assemble(user);
     }
 
-    public UserInformationDto register(UserRegistrationDto userRegistrationDto){
-         User user = userAssembler.disassemble(userRegistrationDto);
+    public UserDto register(RegistrationDto registrationDto){
+         User user = userAssembler.disassemble(registrationDto);
+         if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
+             throw new RuntimeException("User is too young");
+         }
             userRepository.insert(user);
        return loginUser(user);
 
     }
 
-    public UserLoginDto getUser(UUID userId){
+    public LoginDto getUser(UUID userId){
 //        User user = userRepository.findById(userId).orElseThrow();
 //        return userAssembler.assemble(user);
         return null;

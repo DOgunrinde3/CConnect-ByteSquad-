@@ -1,5 +1,6 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
+import com.bytesquad.CConnect.cconnectapp.enums.Gender;
 import lombok.*;
 
 import lombok.experimental.Accessors;
@@ -7,6 +8,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,17 +23,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String userId;
-    private String bio;
     private String firstName;
     private String lastName;
-    private Boolean isAdmin;
     private String phoneNumber;
-    private String email;
     @Indexed(unique=true)
-    private String username;
+    private String email;
+    private Gender gender;
+    private LocalDate birthdate;
     private String password;
-    private Integer companyCode;
-    private Boolean completedRegistration;
 
     public static User newInstance(){
         User newInstance = new User();

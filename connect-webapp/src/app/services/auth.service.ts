@@ -1,10 +1,10 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
-import {UserInformationModel} from "../model/user-information.model";
-import {UserLoginModel} from "../model/user-login.model";
-import {CompanyModel} from "../model/company.model";
-import {UserRegistrationModel} from "../model/user-registration.model";
+import {BehaviorSubject, Observable, of} from "rxjs";
+import {UserModel} from "../model/User.model";
+import {LoginModel} from "../model/Login.model";
+import { Storage } from '@ionic/storage-angular';
+import {RegistrationModel} from "../model/Registration.model";
 
 const BASE_URI = 'http://localhost:8080/api/v1/auth';
 
@@ -14,17 +14,46 @@ const BASE_URI = 'http://localhost:8080/api/v1/auth';
 
 export class AuthService{
 
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+
+  get isAuthenticated$() {
+    return this.isAuthenticatedSubject.asObservable();
+  }
+
   constructor(private http: HttpClient) {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    this.isAuthenticatedSubject.next(isAuthenticated);
   }
 
-  login(loginDetails: UserLoginModel): Observable<UserInformationModel>{
-      return this.http.post<UserInformationModel>(`${BASE_URI}/login`, loginDetails);
-  }
-  createCompany(companyRegistration: CompanyModel): Observable<any>{
-    return this.http.post<any>(`${BASE_URI}/create-company`, companyRegistration);
+   setAuthenticationState(isAuthenticated: boolean) {
+    this.isAuthenticatedSubject.next(isAuthenticated);
+    this.updateLocalStorage(isAuthenticated);
   }
 
-  registerUser(userRegistration: UserRegistrationModel): Observable<UserInformationModel>{
-    return this.http.post<UserInformationModel>(`${BASE_URI}/register-user`, userRegistration);
+  private updateLocalStorage(isAuthenticated: boolean) {
+    if (isAuthenticated) {
+      localStorage.setItem('isAuthenticated', 'true');
+    } else {
+      localStorage.removeItem('isAuthenticated');
+    }
+  }
+  login(loginDetails: LoginModel): Observable<UserModel>{
+      return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails);
+  }
+
+  logout(): Observable<void> {
+    // Your logout logic here
+
+    // Update authentication state
+    this.setAuthenticationState(false);
+
+
+    return of();
+  }
+
+
+  registerUser(userRegistration: RegistrationModel): Observable<UserModel>{
+    console.log(userRegistration)
+    return this.http.post<UserModel>(`${BASE_URI}/register-user`, userRegistration);
   }
 }

@@ -1,10 +1,10 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.CompanyDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
-import com.bytesquad.CConnect.cconnectapp.service.CompanyService;
+import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,25 +17,26 @@ import java.util.UUID;
 public class AuthController {
 
     private final UserService userService;
-    private final CompanyService companyService;
+    private final StaffService staffService;
 
     @PostMapping("/login")
-    public UserInformationDto login(@RequestBody UserLoginDto userLoginDto){
-        return userService.login(userLoginDto);
+    public UserDto login(@RequestBody LoginDto loginDto){
+        return userService.login(loginDto);
     }
 
-    @PostMapping("/create-company")
-    public CompanyDto createCompany(@RequestBody CompanyDto companyDto){
-        return companyService.create(companyDto);
-    }
 
     @PostMapping("/register-user")
-    public UserInformationDto registerUser(@RequestBody UserRegistrationDto userRegistrationDto){
-        return userService.register(userRegistrationDto);
+    public UserDto registerUser(@RequestBody RegistrationDto registrationDto){
+        return userService.register(registrationDto);
+    }
+
+    @PostMapping("/register-doctor")
+    public StaffDto registerDoctor(@RequestBody RegistrationDto registrationDto){
+        return staffService.register(registrationDto);
     }
 
     @GetMapping("/{userId}")
-    public UserLoginDto getUser(@PathVariable UUID userId){
+    public LoginDto getUser(@PathVariable UUID userId){
         return userService.getUser(userId);
     }
 

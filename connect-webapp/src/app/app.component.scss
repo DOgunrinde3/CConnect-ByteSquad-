@@ -1,0 +1,30 @@
+ion-menu::part(backdrop) {
+  background-color: #000000
+}
+
+ion-menu::part(container) {
+  box-shadow: 4px 0px 16px rgba(0, 0, 0, 0.18);
+}
+
+
+ion-menu{
+  --ion-background-color: #ffffff;
+  --min-width: 25em;
+}
+
+ion-icon{
+  margin-right: .5em;
+}
+
+ion-item:hover{
+--ion-background-color: rgba(0, 0, 0, 0.18);
+  color: #3880ff !important;
+  cursor: pointer;
+}
+
+ion-item:hover ~#text{
+  --ion-background-color: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+
+

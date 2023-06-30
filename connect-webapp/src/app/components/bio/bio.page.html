@@ -1,0 +1,60 @@
+<app-header></app-header>
+  <ion-content [fullscreen]="true">
+  <ion-text *ngIf="isAuthenticated">hi</ion-text>
+
+  <div class="blank">
+    <ion-toggle [(ngModel)]="editToggle" (ionChange)="editMode()">EDIT</ion-toggle>
+  </div>
+
+  <ion-grid>
+
+      <ion-row>
+        <ion-col class="profileCol" size-xs="12" size-sm="4.7" size-lg="4.7">
+          <div class="profileImg">
+            <ion-img [class.imgDefault]="!editToggle" [class.imgEdit]="editToggle" (click)="editImg()" [src]="photo"></ion-img>
+            <!--<div class="edit-overlay" *ngIf="editToggle">Edit</div>-->
+            <ion-icon name="pencil" class="pencilIcon" *ngIf="editToggle"></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col class="gapCol" size-xs="0" size-sm="0.5" size-lg="0.5"></ion-col>
+        <ion-col  class="titleCol" size-xs="12" size-sm="6.8" size-lg="6.8">
+          <br/><br/><br/><br/><br/>
+          <div class="title"*ngIf="editToggle" >
+            <ion-input [(ngModel)]="firstNameTemp" placeholder="First Name"></ion-input>
+            <ion-input [(ngModel)]="lastNameTemp" placeholder="Last Name"></ion-input>
+          </div>
+          <div class="title" *ngIf="!editToggle">{{ firstName }} {{ lastName}}</div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-xs="1.8" size-sm="5.2" size-lg="5.2"></ion-col>
+        <ion-col class="info1Col" size-xs="2.7" size-sm="1.5" size-lg="1">
+          <p>Email: </p> <br/>
+          <p>Phone: </p> <br/>
+          <p>Gender: </p>
+        </ion-col>
+        <ion-col  class="info2Col" size-xs="7.5" size-sm="5.3" size-lg="5.8">
+          <div *ngIf="editToggle">
+            <ion-input [(ngModel)]="emailTemp" class="emailInput" placeholder="Email"></ion-input>
+            <ion-input [(ngModel)]="phoneNumberTemp" class="pNumberInput" placeholder="Phone Number"></ion-input>
+            <ion-input [(ngModel)]="genderTemp" placeholder="Gender"></ion-input>
+          </div>
+          <div *ngIf="!editToggle">
+            <p> {{ email }}  </p> <br/>
+            <p> {{ phoneNumber }} </p>  <br/>
+            <p> {{ gender }} </p> <br/>
+          </div>
+        </ion-col>
+      </ion-row>
+
+    <div *ngIf="editToggle" class="saveButton">
+      <ion-button (click)="saveInformation()">Save</ion-button>
+    </div>
+    <div class="blank"></div>
+
+  </ion-grid>
+
+  <app-footer></app-footer>
+
+</ion-content>

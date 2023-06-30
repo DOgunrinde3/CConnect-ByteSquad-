@@ -1,55 +1,45 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.UserInformationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserLoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 @Component
 public class UserAssembler {
 
 
-    public UserInformationDto assemble(User user){
-        return new UserInformationDto()
+    public UserDto assemble(User user){
+        return new UserDto()
                 .setUserId(user.getUserId())
-                .setBio(user.getBio())
                 .setPhoneNumber(user.getPhoneNumber())
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName());
+                .setLastName(user.getLastName())
+                .setBirthDate(user.getBirthdate())
+                .setGender(user.getGender());
     }
 
-    public User disassemble(UserRegistrationDto userRegistrationDto){
-        return disassembleInto(User.newInstance(), userRegistrationDto);
+    public User disassemble(RegistrationDto registrationDto){
+        return disassembleInto(User.newInstance(), registrationDto);
     }
 
-    public User disassembleInto(User user, UserRegistrationDto userRegistrationDto){
+    public User disassembleInto(User user, RegistrationDto registrationDto){
 
-        String username = generateUsername(
-                userRegistrationDto.getFirstName(), userRegistrationDto.getLastName()
-        );
+        LocalDate date = LocalDate.parse(registrationDto.getBirthdate());
+
 
         return user
-                .setUsername(username)
-                .setFirstName(userRegistrationDto.getFirstName())
-                .setLastName(userRegistrationDto.getLastName())
-                .setBio(userRegistrationDto.getBio())
-                .setEmail(userRegistrationDto.getEmail())
-                .setPassword(userRegistrationDto.getPassword())
-                .setIsAdmin(userRegistrationDto.getIsAdmin())
-                .setPhoneNumber(userRegistrationDto.getPhoneNumber())
-                .setCompanyCode(userRegistrationDto.getCompanyCode())
-                .setCompletedRegistration(true);
+                .setFirstName(registrationDto.getFirstName())
+                .setLastName(registrationDto.getLastName())
+                .setBirthdate(date)
+                .setEmail(registrationDto.getEmail())
+                .setPassword(registrationDto.getPassword())
+                .setPhoneNumber(registrationDto.getPhoneNumber());
     }
 
-    private static String generateUsername(String firstName, String lastName) {
-        String firstLetter = firstName.substring(0, 1).toLowerCase();
-        String generatedName = firstLetter + lastName.toLowerCase();
-        String randomDigits = String.format("%02d", new Random().nextInt(100));
-        generatedName += randomDigits;
-        return generatedName;
-    }
+
 }
