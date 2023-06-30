@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "./services/auth.service";
+import {FooterPage} from "./components/footer/footer.page";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, FooterPage],
 })
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);

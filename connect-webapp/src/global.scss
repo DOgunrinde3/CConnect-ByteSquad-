@@ -24,8 +24,8 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
-
+@import 'swiper/swiper.min.css';
+@import '@ionic/angular/css/ionic-swiper';
 
 .logo{
   max-width: 250px !important;
@@ -55,6 +55,7 @@ ion-header, ion-footer{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-right: 20px;
   font-family: 'Poppins';
 
 }
@@ -66,6 +67,12 @@ ion-nav-link{
 ion-nav-link:hover{
   color: #3880ff;
 }
+
+ion-toolbar{
+
+  background:radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%) !important;
+}
+
 
 
 

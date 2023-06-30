@@ -1,7 +1,7 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, NavParams} from '@ionic/angular';
 
 
 import { routes } from './app/app.routes';
@@ -10,6 +10,7 @@ import { environment } from './environments/environment';
 import {HttpClient, provideHttpClient, withInterceptors} from "@angular/common/http";
 import {IonicStorageModule} from "@ionic/storage-angular";
 import {Drivers} from '@ionic/storage';
+import {NgCalendarModule} from "ionic7-calendar";
 
 if (environment.production) {
   enableProdMode();
@@ -18,7 +19,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({}), IonicStorageModule.forRoot()),
+    importProvidersFrom(IonicModule.forRoot({}), IonicStorageModule.forRoot(), NgCalendarModule),
     provideRouter(routes),
     provideHttpClient(
     ),
