@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
@@ -27,11 +28,12 @@ public class Staff {
     private String lastName;
     private String phoneNumber;
     private String email;
-    private Gender gender;
     private LocalDate birthdate;
     @Indexed(unique=true)
     private String username;
     private String password;
+    private Time startTime;
+    private Time endTime;
 
     public static Staff newInstance(){
         Staff newInstance = new Staff();
