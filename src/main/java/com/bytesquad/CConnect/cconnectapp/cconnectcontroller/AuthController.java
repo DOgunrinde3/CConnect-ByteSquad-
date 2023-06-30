@@ -40,5 +40,10 @@ public class AuthController {
         return userService.getUser(userId);
     }
 
+    @PutMapping("/user/{userId}")
+    public UserDto getUser(@PathVariable String userId, @RequestBody UserDto userDto){
+        return userService.getUser(userId);
+    }
+
 
 }

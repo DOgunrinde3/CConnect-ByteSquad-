@@ -80,13 +80,16 @@ export class BioPage implements OnInit {
   }
 
   saveInformation() {
+
     // Save logic here
-    this.firstName = this.firstNameTemp;
+    this.user.firstName = this.firstNameTemp;
     this.lastName = this.lastNameTemp;
     this.email = this.emailTemp;
     this.phoneNumber = this.phoneNumberTemp;
     this.gender = this.genderTemp;
     this.editToggle = false;
+
+
   }
 
   editMode() {

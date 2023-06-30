@@ -47,6 +47,10 @@ export class AuthService{
       return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails);
   }
 
+  update(userDetails: UserModel): Observable<UserModel>{
+    return this.http.put<UserModel>(`${BASE_URI}/user/${userDetails.userId}`, userDetails);
+  }
+
   logout(): Observable<void> {
     // Your logout logic here
 
