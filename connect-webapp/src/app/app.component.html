@@ -12,7 +12,7 @@
     <ion-content class="ion-padding">
       <ion-list>
         <ion-menu-toggle auto-hide="true" >
-          <ion-item><ion-icon name="home"></ion-icon>Home</ion-item>
+          <ion-item (click)="routeToHome()"><ion-icon name="home"></ion-icon>Home</ion-item>
           <ion-item><ion-icon ios="apps"></ion-icon>Services</ion-item>
           <ion-item (click)="routeToBook()"><ion-icon name="calender"></ion-icon>My Bookings</ion-item>
           <ion-item (click)="routeToBio()"><ion-icon name="contact"></ion-icon>Profile</ion-item>

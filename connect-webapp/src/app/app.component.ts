@@ -51,7 +51,8 @@ export class AppComponent implements OnInit {
     this.router.navigate(["/bio"]);
   }
 
-
-
+routeToHome(){
+    this.router.navigate(["/home"]);
+  }
 
 }
