@@ -19,7 +19,7 @@ public class UserAssembler {
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
-                .setBirthDate(user.getBirthdate())
+                .setBirthDate(user.getBirthdate().toString())
                 .setGender(user.getGender());
     }
 
@@ -27,10 +27,11 @@ public class UserAssembler {
         return disassembleInto(User.newInstance(), registrationDto);
     }
 
+
+
     public User disassembleInto(User user, RegistrationDto registrationDto){
 
         LocalDate date = LocalDate.parse(registrationDto.getBirthdate());
-
 
         return user
                 .setFirstName(registrationDto.getFirstName())

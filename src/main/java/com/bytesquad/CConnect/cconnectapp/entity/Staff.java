@@ -27,13 +27,12 @@ public class Staff {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @Indexed(unique=true)
     private String email;
     private LocalDate birthdate;
-    @Indexed(unique=true)
-    private String username;
     private String password;
-    private Time startTime;
-    private Time endTime;
+
+
 
     public static Staff newInstance(){
         Staff newInstance = new Staff();

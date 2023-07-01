@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class CconnectAppApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(CconnectAppApplication.class, args);
 	}
 
