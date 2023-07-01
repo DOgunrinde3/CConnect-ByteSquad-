@@ -3,7 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;

@@ -5,6 +5,7 @@ import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 @Component
@@ -15,7 +16,8 @@ public class StaffAssembler {
                 .setPhoneNumber(staff.getPhoneNumber())
                 .setEmail(staff.getEmail())
                 .setFirstName(staff.getFirstName())
-                .setLastName(staff.getLastName());
+                .setLastName(staff.getLastName())
+                .setBirthdate(staff.getBirthdate().toString());
     }
 
     public Staff disassemble(RegistrationDto registrationDto){
@@ -23,26 +25,16 @@ public class StaffAssembler {
     }
 
     public Staff disassembleInto(Staff staff, RegistrationDto registrationDto){
+        LocalDate date = LocalDate.parse(registrationDto.getBirthdate());
 
-        String username = generateUsername(
-                registrationDto.getFirstName(), registrationDto.getLastName()
-        );
 
         return staff
-                .setUsername(username)
                 .setFirstName(registrationDto.getFirstName())
                 .setLastName(registrationDto.getLastName())
-
+                .setBirthdate(date)
                 .setEmail(registrationDto.getEmail())
                 .setPassword(registrationDto.getPassword())
                 .setPhoneNumber(registrationDto.getPhoneNumber());
     }
 
-    private static String generateUsername(String firstName, String lastName) {
-        String firstLetter = firstName.substring(0, 1).toLowerCase();
-        String generatedName = firstLetter + lastName.toLowerCase();
-        String randomDigits = String.format("%02d", new Random().nextInt(100));
-        generatedName += randomDigits;
-        return generatedName;
-    }
 }

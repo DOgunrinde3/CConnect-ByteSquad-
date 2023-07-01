@@ -3,7 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
