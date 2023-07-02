@@ -38,9 +38,7 @@ export class BioPage implements OnInit {
               private router: Router, private actionSheetController: ActionSheetController,
               private userService: UserInformationService) {
 
-    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      this.isAuthenticated = isAuthenticated;
-    });
+
   }
 
   ngOnInit() {
@@ -48,6 +46,7 @@ export class BioPage implements OnInit {
       this.user = user;
     });
   }
+
 
   async editImg() {
     const actionSheet = await this.actionSheetController.create({

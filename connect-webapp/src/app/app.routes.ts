@@ -10,6 +10,7 @@ import {BioPage} from "./components/bio/bio.page";
 import {loggedInGuard, notLoggedInGuard} from "./services/auth.guard";
 import {BookAppointmentPage} from "./components/book-appointment/book-appointment.page";
 import {NgCalendarModule} from "ionic7-calendar";
+import {DatePipe} from "@angular/common";
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [loggedInGuard]},
@@ -22,14 +23,18 @@ export const routes: Routes = [
   {
     path: 'home', component: HomePage
   },
+  {
+    path: 'confirm-appointment',
+    loadComponent: () => import('./components/confirm-appointment/confirm-appointment.page').then( m => m.ConfirmAppointmentPage)
+  },
 
 
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),  IonicStorageModule.forRoot(), NgCalendarModule],
-  exports: [RouterModule, IonicStorageModule, NgCalendarModule],
+  imports: [RouterModule.forRoot(routes),  IonicStorageModule.forRoot(), NgCalendarModule, DatePipe],
+  exports: [RouterModule, IonicStorageModule, NgCalendarModule, DatePipe],
 })
 
 export class AppRoutes {}
