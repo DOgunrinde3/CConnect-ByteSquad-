@@ -32,6 +32,7 @@ export class AppointmentService {
   }
 
   bookAppointment(appointmentDetails: AppointmentModel): Observable<AppointmentModel>{
+    console.log(appointmentDetails);
     return this.http.post<AppointmentModel>(`${BASE_URI}/book`, appointmentDetails);
 
   }

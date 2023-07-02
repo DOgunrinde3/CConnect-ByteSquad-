@@ -9,10 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -27,7 +25,9 @@ public class Appointment {
     private String staffId;
     private String patientId;
     private LocalDate date;
-    private LocalTime time;
+    private String time;
+    //this should be an enum but I dont have time
+    private String appointmentType;
 
 
     public static Appointment newInstance(){

@@ -1,26 +1,18 @@
 package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.AppointmentAssembler;
-import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.AppointmentRepository;
-import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,7 +28,7 @@ public class AppointmentService {
     public AppointmentDto book(AppointmentDto appointmentDto){
 
         if(appointmentDto.getStaffId() == null){
-           appointmentDto.setStaffId(getRandomAvailableDoctor(appointmentDto.getDate(), appointmentDto.getTime()));
+           appointmentDto.setStaffId(getRandomAvailableDoctor(appointmentDto.getAppointmentDate(), appointmentDto.getAppointmentTime()));
         }
 
         Appointment appointment = appointmentAssembler.disassemble(appointmentDto);
