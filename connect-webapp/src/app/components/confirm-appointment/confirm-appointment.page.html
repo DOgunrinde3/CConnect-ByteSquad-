@@ -1,0 +1,26 @@
+<div class="container">
+
+    <div class="title">
+      <div>
+      <ion-label class="lbl-title">{{ 'DATE' }}</ion-label>
+      <h3 class="lbl-value">{{options.date}}</h3>
+      </div>
+      <div>
+
+      <ion-label class="lbl-title">{{ 'TIME SLOT' }}</ion-label>
+      <h3 class="lbl-value">{{ options.time }}</h3>
+      </div>
+
+    </div>
+
+    <div class="confirm">
+
+      <ion-button color="secondary" (click)="confirmOnClick()" >{{ 'CONFIRM' }}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button ion-button round icon-right color="light" (click)="cancelOnClick()">{{ 'CANCEL' }}
+      </ion-button>
+    </div>
+
+</div>

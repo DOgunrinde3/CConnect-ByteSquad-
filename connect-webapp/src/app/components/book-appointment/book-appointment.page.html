@@ -3,30 +3,59 @@
   </app-header>
   <ion-content class="container" [fullscreen]="true">
     <ion-card class="card-calender">
+<!--      <ion-segment [(ngModel)]="calendar.mode" >-->
+<!--        <ion-segment-button value="month"> Month </ion-segment-button>-->
+<!--        <ion-segment-button value="week"> Week </ion-segment-button>-->
+<!--        <ion-segment-button value="day"> Day </ion-segment-button>-->
 
-    <calendar (onEventSelected)="onDateSelected($event)"
-              [calendarMode]="calendar.mode">
+<!--      </ion-segment>-->
+
+      <ion-row class="ion-justify-content-center">
+        <!-- Move back one screen of the slides -->
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="back()">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="8" class="ion-text-center">
+          <h2>{{ viewTitle }}</h2>
+        </ion-col>
+
+        <!-- Move forward one screen of the slides -->
+        <ion-col size="2" class="ion-text-end" >
+          <ion-button fill="clear" (click)="next()">
+            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+    <calendar (onCurrentDateChanged)="onDateSelected($event)"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              [startHour]="9"
+              [endHour]="17"
+              (onTitleChanged)="onViewTitleChanged($event)">
     </calendar>
-    </ion-card>
 
-    <ion-card class="card-time-schedule" *ngIf="appointmentAvailable">
-
-      <ion-segment color="primary" (ionChange)="shiftSelected($event)" [ngModel]="appointmentTimeShifts">
-
-        <ion-segment-button *ngFor="let shift of appointmentTimeShifts" [value]="shift">
-          {{shift}}
-        </ion-segment-button>
-
-      </ion-segment>
 
       <ion-row>
-      <ion-col col-4 *ngFor="let time of selectedShiftTime">
-        <button ion-button outline round color="secondary">
-          {{time}}
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+
+        <ion-col col-4 *ngFor="let time of appointmentTimeShifts ">
+          <ion-button ion-button outline round color="secondary" (click)="timeOnClick(time)" >
+            {{time}}
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-card>
+
+
+
+
+
 </ion-content>
   <app-footer ></app-footer>
 

@@ -4,7 +4,6 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import {UserInformationService} from "../../services/user-information.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {CompanyInformationService} from "../../services/company-information.service";
 import {NgIf} from "@angular/common";
 import {RegistrationModel} from "../../model/Registration.model";
 import {FooterPage} from "../footer/footer.page";
@@ -26,7 +25,6 @@ export class SignupClient implements OnInit {
               private formBuilder: FormBuilder,
               private platform: Platform,
               private navCtrl: NavController,
-              private companyInformationService: CompanyInformationService,
               private userInformationService: UserInformationService) {
 
 

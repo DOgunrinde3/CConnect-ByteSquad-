@@ -29,11 +29,11 @@ public class AppointmentAssembler {
         LocalDate date = LocalDate.parse(appointmentDto.getDate());
         LocalTime time = LocalTime.parse(appointmentDto.getTime());
 
-
         return appointment
-                .setStaffId(appointmentDto.getStaffId())
+                .setStaffId(appointment.getStaffId())
                 .setPatientId(appointmentDto.getPatientId())
                 .setDate(date)
                 .setTime(time);
     }
+
 }

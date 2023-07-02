@@ -11,6 +11,7 @@ import {HttpClient, provideHttpClient, withInterceptors} from "@angular/common/h
 import {IonicStorageModule} from "@ionic/storage-angular";
 import {Drivers} from '@ionic/storage';
 import {NgCalendarModule} from "ionic7-calendar";
+import {DatePipe} from "@angular/common";
 
 if (environment.production) {
   enableProdMode();
@@ -23,6 +24,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideHttpClient(
     ),
+    DatePipe
   ],
 });
 
