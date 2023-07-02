@@ -3,11 +3,8 @@ export class DoctorModel{
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  birthDate: Date;
+  birthDate: string;
   email: string;
-  gender: string;
   experience: string;
   image: string;
-  specialization?: string; //change to enum
-  possibleAppointmentTimes: string[];
 }

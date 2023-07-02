@@ -1,14 +1,18 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
-import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import org.springframework.stereotype.Component;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.Locale;
 
 @Component
 
@@ -17,23 +21,26 @@ public class AppointmentAssembler {
         return new AppointmentDto()
                 .setStaffId(appointment.getStaffId())
                 .setPatientId(appointment.getPatientId())
-                .setDate(appointment.getDate().toString())
-                .setTime(appointment.getTime().toString());
+                .setAppointmentDate(appointment.getDate().toString())
+                .setAppointmentTime(appointment.getTime().toString())
+                .setAppointmentType(appointment.getAppointmentType());
     }
 
     public Appointment disassemble(AppointmentDto appointmentDto){
         return disassembleInto(Appointment.newInstance(), appointmentDto);
     }
 
-    public Appointment disassembleInto(Appointment appointment, AppointmentDto appointmentDto){
-        LocalDate date = LocalDate.parse(appointmentDto.getDate());
-        LocalTime time = LocalTime.parse(appointmentDto.getTime());
+    public Appointment disassembleInto(Appointment appointment, AppointmentDto appointmentDto) {
+
+
+        LocalDate date = LocalDate.parse(appointmentDto.getAppointmentDate());
 
         return appointment
-                .setStaffId(appointment.getStaffId())
+                .setStaffId(appointmentDto.getStaffId())
                 .setPatientId(appointmentDto.getPatientId())
                 .setDate(date)
-                .setTime(time);
+                .setTime(appointmentDto.getAppointmentTime())
+                .setAppointmentType(appointmentDto.getAppointmentType());
     }
 
 }

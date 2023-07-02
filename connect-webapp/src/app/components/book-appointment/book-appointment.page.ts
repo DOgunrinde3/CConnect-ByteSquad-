@@ -102,9 +102,10 @@ appointment: AppointmentModel;
       doctorId: null,
       patientId: this.user.userId,
       appointmentDate: selectedDate,
-      appointmentTime: selectedTime
+      appointmentTime: selectedTime,
+      appointmentType: null
     };
-     this.openModal(selectedDate,selectedTime)
+     this.openModal(this.appointment)
 
     // confirmModal.onDidDismiss((data) => {
     //   if (data.confirm) {
@@ -113,30 +114,23 @@ appointment: AppointmentModel;
     // });
   }
 
-  async openModal(selectedDate, selectedTime) {
+  async openModal(appointment) {
 
-    const originalDate = new Date(selectedDate);
-    const formattedDate = this.datePipe.transform(originalDate, 'mediumDate');
 
     const modal = await this.modalController.create({
       component: ConfirmAppointmentPage,
       componentProps: {
-        date: formattedDate,
-        time: selectedTime
-      }
+       appointment: appointment
+      },
+      mode: "ios"
     });
     modal.present();
 
-    const {data} = await modal.onWillDismiss();
 
-    if (data.confirm === true) {
-      this.appointmentService.bookAppointment(this.appointment).subscribe(
-        () => {
-          this.router.navigate(['/bio']);
-        }
-      )
 
-    }
   }
-
+  markDisabled = (date: Date) => {
+    var current = new Date();
+    return date < current;
+  };
 }

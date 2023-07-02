@@ -3,5 +3,6 @@ export class AppointmentModel{
   patientId?: string;
   appointmentDate: string;
   appointmentTime: string;
+  appointmentType: string | null;
 
 }
