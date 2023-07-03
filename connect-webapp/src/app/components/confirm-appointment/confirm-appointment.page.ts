@@ -7,6 +7,7 @@ import {AppointmentService} from "../../services/appointment.service";
 import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
 import {Router} from "@angular/router";
+import {StaffService} from "../../services/staff.service";
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ConfirmAppointmentPage {
   selectedDate: any;
   selectedTime: any;
   selectedService: any;
-  selectedDoctor: any = null ;
+  selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
 
@@ -33,6 +34,7 @@ export class ConfirmAppointmentPage {
               public viewController: ModalController,
               private appointmentService: AppointmentService,
               private datePipe: DatePipe,
+              private staffService: StaffService,
               private router: Router,
               private toastController: ToastController) {
     if (navParams.data) {
@@ -40,7 +42,7 @@ export class ConfirmAppointmentPage {
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
        this.selectedDate = this.options.appointment.appointmentDate;
        this.selectedTime = this.options.appointment.appointmentTime;
-       //this.selectedService = AppointmentTypeEnum.CHECK_UP;
+       this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
       this.pageReady = true;
     }
   }
@@ -50,7 +52,7 @@ export class ConfirmAppointmentPage {
 
 
     let bookAppointment: AppointmentModel = {
-      doctorId: this.selectedDoctor,
+      doctorId: this.selectedDoctor?.doctorId,
       patientId: this.options.appointment.patientId,
       appointmentDate: this.selectedDate,
       appointmentTime: this.selectedTime,
@@ -77,6 +79,11 @@ export class ConfirmAppointmentPage {
     this.presentToast("top", "Cancelled", 'danger', 'close-outline');
     this.viewController.dismiss({confirm: false});
   }
+
+  filterSelect(){
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+  }
+
 
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {

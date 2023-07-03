@@ -15,9 +15,13 @@ import {FooterPage} from "../footer/footer.page";
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  routeToBook(){
+    this.router.navigate(["/book"]);
   }
 
 }

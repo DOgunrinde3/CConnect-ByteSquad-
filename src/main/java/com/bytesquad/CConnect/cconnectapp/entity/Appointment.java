@@ -4,13 +4,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Getter
@@ -18,11 +18,12 @@ import java.util.UUID;
 @Data
 @Document()
 @Accessors(chain = true)
+@CompoundIndex(def = "{'doctorId': 1, 'date': 1, 'time': 1}", unique = true)
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id;
-    private String staffId;
+    private String doctorId;
     private String patientId;
     private LocalDate date;
     private String time;

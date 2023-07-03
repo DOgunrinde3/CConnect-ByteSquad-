@@ -1,25 +1,31 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IonicModule, NavController, Platform, ToastController} from '@ionic/angular';
+import {IonicModule, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {UserRegistrationModel} from "../../model/user-registration.model";
 import {FooterPage} from "../footer/footer.page";
 import {HeaderPage} from "../header/header.page";
+import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
+import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
+import {StaffRegistrationModel} from "../../model/staff-registration.model";
 
 @Component({
   selector: 'app-signup-client',
-  templateUrl: 'signup-client.page.html',
-  styleUrls: ['signup-client.page.scss'],
+  templateUrl: 'staff-signup-client.page.html',
+  styleUrls: ['staff-signup-client.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage]
+  imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage, NgForOf]
 })
-export class SignupClient implements OnInit {
+export class StaffSignupClient implements OnInit {
 
 
-  userRegistrationForm: FormGroup;
+  staffRegistrationForm: FormGroup;
+
+  appointmentTypes = Object.values(AppointmentTypeEnum);
+
 
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
@@ -33,14 +39,17 @@ export class SignupClient implements OnInit {
   }
 
   ngOnInit(){
-    this.userRegistrationForm = this.formBuilder.group({
+    this.staffRegistrationForm = this.formBuilder.group({
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
+      experience: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       birthdate: ['', [Validators.required]],
-      gender: ['', [Validators.required]]
+      gender: ['', [Validators.required]],
+      services: ['', [Validators.required]],
+
 
     });
 
@@ -49,32 +58,40 @@ export class SignupClient implements OnInit {
 
 
   get email() {
-    return this.userRegistrationForm.get('email');
+    return this.staffRegistrationForm.get('email');
   }
 
   get password() {
-    return this.userRegistrationForm.get('password');
+    return this.staffRegistrationForm.get('password');
   }
 
 
   get phoneNumber() {
-    return this.userRegistrationForm.get('phoneNumber');
+    return this.staffRegistrationForm.get('phoneNumber');
   }
 
   get bio() {
-    return this.userRegistrationForm.get('bio');
+    return this.staffRegistrationForm.get('bio');
   }
 
   get firstName() {
-    return this.userRegistrationForm.get('firstName');
+    return this.staffRegistrationForm.get('firstName');
   }
 
   get lastName() {
-    return this.userRegistrationForm.get('lastName');
+    return this.staffRegistrationForm.get('lastName');
   }
 
   get birthdate() {
-    return this.userRegistrationForm.get('birthdate');
+    return this.staffRegistrationForm.get('birthdate');
+  }
+
+  get experience() {
+    return this.staffRegistrationForm.get('experience');
+  }
+
+  get services() {
+    return this.staffRegistrationForm.get('services');
   }
 
 
@@ -85,23 +102,19 @@ export class SignupClient implements OnInit {
 
   register(): void {
 
-    const userRegistrationInformation =  this.userRegistrationForm.getRawValue() as UserRegistrationModel;
+    const staffRegistrationInformation =  this.staffRegistrationForm.getRawValue() as StaffRegistrationModel;
 
-console.log(userRegistrationInformation)
-    // @ts-ignore
     // Perform registration logic here
-    this.authService.registerUser(userRegistrationInformation).subscribe(
-      (value) =>{
-
-
-        this.userInformationService.setUserInformation(value)
+    this.authService.registerStaff(staffRegistrationInformation).subscribe(
+      (value) => {
+        this.userInformationService.setStaffInformation(value);
 
       },
       error => {
         this.presentToast("top", error.message, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
-        this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
+        this.presentToast("top", 'Registration successful!', 'success',"checkmark-outline");
 
         this.platform.ready().then(() => {
           this.navCtrl.navigateRoot('/book');

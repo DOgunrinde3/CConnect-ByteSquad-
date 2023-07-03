@@ -2,9 +2,10 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 
 import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
+import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -55,8 +58,8 @@ public class StaffService {
         return staffAssembler.assemble(staff);
     }
 
-    public StaffDto register(RegistrationDto registrationDto){
-        Staff staff = staffAssembler.disassemble(registrationDto);
+    public StaffDto register(StaffRegistrationDto staffRegistrationDto){
+        Staff staff = staffAssembler.disassemble(staffRegistrationDto);
         if(staff.getBirthdate().isAfter(minYear) || staff.getBirthdate().isEqual(minYear) ){
             throw new RuntimeException("User is too young");
         }
@@ -69,6 +72,14 @@ public class StaffService {
 //        User user = userRepository.findById(userId).orElseThrow();
 //        return userAssembler.assemble(user);
         return null;
+    }
+
+    public List<StaffDto> getAllStaff(){
+        List<Staff> allStaff = staffRepository.findAll();
+        return allStaff.stream()
+                .map(staffAssembler::assemble)
+                .collect(Collectors.toList());
+
     }
 
 

@@ -1,0 +1,78 @@
+<app-header></app-header>
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <ion-card mode="ios">
+      <ion-card-header>
+        <ion-card-title>Staff Registration</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="staffRegistrationForm" (ngSubmit)="register()">
+          <ion-list>
+          <ion-item>
+            <ion-label position="floating">First Name</ion-label>
+            <ion-input type="text" formControlName="firstName"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Last Name</ion-label>
+            <ion-input type="text" formControlName="lastName"></ion-input>
+          </ion-item>
+
+
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+
+          <ion-item *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+            <ion-text color="danger" *ngIf="email?.errors?. ['required']">Email is required.</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone Number</ion-label>
+            <ion-input type="text" formControlName="phoneNumber"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="date" formControlName="birthdate"></ion-input>
+          </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Years of Experience</ion-label>
+              <ion-input type="number" formControlName="experience"></ion-input>
+            </ion-item>
+
+            <ion-item>
+
+            <ion-label class="lbl-title">{{ 'PLEASE SELECT YOUR OFFERED SERVICES' }}</ion-label>
+            <ion-select formControlName="services" placeholder="Select a service" [multiple]="true">
+              <ion-select-option *ngFor="let type of appointmentTypes; let i = index"
+                                 [value]="type">
+                {{type}}
+              </ion-select-option>
+            </ion-select>
+            </ion-item>
+
+          </ion-list>
+
+
+
+
+          <button class="cssbuttons-io-button" type="submit"> Get started
+            <div class="icon">
+              <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
+            </div>
+          </button>
+        </form>      </ion-card-content>
+    </ion-card>
+  </div>
+  <app-footer></app-footer>
+
+</ion-content>
+
