@@ -28,6 +28,7 @@ public class Staff {
     private String email;
     private LocalDate birthdate;
     private String password;
+    private Integer experience;
     private List<String> services;
 
 

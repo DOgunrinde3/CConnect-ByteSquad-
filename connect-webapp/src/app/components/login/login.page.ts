@@ -62,21 +62,20 @@ export class LoginPage implements OnInit {
       (value) =>{
         this.authService.setAuthenticationState(true, value.userId);
         this.userInformationService.setUserInformation(value);
-
-          this.router.navigate(["/bio"]);
-
-        this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
-
-
       },
       error => {
           this.presentToast("top", error.message, 'danger', 'close-outline');
         // Handle errors if necessary
+      }, () => {
+        this.router.navigate(["/home"]);
+        this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
+
       }
 
     );
-    // You can send a request to your backend for authentication
-    // and handle the response accordingly
+
+
+
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {

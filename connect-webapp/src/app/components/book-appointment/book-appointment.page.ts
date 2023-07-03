@@ -23,10 +23,12 @@ import {Router} from "@angular/router";
 export class BookAppointmentPage implements OnInit {
 
   date: string;
+  showTime = false;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   calendar = {
     mode: 'month' as CalendarMode,
-    currentDate: new Date(),
+    currentDate: new Date(Date.now() + ( 3600 * 1000 * 24))
+    ,
 
   };
   appointmentAvailable: boolean = false;
@@ -65,6 +67,7 @@ appointment: AppointmentModel;
   }
 
   onDateSelected(date) {
+    this.showTime = true;
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
     //this.getAvailableTimes(date);

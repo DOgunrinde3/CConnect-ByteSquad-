@@ -11,11 +11,14 @@ import {loggedInGuard, notLoggedInGuard} from "./services/auth.guard";
 import {BookAppointmentPage} from "./components/book-appointment/book-appointment.page";
 import {NgCalendarModule} from "ionic7-calendar";
 import {DatePipe} from "@angular/common";
+import {StaffSignupClient} from "./components/staff-signup-client/staff-signup-client.page";
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [loggedInGuard]},
   // Add more routes for other pages
   { path: 'signup-client', component: SignupClient, canActivate: [loggedInGuard] },
+  { path: 'staff-signup', component: StaffSignupClient, canActivate: [loggedInGuard] },
+
   { path: 'book', component: BookAppointmentPage, canActivate: [notLoggedInGuard] },
   {
     path: 'bio', component: BioPage, canActivate: [notLoggedInGuard]
@@ -27,6 +30,7 @@ export const routes: Routes = [
     path: 'confirm-appointment',
     loadComponent: () => import('./components/confirm-appointment/confirm-appointment.page').then( m => m.ConfirmAppointmentPage)
   },
+
 
 
 

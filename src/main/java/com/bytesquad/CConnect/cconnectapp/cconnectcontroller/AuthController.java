@@ -1,9 +1,10 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
+import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +25,13 @@ public class AuthController {
 
 
     @PostMapping("/register-user")
-    public UserDto registerUser(@RequestBody RegistrationDto registrationDto){
-        return userService.register(registrationDto);
+    public UserDto registerUser(@RequestBody UserRegistrationDto userRegistrationDto){
+        return userService.register(userRegistrationDto);
     }
 
-    @PostMapping("/register-doctor")
-    public StaffDto registerDoctor(@RequestBody RegistrationDto registrationDto){
-        return staffService.register(registrationDto);
+    @PostMapping("/register-staff")
+    public StaffDto registerStaff(@RequestBody StaffRegistrationDto staffRegistrationDto){
+        return staffService.register(staffRegistrationDto);
     }
 
     @GetMapping("/user/{userId}")
