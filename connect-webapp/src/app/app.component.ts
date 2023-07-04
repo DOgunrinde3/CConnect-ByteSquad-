@@ -58,6 +58,16 @@ routeToHome(){
     this.router.navigate(["/home"]);
   }
 
+  routeToSignup(){
+    this.router.navigate(["/signup-client"]);
+
+  }
+
+
+  routeToLogin(){
+    this.router.navigate(["/login"]);
+  }
+
   async openModal() {
 
 

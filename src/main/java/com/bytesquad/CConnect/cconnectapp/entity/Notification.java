@@ -18,23 +18,16 @@ import java.util.UUID;
 @Data
 @Document()
 @Accessors(chain = true)
-@CompoundIndex(def = "{'doctorId': 1, 'date': 1, 'time': 1}", unique = true)
-public class Appointment {
+public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id;
-    private String doctorId;
-    private String patientId;
-    private LocalDate date;
-    private String time;
-    //these should be an enum but I dont have time
-    private String appointmentType;
-    private String appointmentStatus;
+    private String notifiedUserId;
+    private String appointmentId;
 
 
-
-    public static Appointment newInstance(){
-        Appointment newInstance = new Appointment();
+    public static Notification newInstance(){
+        Notification newInstance = new Notification();
         newInstance.Id = UUID.randomUUID().toString();
         return newInstance;
     }

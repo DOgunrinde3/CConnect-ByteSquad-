@@ -15,7 +15,8 @@ public class AppointmentAssembler {
                 .setPatientId(appointment.getPatientId())
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
-                .setAppointmentType(appointment.getAppointmentType());
+                .setAppointmentType(appointment.getAppointmentType())
+                .setAppointmentStatus(appointment.getAppointmentStatus());
     }
 
     public Appointment disassemble(AppointmentDto appointmentDto){
@@ -32,7 +33,8 @@ public class AppointmentAssembler {
                 .setPatientId(appointmentDto.getPatientId())
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
-                .setAppointmentType(appointmentDto.getAppointmentType());
+                .setAppointmentType(appointmentDto.getAppointmentType())
+                .setAppointmentStatus(appointmentDto.getAppointmentStatus());
     }
 
 }

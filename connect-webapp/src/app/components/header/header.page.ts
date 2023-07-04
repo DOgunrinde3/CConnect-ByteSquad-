@@ -16,22 +16,12 @@ export class HeaderPage implements OnInit {
   isAuthenticated = false;
 
   constructor(private router: Router,
-              private authService: AuthService) { }
+             ) { }
 
   ngOnInit() {
-    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      this.isAuthenticated = isAuthenticated;
-    });
-  }
-  routeToSignup(){
-    this.router.navigate(["/signup-client"]);
 
   }
 
-
-  routeToLogin(){
-    this.router.navigate(["/login"]);
-  }
 
   routeToHome(){
     this.router.navigate(["/home"]);

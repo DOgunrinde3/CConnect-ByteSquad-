@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController} from '@ionic/angular';
 import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
@@ -14,7 +14,7 @@ import {AppointmentModel} from "../../model/appointment.model";
   templateUrl: './notifications.page.html',
   styleUrls: ['./notifications.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class NotificationsPage implements OnInit {
 
@@ -50,6 +50,15 @@ export class NotificationsPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+
+  cancelOnClick() {
+    this.viewController.dismiss({confirm: false});
+  }
+
+  getColour(){
+    return '#000000';
   }
 
 

@@ -4,5 +4,6 @@ export class AppointmentModel{
   appointmentDate: string;
   appointmentTime: string;
   appointmentType: string | null;
+  appointmentStatus: string;
 
 }

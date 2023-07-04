@@ -8,6 +8,7 @@ import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
 import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
+import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ConfirmAppointmentPage {
   formattedDate: any;
   selectedDate: any;
   selectedTime: any;
-  selectedService: any;
+  selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
@@ -50,20 +51,27 @@ export class ConfirmAppointmentPage {
 
   confirmOnClick() {
 
-
-    let bookAppointment: AppointmentModel = {
-      doctorId: this.selectedDoctor?.doctorId,
-      patientId: this.options.appointment.patientId,
-      appointmentDate: this.selectedDate,
-      appointmentTime: this.selectedTime,
-      appointmentType: this.selectedService
+    if(this.selectedService === null){
+       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
     }
+
+    else {
+
+
+      let bookAppointment: AppointmentModel = {
+        doctorId: this.selectedDoctor?.doctorId,
+        patientId: this.options.appointment.patientId,
+        appointmentDate: this.selectedDate,
+        appointmentTime: this.selectedTime,
+        appointmentType: this.selectedService,
+        appointmentStatus: AppointmentStatusEnum.PENDING
+      }
 
 
       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         () => {
-          this.presentToast("top", 'Appointment Created', 'success',"checkmark-outline");
+          this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
           this.router.navigate(['/home']);
         },
         error => {
@@ -71,8 +79,9 @@ export class ConfirmAppointmentPage {
           // Handle errors if necessary
         }
       )
+      this.viewController.dismiss({confirm: true});
+    }
 
-    this.viewController.dismiss({confirm: true});
   }
 
   cancelOnClick() {

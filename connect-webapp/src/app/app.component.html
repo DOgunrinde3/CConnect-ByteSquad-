@@ -10,7 +10,14 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-list>
+
+      <ion-list *ngIf="!isAuthenticated">
+        <ion-menu-toggle auto-hide="true" >
+          <ion-item (click)="routeToLogin()"><ion-icon name="log-in-outline"></ion-icon>Login</ion-item>
+          <ion-item (click)="routeToSignup()"><ion-icon name="people-outline"></ion-icon>Signup</ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+      <ion-list *ngIf="isAuthenticated">
         <ion-menu-toggle auto-hide="true" >
           <ion-item (click)="routeToHome()"><ion-icon name="home"></ion-icon>Home</ion-item>
           <ion-item><ion-icon ios="apps"></ion-icon>Services</ion-item>
@@ -23,12 +30,11 @@
     </ion-content>
   </ion-menu>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="isAuthenticated">
     <ion-fab-button (click)="openModal()" >
       <ion-icon name="notifications-outline" id="noti"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+
 </ion-app>
-
-

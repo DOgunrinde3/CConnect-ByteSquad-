@@ -12,6 +12,7 @@ import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
 import {Router} from "@angular/router";
+import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 
 @Component({
   selector: 'app-book-appointment',
@@ -106,7 +107,8 @@ appointment: AppointmentModel;
       patientId: this.user.userId,
       appointmentDate: selectedDate,
       appointmentTime: selectedTime,
-      appointmentType: null
+      appointmentType: "",
+      appointmentStatus: AppointmentStatusEnum.PENDING
     };
      this.openModal(this.appointment)
 
