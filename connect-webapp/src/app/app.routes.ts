@@ -30,6 +30,10 @@ export const routes: Routes = [
     path: 'confirm-appointment',
     loadComponent: () => import('./components/confirm-appointment/confirm-appointment.page').then( m => m.ConfirmAppointmentPage)
   },
+  {
+    path: 'notifications',
+    loadComponent: () => import('./components/notifications/notifications.page').then( m => m.NotificationsPage)
+  },
 
 
 
