@@ -1,0 +1,94 @@
+
+<app-header>
+  </app-header>
+  <ion-content [fullscreen]="true" >
+    <div class="container">
+      <div *ngIf="!subscriptionComplete" class="loading-spinner">
+        <ion-spinner name="dots"></ion-spinner>
+      </div>
+    <ion-card class="card-calender" mode="ios" *ngIf="subscriptionComplete">
+      <ion-card-title class="ion-text-center ion-margin-bottom ion-margin-vertical " mode="ios"> Manage Appointments</ion-card-title>
+
+
+      <ion-row class="ion-justify-content-center">
+        <!-- Move back one screen of the slides -->
+        <ion-col sizeSm="0" sizeLg="2" class="ion-text-start">
+          <ion-button fill="clear" (click)="back()">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col sizeSm="8" sizeLg="8" class="ion-text-center">
+          <h2 class="calender-title">{{ viewTitle }}</h2>
+        </ion-col>
+
+        <!-- Move forward one screen of the slides -->
+        <ion-col sizeSm="1" sizeLg="2" class="ion-text-end" >
+          <ion-button fill="clear" (click)="next()">
+            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+
+    <calendar (onCurrentDateChanged)="onDateSelected($event)"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              [startHour]="9"
+              [endHour]="17"
+              [markDisabled]="markDisabled"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              [monthviewEventDetailTemplate]="monthviewDisplayEventTemplate">
+    </calendar>
+
+      <ng-template #monthviewDisplayEventTemplate>
+        <div class="noappointment">
+  <ion-list class="event-detail-container ion-padding" has-bouncing="false" overflow-scroll="false" >
+    <ion-item *ngFor="let appointment of filteredUserAppointments" class="ion-padding-vertical">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="auto" sizeLg="10" style="display: flex; flex-direction: column; width: 100%; margin-bottom: 15px;">
+            <span style="font-weight: 700; margin-bottom: 5px; font-size: 1.2em; color: #3a7be0"> {{appointment.appointmentType}}</span>
+            <ion-text class="event-detail"> With Doctor: {{appointment.doctor}}</ion-text>
+            <ion-text class="ion-margin-top" style="font-size: .9em;" > Time:  {{appointment.appointmentTime}}</ion-text>
+
+
+          </ion-col>
+          <ion-col sizeLg="2" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; margin-bottom: 15px;">
+            <div class="status" [ngStyle]="{'background-color': getColour(appointment)}">
+              <ion-text class="ion-text-center">{{appointment.appointmentStatus}}</ion-text>
+            </div>
+            <ion-button fill="clear" color="danger" (click)="delete(appointment.id)"  > Cancel</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div >
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+        </div>
+
+      </div>
+
+        </ion-item>
+
+        </ion-list>
+
+        <ion-text class="ion-padding ion-margin " *ngIf="!noAppointments">No Appointments</ion-text>
+
+</div>
+      </ng-template>
+
+
+    </ion-card>
+
+
+
+    </div>
+</ion-content>
+<app-footer></app-footer>
+
+

@@ -31,10 +31,17 @@ export class AppointmentService {
     return appointmentHours;
   }
 
+  getUserAppointments(userId: string): Observable<AppointmentModel[]>{
+    return this.http.get<AppointmentModel[]>(`${BASE_URI}/${userId}`);
+  }
+
   bookAppointment(appointmentDetails: AppointmentModel): Observable<AppointmentModel>{
-    console.log(appointmentDetails);
     return this.http.post<AppointmentModel>(`${BASE_URI}/book`, appointmentDetails);
 
+  }
+
+  delete(appointmentId: String): void{
+     this.http.delete(`${BASE_URI}/${appointmentId}`);
   }
 
 

@@ -50,6 +50,10 @@ export class AppComponent implements OnInit {
     this.router.navigate(["/book"]);
   }
 
+  routeToManage(){
+    this.router.navigate(["/manage-appointments"]);
+  }
+
   routeToBio(){
     this.router.navigate(["/bio"]);
   }

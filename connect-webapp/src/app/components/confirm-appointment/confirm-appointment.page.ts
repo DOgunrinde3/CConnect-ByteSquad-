@@ -25,6 +25,7 @@ export class ConfirmAppointmentPage {
   formattedDate: any;
   selectedDate: any;
   selectedTime: any;
+  selectedDateValue: Date;
   selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
@@ -43,6 +44,7 @@ export class ConfirmAppointmentPage {
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
        this.selectedDate = this.options.appointment.appointmentDate;
        this.selectedTime = this.options.appointment.appointmentTime;
+       this.selectedDateValue = this.options.selectedDateValue;
        this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
       this.pageReady = true;
     }
@@ -60,7 +62,8 @@ export class ConfirmAppointmentPage {
 
 
       let bookAppointment: AppointmentModel = {
-        doctorId: this.selectedDoctor?.doctorId,
+        id: null,
+        doctor: this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
         patientId: this.options.appointment.patientId,
         appointmentDate: this.selectedDate,
         appointmentTime: this.selectedTime,
@@ -69,10 +72,11 @@ export class ConfirmAppointmentPage {
       }
 
 
+
       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         () => {
           this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
-          this.router.navigate(['/home']);
+          this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
         },
         error => {
           this.presentToast("top", error.message, 'danger', 'close-outline');

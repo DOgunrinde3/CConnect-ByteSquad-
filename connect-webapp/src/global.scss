@@ -59,9 +59,6 @@ ion-toolbar{
 }
 
 
-.event-detail-container[_ngcontent-ng-c2702781282] {
-  display: none !important;
-}
 
 //ion-modal{
 //  --ion-background-color: transparent;
@@ -76,6 +73,12 @@ ion-toolbar{
 .select-label{
   align-items: start !important;
 
+}
+
+
+
+.card-calender{
+  --ion-background-color: #ffffff !important;
 }
 
 

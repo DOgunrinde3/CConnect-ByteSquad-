@@ -6,10 +6,9 @@ import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.service.AppointmentService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/appointment")
@@ -20,6 +19,16 @@ public class AppointmentController {
     @PostMapping("/book")
     public AppointmentDto login(@RequestBody AppointmentDto appointmentDto){
         return appointmentService.book(appointmentDto);
+    }
+
+    @GetMapping("/{userId}")
+    public List<AppointmentDto> getAllUsersAppointments(@PathVariable String userId){
+        return appointmentService.getAllUserAppointments(userId);
+    }
+
+    @DeleteMapping("/{appointmentId}")
+    public void delete(@PathVariable String appointmentId){
+         appointmentService.delete(appointmentId);
     }
 
 }

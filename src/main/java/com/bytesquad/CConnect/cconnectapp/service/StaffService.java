@@ -7,6 +7,7 @@ import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
+import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -68,10 +69,37 @@ public class StaffService {
 
     }
 
-    public StaffDto getStaff(UUID userId){
-//        User user = userRepository.findById(userId).orElseThrow();
-//        return userAssembler.assemble(user);
-        return null;
+    public StaffDto getStaff(String userId){
+        Staff staff = staffRepository.findById(userId).orElseThrow();
+        return staffAssembler.assemble(staff);
+    }
+
+    public String getStaffName(String doctorId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(doctorId));
+
+        Staff staff = mongoTemplate.find(query, Staff.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return String.format(staff.getFirstName() + " " + staff.getLastName());
+    }
+
+    public String getStaffId(String doctorName){
+        String[] nameParts = doctorName.split(" ");
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+        Query query = new Query();
+        query.addCriteria(Criteria.where("firstName").is(firstName));
+        query.addCriteria(Criteria.where("lastName").is(lastName));
+
+        Staff staff = mongoTemplate.find(query, Staff.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return staff.getUserId();
     }
 
     public List<StaffDto> getAllStaff(){

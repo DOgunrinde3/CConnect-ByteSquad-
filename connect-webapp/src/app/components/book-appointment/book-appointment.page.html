@@ -3,13 +3,8 @@
   </app-header>
   <ion-content [fullscreen]="true">
     <div class="container">
-    <ion-card class="card-calender">
-<!--      <ion-segment [(ngModel)]="calendar.mode" >-->
-<!--        <ion-segment-button value="month"> Month </ion-segment-button>-->
-<!--        <ion-segment-button value="week"> Week </ion-segment-button>-->
-<!--        <ion-segment-button value="day"> Day </ion-segment-button>-->
-
-<!--      </ion-segment>-->
+    <ion-card class="card-calender" mode="ios">
+<ion-card-title class="ion-text-center ion-margin-bottom ion-margin-vertical" mode="ios"> Book Appointments</ion-card-title>
 
       <ion-row class="ion-justify-content-center">
         <!-- Move back one screen of the slides -->
@@ -38,11 +33,12 @@
               [startHour]="9"
               [endHour]="17"
               [markDisabled]="markDisabled"
-              (onTitleChanged)="onViewTitleChanged($event)">
+              (onTitleChanged)="onViewTitleChanged($event)"
+    [showEventDetail]="false">
     </calendar>
 
 
-      <ion-row *ngIf="showTime">
+      <ion-row *ngIf="showTime" class="ion-margin-vertical">
 
         <ion-col sizeLg="2" *ngFor="let time of appointmentTimeShifts ">
           <ion-button color="secondary" mode="ios" class="buttons" (click)="timeOnClick(time)" >
