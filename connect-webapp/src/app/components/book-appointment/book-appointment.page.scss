@@ -28,8 +28,8 @@ ion-button{
   min-width: 100px;
 }
 
-.buttons:hover{
-  --ion-background-color: #000000;
+.buttons{
+  --background-hover: #000000 !important;
 }
 
 .block {

@@ -40,8 +40,8 @@
 
       <ion-row *ngIf="showTime" class="ion-margin-vertical">
 
-        <ion-col sizeLg="2" *ngFor="let time of appointmentTimeShifts ">
-          <ion-button color="secondary" mode="ios" class="buttons" (click)="timeOnClick(time)" >
+        <ion-col sizeSm="auto" class="ion-text-center" sizeLg="2" *ngFor="let time of appointmentTimeShifts ">
+          <ion-button color="primary" mode="ios" class="buttons" fill="outline" shape="round" size="small" (click)="timeOnClick(time)" >
             {{time}}
           </ion-button>
         </ion-col>
