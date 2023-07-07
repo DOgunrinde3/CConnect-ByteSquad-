@@ -8,5 +8,5 @@ export class DoctorModel{
   birthDate: string;
   email: string;
   experience: string;
-  services: AppointmentTypeEnum[]
+  services: AppointmentTypeEnum[];
 }

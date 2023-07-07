@@ -39,6 +39,10 @@ export class BioPage implements OnInit {
   ngOnInit() {
     this.userService.userInformation$.subscribe((user) => {
       this.user = user;
+
+      if (this.user){
+        this.isAuthenticated = true;
+      }
     });
   }
 

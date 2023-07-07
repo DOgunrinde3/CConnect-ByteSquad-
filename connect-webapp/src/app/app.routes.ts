@@ -29,7 +29,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'manage-appointments', component: ManageAppointmentPage
+    path: 'manage-appointments', component: ManageAppointmentPage, canActivate: [notLoggedInGuard]
   },
 
 

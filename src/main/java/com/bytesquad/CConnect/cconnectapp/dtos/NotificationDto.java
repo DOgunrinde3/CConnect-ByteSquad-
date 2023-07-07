@@ -7,6 +7,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class NotificationDto {
     private String Id;
-    private String notifiedUserId;
     private String appointmentId;
+    private String apointmentStatus;
+    private String notifiedUserId;
+    private String notifiedFromId;
+
 }
