@@ -59,7 +59,24 @@ ion-toolbar{
 }
 
 
+.event-detail-container[_ngcontent-ng-c2702781282] {
+  display: none !important;
+}
 
+//ion-modal{
+//  --ion-background-color: transparent;
+//}
+
+.alert-wrapper.sc-ion-alert-md{
+  width: 500px !important;
+  --ion-background-color: ffffff;
+  --ion-background: #ffffff !important;
+}
+
+.select-label{
+  align-items: start !important;
+
+}
 
 
 

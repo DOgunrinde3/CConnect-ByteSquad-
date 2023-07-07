@@ -3,8 +3,8 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.LoginDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -55,8 +54,8 @@ public class UserService {
         return userAssembler.assemble(user);
     }
 
-    public UserDto register(RegistrationDto registrationDto){
-         User user = userAssembler.disassemble(registrationDto);
+    public UserDto register(UserRegistrationDto userRegistrationDto){
+         User user = userAssembler.disassemble(userRegistrationDto);
          if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
              throw new RuntimeException("User is too young");
          }

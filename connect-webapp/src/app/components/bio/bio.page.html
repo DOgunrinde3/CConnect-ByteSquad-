@@ -1,6 +1,5 @@
 <app-header></app-header>
-  <ion-content [fullscreen]="true">
-  <ion-text *ngIf="isAuthenticated">hi</ion-text>
+  <ion-content  *ngIf="isAuthenticated" [fullscreen]="true">
 
   <div class="blank">
     <ion-toggle [(ngModel)]="editToggle" (ionChange)="editMode()">EDIT</ion-toggle>
@@ -44,6 +43,7 @@
             <p> {{ user?.email }}  </p> <br/>
             <p> {{ user?.phoneNumber }} </p>  <br/>
             <p> {{ user?.gender }} </p> <br/>
+
           </div>
         </ion-col>
       </ion-row>

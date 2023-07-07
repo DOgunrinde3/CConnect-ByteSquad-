@@ -28,19 +28,12 @@ export class BioPage implements OnInit {
   phoneNumberTemp: string = '';
   genderTemp: string = '';
 
-  firstName: string = 'John';
-  lastName: string = 'Doe'
-  email: string = 'john.doe@example.com';
-  phoneNumber: string = '+1 123-456-7890';
-  gender: string = 'Male';
   photo = './assets/icon/defaultPic.jpg';
   constructor(private authService: AuthService,
               private router: Router, private actionSheetController: ActionSheetController,
               private userService: UserInformationService) {
 
-    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      this.isAuthenticated = isAuthenticated;
-    });
+
   }
 
   ngOnInit() {
@@ -48,6 +41,7 @@ export class BioPage implements OnInit {
       this.user = user;
     });
   }
+
 
   async editImg() {
     const actionSheet = await this.actionSheetController.create({
@@ -80,25 +74,22 @@ export class BioPage implements OnInit {
   }
 
   saveInformation() {
-
-    // Save logic here
     this.user.firstName = this.firstNameTemp;
-    this.lastName = this.lastNameTemp;
-    this.email = this.emailTemp;
-    this.phoneNumber = this.phoneNumberTemp;
-    this.gender = this.genderTemp;
+    this.user.lastName = this.lastNameTemp;
+    this.user.email = this.emailTemp;
+    this.user.phoneNumber = this.phoneNumberTemp;
+    this.user.gender = this.genderTemp;
     this.editToggle = false;
-
-
+    this.authService.update(this.user);
   }
 
   editMode() {
     if(this.editToggle) {
-      this.firstNameTemp = this.firstName;
-      this.lastNameTemp = this.lastName;
-      this.emailTemp = this.email;
-      this.phoneNumberTemp = this.phoneNumber;
-      this.genderTemp = this.gender;
+      this.firstNameTemp = this.user?.firstName;
+      this.lastNameTemp = this.user?.lastName;
+      this.emailTemp = this.user?.email;
+      this.phoneNumberTemp = this.user?.phoneNumber;
+      this.genderTemp = this.user?.gender;
     }
   }
 }

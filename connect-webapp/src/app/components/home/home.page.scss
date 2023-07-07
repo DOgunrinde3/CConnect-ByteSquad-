@@ -15,8 +15,6 @@ ion-header {
 .welcome-section {
   position: relative;
   text-align: center;
-  margin-top: 25px;
-  margin-bottom: 25px;
 }
 
 .welcome-container {
@@ -55,13 +53,11 @@ ion-header {
 }
 
 .about-section {
-margin-top: 50px;
-margin-bottom: 50px;
 position: relative;
 text-align: center;
 background-color: rgba(255, 255, 255, 0.8);
 line-height: 2;
-padding: 50px;
+padding: 75px;
 border-radius: 10px;
 }
 
@@ -78,15 +74,13 @@ border-radius: 10px;
 }
 
 .services-section img {
-  width: 90%;
+  width:100%;
   height: auto;
 }
 
 .services-section {
   position: relative;
   text-align: center;
-  margin-top: 25px;
-  margin-bottom: 25px;
 }
 
 .services-container {
@@ -99,7 +93,6 @@ border-radius: 10px;
   left: 50%;
   transform: translate(-50%, -50%);
   /*background-color: rgba(255, 255, 255, 0.8);*/
-  padding: 20px;
 }
 
 .cssbuttons-io-button {

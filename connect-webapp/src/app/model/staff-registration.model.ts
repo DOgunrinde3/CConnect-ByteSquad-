@@ -1,12 +1,12 @@
 import {AppointmentTypeEnum} from "./appointment-type.enum";
 
-export class DoctorModel{
-  doctorId: string;
+export class StaffRegistrationModel {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  birthDate: string;
   email: string;
-  experience: string;
-  services: AppointmentTypeEnum[]
+  password: string;
+  birthDate: string;
+  experience: number;
+  services: AppointmentTypeEnum[];
 }

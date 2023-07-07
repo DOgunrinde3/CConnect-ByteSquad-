@@ -1,7 +1,8 @@
 export class AppointmentModel{
-  doctorId: string;
+  doctorId: string | null;
   patientId?: string;
   appointmentDate: string;
   appointmentTime: string;
+  appointmentType: string | null;
 
 }

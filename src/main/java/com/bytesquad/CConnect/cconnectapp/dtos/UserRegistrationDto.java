@@ -1,15 +1,11 @@
 package com.bytesquad.CConnect.cconnectapp.dtos;
 
-import com.bytesquad.CConnect.cconnectapp.enums.Gender;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDate;
-
 @Data
 @Accessors(chain = true)
-public class RegistrationDto {
+public class UserRegistrationDto {
     private String firstName;
     private String lastName;
     private String phoneNumber;

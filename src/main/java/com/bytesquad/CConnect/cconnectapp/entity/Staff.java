@@ -1,6 +1,5 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
-import com.bytesquad.CConnect.cconnectapp.enums.Gender;
 import lombok.*;
 
 import lombok.experimental.Accessors;
@@ -9,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Random;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -26,12 +24,14 @@ public class Staff {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String email;
-    private Gender gender;
-    private LocalDate birthdate;
     @Indexed(unique=true)
-    private String username;
+    private String email;
+    private LocalDate birthdate;
     private String password;
+    private Integer experience;
+    private List<String> services;
+
+
 
     public static Staff newInstance(){
         Staff newInstance = new Staff();

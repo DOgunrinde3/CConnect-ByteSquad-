@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import {FormsModule, Validators} from '@angular/forms';
 import {IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
 import {HeaderPage} from "../header/header.page";
@@ -7,39 +7,57 @@ import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
 import {CalendarComponent, CalendarMode, NgCalendarModule} from "ionic7-calendar";
 import {FooterPage} from "../footer/footer.page";
+import {AppointmentService} from "../../services/appointment.service";
+import {UserInformationService} from "../../services/user-information.service";
+import {UserModel} from "../../model/User.model";
+import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-book-appointment',
   templateUrl: './book-appointment.page.html',
   styleUrls: ['./book-appointment.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, HeaderPage, NgCalendarModule, FooterPage]
+  imports: [IonicModule, CommonModule, FormsModule, HeaderPage, NgCalendarModule, FooterPage, DatePipe]
 })
 export class BookAppointmentPage implements OnInit {
 
   date: string;
+  showTime = false;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   calendar = {
-    mode: 'month' as CalendarMode
+    mode: 'month' as CalendarMode,
+    currentDate: new Date(Date.now() + ( 3600 * 1000 * 24))
+    ,
+
   };
   appointmentAvailable: boolean = false;
-  selectedShiftTime: string[];
-  selectedDate: string;
+  selectedDate: string | null;
+  viewTitle: string;
   selectedTime: string | undefined;
-
-  doctorProfile: DoctorModel;
-
+  user: UserModel;
   appointmentTimeShifts: string[];
-  allAppointments: AppointmentModel[];
+appointment: AppointmentModel;
 
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
 
   constructor(public navCtrl: NavController,
-              public modalController: ModalController) {
+              public modalController: ModalController,
+              private datePipe: DatePipe,
+              private appointmentService: AppointmentService,
+              private userService: UserInformationService,
+              private router: Router
+              ) {
 
   }
 
   ngOnInit(){
+
+    this.userService.userInformation$.subscribe(user => {
+      this.user = user;
+    })
+    this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
 
       //this.doctorProfile = this.navParams.data;
      // this.getAllFutureAppointmentsForDoctor(this.doctorProfile.doctorId)
@@ -49,69 +67,73 @@ export class BookAppointmentPage implements OnInit {
   }
 
   onDateSelected(date) {
-    this.getAvailableTimes(date);
+    this.showTime = true;
+    this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+
+    //this.getAvailableTimes(date);
     /** Check here if appointment is available or not **/
     this.appointmentAvailable = true;
-    this.selectedDate = date;
-
-  }
-
-  getAvailableTimes(date: any){
-
-    this.allAppointments.map(
-      appointment => {if(appointment.appointmentDate === date.toString()){
-        this.selectedShiftTime = this.appointmentTimeShifts
-          .filter(availableAppointmentTime => availableAppointmentTime !== appointment.appointmentTime);
-      }
-
-      }
-    )
-
-  }
-
-  getAllFutureAppointmentsForDoctor(doctorId: string): AppointmentModel[]{
-    // api call to get all future doctor appointment
-   return this.allAppointments = [
-      {doctorId: "1", appointmentDate: "Evening", appointmentTime: "6.00 PM "},
-      {doctorId: "1", appointmentDate: "Night", appointmentTime: "9.00 PM "}
-    ];
 
   }
 
 
-  shiftSelected($event: any) {
-    let shift = this.appointmentTimeShifts.find((value => {
-      return value == $event.value
-    }));
 
-    //this.selectedShiftTime = shift;
+
+  next() {
+    this.myCal.slideNext();
   }
 
-  // timeOnClick(time: string) {
-  //   this.selectedTime = time;
-  //   this.openConfirmatModal(this.selectedDate, this.selectedTime);
-  // }
+  back() {
+    this.myCal.slidePrev();
+  }
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
 
-  // private openConfirmatModal(selectedDate: string, selectedTime: string) {
-  //
-  //
-  //   let appointment: AppointmentInterface = {
-  //     doctorProfile: this.doctorProfile, appointment_time: selectedTime,
-  //     appointment_date: this.selectedDate, appointment_type: AppointmentType.VIDEO_CONSULTATION
-  //   };
-  //
-  //   let confirmModal = this.modalController.create(PageBookAppointmentConfirmation, {
-  //     date: selectedDate,
-  //     time: selectedTime
-  //   });
-  //   confirmModal.present();
-  //
-  //
-  //   confirmModal.onDidDismiss((data) => {
-  //     if (data.confirm) {
-  //       this.navCtrl.push(PageBookAppointmentConfirmationDetails, appointment);
-  //     }
-  //   });
-  // }
+  timeOnClick(time: string) {
+    this.selectedTime = time;
 
+    if (this.selectedDate){
+    this.openConfirmatModal(this.selectedDate, this.selectedTime);
+  }
+  }
+
+  private openConfirmatModal(selectedDate: string, selectedTime: string) {
+
+
+    this.appointment = {
+      doctorId: null,
+      patientId: this.user.userId,
+      appointmentDate: selectedDate,
+      appointmentTime: selectedTime,
+      appointmentType: null
+    };
+     this.openModal(this.appointment)
+
+    // confirmModal.onDidDismiss((data) => {
+    //   if (data.confirm) {
+    //     this.navCtrl.push(PageBookAppointmentConfirmationDetails, appointment);
+    //   }
+    // });
+  }
+
+  async openModal(appointment) {
+
+
+    const modal = await this.modalController.create({
+      component: ConfirmAppointmentPage,
+      componentProps: {
+       appointment: appointment
+      },
+      mode: "ios"
+    });
+    modal.present();
+
+
+
+  }
+  markDisabled = (date: Date) => {
+    var current = new Date();
+    return date < current;
+  };
 }

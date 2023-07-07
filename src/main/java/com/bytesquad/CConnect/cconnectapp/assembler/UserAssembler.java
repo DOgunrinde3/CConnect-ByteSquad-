@@ -1,12 +1,11 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.RegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 @Component
 public class UserAssembler {
@@ -19,26 +18,27 @@ public class UserAssembler {
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
-                .setBirthDate(user.getBirthdate())
+                .setBirthDate(user.getBirthdate().toString())
                 .setGender(user.getGender());
     }
 
-    public User disassemble(RegistrationDto registrationDto){
-        return disassembleInto(User.newInstance(), registrationDto);
+    public User disassemble(UserRegistrationDto userRegistrationDto){
+        return disassembleInto(User.newInstance(), userRegistrationDto);
     }
 
-    public User disassembleInto(User user, RegistrationDto registrationDto){
 
-        LocalDate date = LocalDate.parse(registrationDto.getBirthdate());
 
+    public User disassembleInto(User user, UserRegistrationDto userRegistrationDto){
+
+        LocalDate date = LocalDate.parse(userRegistrationDto.getBirthdate());
 
         return user
-                .setFirstName(registrationDto.getFirstName())
-                .setLastName(registrationDto.getLastName())
+                .setFirstName(userRegistrationDto.getFirstName())
+                .setLastName(userRegistrationDto.getLastName())
                 .setBirthdate(date)
-                .setEmail(registrationDto.getEmail())
-                .setPassword(registrationDto.getPassword())
-                .setPhoneNumber(registrationDto.getPhoneNumber());
+                .setEmail(userRegistrationDto.getEmail())
+                .setPassword(userRegistrationDto.getPassword())
+                .setPhoneNumber(userRegistrationDto.getPhoneNumber());
     }
 
 
