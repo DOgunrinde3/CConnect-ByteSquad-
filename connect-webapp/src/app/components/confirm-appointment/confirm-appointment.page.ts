@@ -8,6 +8,7 @@ import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
 import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
+import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 
 
 @Component({
@@ -24,7 +25,8 @@ export class ConfirmAppointmentPage {
   formattedDate: any;
   selectedDate: any;
   selectedTime: any;
-  selectedService: any;
+  selectedDateValue: Date;
+  selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
@@ -42,7 +44,10 @@ export class ConfirmAppointmentPage {
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
        this.selectedDate = this.options.appointment.appointmentDate;
        this.selectedTime = this.options.appointment.appointmentTime;
-       this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
+       this.selectedDoctor = this.options.selectedDoctor;
+      this.selectedService = this.options.selectedService;
+      this.doctors =this.options.doctors;
+       this.selectedDateValue = this.options.selectedDateValue;
       this.pageReady = true;
     }
   }
@@ -50,29 +55,39 @@ export class ConfirmAppointmentPage {
 
   confirmOnClick() {
 
-
-    let bookAppointment: AppointmentModel = {
-      doctorId: this.selectedDoctor?.doctorId,
-      patientId: this.options.appointment.patientId,
-      appointmentDate: this.selectedDate,
-      appointmentTime: this.selectedTime,
-      appointmentType: this.selectedService
+    if(this.selectedService === null){
+       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
     }
+
+    else {
+
+
+      let bookAppointment: AppointmentModel = {
+        id: null,
+        doctor: this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
+        patientId: this.options.appointment.patientId,
+        appointmentDate: this.selectedDate,
+        appointmentTime: this.selectedTime,
+        appointmentType: this.selectedService,
+        appointmentStatus: AppointmentStatusEnum.PENDING
+      }
+
 
 
       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         () => {
-          this.presentToast("top", 'Appointment Created', 'success',"checkmark-outline");
-          this.router.navigate(['/home']);
+          this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
+          this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
         },
         error => {
           this.presentToast("top", error.message, 'danger', 'close-outline');
           // Handle errors if necessary
         }
       )
+      this.viewController.dismiss({confirm: true});
+    }
 
-    this.viewController.dismiss({confirm: true});
   }
 
   cancelOnClick() {

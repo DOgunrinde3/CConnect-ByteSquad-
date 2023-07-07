@@ -5,17 +5,16 @@ import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.AppointmentRepository;
-import com.mongodb.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.NotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,8 +31,8 @@ public class AppointmentService {
 
     public AppointmentDto book(AppointmentDto appointmentDto){
 
-        if(appointmentDto.getDoctorId() == null){
-           appointmentDto.setDoctorId(getRandomAvailableDoctor(appointmentDto));
+        if(appointmentDto.getDoctor() == null){
+           appointmentDto.setDoctor(getRandomAvailableDoctor(appointmentDto));
         }
 
         Appointment appointment = appointmentAssembler.disassemble(appointmentDto);
@@ -42,6 +41,34 @@ public class AppointmentService {
 
         return appointmentAssembler.assemble(appointment);
 
+    }
+
+    public List<AppointmentDto> getAllUserAppointments(String userid){
+
+        if(userid.isEmpty() || userid == null){
+            return List.of();
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("patientId").is(userid));
+
+        List<Appointment> appointmentDtos = mongoTemplate.find(query, Appointment.class);
+
+        return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
+
+    }
+
+    public List<AppointmentDto> getAppointmentsByDoctor(String doctorId){
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("doctorId").is(doctorId));
+
+        List<Appointment> appointmentDtos = mongoTemplate.find(query, Appointment.class);
+
+        return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
+    }
+
+    public void delete(String appointmentId){
+        //appointmentRepository.deleteByAppointmentId(appointmentId);
     }
 
     private String getRandomAvailableDoctor(AppointmentDto appointmentDto){

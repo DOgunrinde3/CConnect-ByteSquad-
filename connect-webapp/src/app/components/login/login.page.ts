@@ -24,6 +24,7 @@ import {async} from "rxjs";
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isAuthenticated = false;
+  showPassword = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
               private router: Router,
@@ -46,6 +47,18 @@ export class LoginPage implements OnInit {
     return this.loginForm.get('email');
   }
 
+  getName(){
+   return this.showPassword ? 'eye-outline' : 'eye-off-outline'
+  }
+
+  getType(){
+    return this.showPassword ? 'text' : 'password'
+  }
+
+  toggleShowPassword(){
+    this.showPassword = !this.showPassword;
+  }
+
   get password() {
     return this.loginForm.get('password');
   }
@@ -64,6 +77,7 @@ export class LoginPage implements OnInit {
         this.userInformationService.setUserInformation(value);
       },
       error => {
+        console.log(error);
           this.presentToast("top", error.message, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {

@@ -1,0 +1,22 @@
+<ion-header class="header-style">
+  <ion-toolbar >
+    <div style="display: flex; justify-content: space-between; width: 100%">
+
+    <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+    <button (click)="cancelOnClick()"><ion-icon name="close-outline" size="large" ></ion-icon></button></div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-list>
+  <ion-item [ngStyle]="{'--ion-background-color': getColour(), 'opacity': .5}">
+    <div style="display: flex; justify-content: space-between; width: 100%">
+    <ion-label position="floating" color="success" style="margin-bottom: 3em;">Appointment Confirmed</ion-label>
+      <div style="display: flex; justify-content: space-between; align-items: center; height: 100%">
+        <ion-button ><ion-icon name="eye-outline"></ion-icon></ion-button>
+        <ion-button ><ion-icon name="trash-outline"></ion-icon></ion-button>
+      </div>
+    </div>
+    <ion-text style="font-size: 16px; color: #ffffff; margin-bottom: 1em;"> Your appointment with Doctor Daniel Ogunrinde has been confirmed </ion-text>
+  </ion-item>
+
+</ion-list>

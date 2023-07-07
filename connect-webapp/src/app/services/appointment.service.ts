@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {LoginModel} from "../model/Login.model";
 import {UserModel} from "../model/User.model";
@@ -31,10 +31,22 @@ export class AppointmentService {
     return appointmentHours;
   }
 
+  getUserAppointments(userId: string): Observable<AppointmentModel[]>{
+    return this.http.get<AppointmentModel[]>(`${BASE_URI}/user/${userId}`);
+  }
+
   bookAppointment(appointmentDetails: AppointmentModel): Observable<AppointmentModel>{
-    console.log(appointmentDetails);
     return this.http.post<AppointmentModel>(`${BASE_URI}/book`, appointmentDetails);
 
+  }
+
+  delete(appointmentId: String): void{
+     this.http.delete(`${BASE_URI}/${appointmentId}`);
+  }
+
+  getAppointmentsByDoctor(doctorId: string): Observable<AppointmentModel[]>{
+
+    return this.http.get<AppointmentModel[]>(`${BASE_URI}/doctor/${doctorId}`);
   }
 
 

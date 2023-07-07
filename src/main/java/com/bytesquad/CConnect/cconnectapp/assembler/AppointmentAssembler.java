@@ -2,20 +2,26 @@ package com.bytesquad.CConnect.cconnectapp.assembler;
 
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
+import com.bytesquad.CConnect.cconnectapp.service.StaffService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
-
+@RequiredArgsConstructor
 public class AppointmentAssembler {
+
+    private final StaffService staffService;
     public AppointmentDto assemble(Appointment appointment){
         return new AppointmentDto()
-                .setDoctorId(appointment.getDoctorId())
+                .setId(appointment.getId())
+                .setDoctor(staffService.getStaffName(appointment.getDoctorId()))
                 .setPatientId(appointment.getPatientId())
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
-                .setAppointmentType(appointment.getAppointmentType());
+                .setAppointmentType(appointment.getAppointmentType())
+                .setAppointmentStatus(appointment.getAppointmentStatus());
     }
 
     public Appointment disassemble(AppointmentDto appointmentDto){
@@ -28,11 +34,12 @@ public class AppointmentAssembler {
         LocalDate date = LocalDate.parse(appointmentDto.getAppointmentDate());
 
         return appointment
-                .setDoctorId(appointmentDto.getDoctorId())
+                .setDoctorId(staffService.getStaffId(appointmentDto.getDoctor()))
                 .setPatientId(appointmentDto.getPatientId())
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
-                .setAppointmentType(appointmentDto.getAppointmentType());
+                .setAppointmentType(appointmentDto.getAppointmentType())
+                .setAppointmentStatus(appointmentDto.getAppointmentStatus());
     }
 
 }

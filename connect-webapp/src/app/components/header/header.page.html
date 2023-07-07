@@ -2,15 +2,9 @@
 <ion-toolbar>
   <div class="header-nav">
     <ion-img src="/assets/logo-transparent-png.png" class="logo" (click)="routeToHome()"> </ion-img>
-    <div *ngIf="!isAuthenticated">
-      <ion-nav-link class="ion-margin-end" (click)="routeToLogin()" >
-        Login
-      </ion-nav-link >
-      <ion-nav-link (click)="routeToSignup()">
-        Signup
-      </ion-nav-link></div>
 
-<div *ngIf="isAuthenticated" id="main-content">
+
+<div id="main-content">
   <ion-buttons slot="start" >
     <ion-menu-button mode="ios"></ion-menu-button>
   </ion-buttons>

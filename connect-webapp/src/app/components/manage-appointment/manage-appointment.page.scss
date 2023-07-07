@@ -6,28 +6,23 @@
 
 @media (max-width: 767px) {
   /* Styles for mobile devices go here */
-  .filter {
-    padding-top: 10px !important;
+  .container {
+    padding-top: 0px !important;
   }
 }
-
-.filter{
-  width: 100%;
-  max-width: 750px;
-  display: flex;
-  padding-top: 100px;
-  justify-content: center;
-}
-
 
 .container {
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: start;
+  padding-top: 100px;
   padding-bottom: 100px;
 }
 
+.date{
+  color: #3880ff;
+}
 .calender-title{
   font-size: 22px;
 }
@@ -36,8 +31,22 @@ ion-button{
   min-width: 100px;
 }
 
-.buttons{
-  --background-hover: #000000 !important;
+
+.status{
+  padding: 5px !important;
+  font-size: .9em;
+  display: flex;
+  justify-content: center;
+  border: #0d0d0d 1px solid;
+  border-radius: 5px;
+}
+.noappointment{
+  padding: 1%;
+  padding-bottom: 25px;
+}
+
+.buttons:hover{
+  --ion-background-color: #000000;
 }
 
 .block {
@@ -83,34 +92,6 @@ ion-modal {
 
 }
 
-.select-filter {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  --ion-background-color: #ffffff;
-}
-
-.select-filter:hover{
-  --ion-background-color: #3880ff;
-}
-
-.title{
-  display: flex;
-  width: 100%;
-  align-items: center;
-}
-
-.select-filter:hover .select-title{
-  color: #ffffff !important;
-}
-
-.select-title {
-  font-size: 15px !important;
-  color:#000000 !important;
-  font-weight: 600 !important;
-}
-
 .selection {
   display: none;
   position: absolute;
@@ -120,5 +101,9 @@ ion-modal {
   left: 0;
   top: 0;
   transition: .15s ease;
+}
+
+.event-detail-container{
+  --ion-background-color: #ffffff !important;
 }
 

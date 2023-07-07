@@ -27,7 +27,7 @@
 
 
 ion-label{
-width: 100%;
+  width: 100%;
   font-weight: 700;
 }
 .confirm{
@@ -40,6 +40,14 @@ width: 100%;
   --ion-background-color: #ffffff !important;
 }
 
+
+button{
+  background: transparent;
+}
+
+ion-list{
+  height: 100%;
+}
 
 
 
