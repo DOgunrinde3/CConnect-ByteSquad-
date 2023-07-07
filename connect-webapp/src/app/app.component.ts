@@ -85,4 +85,8 @@ routeToHome(){
 
   }
 
+  routeToServices(){
+      this.router.navigate(["/services-page"]);
+    }
+
 }

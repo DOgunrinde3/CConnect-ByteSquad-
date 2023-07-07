@@ -28,11 +28,18 @@ export const routes: Routes = [
     path: 'home', component: HomePage
   },
   {
-    path: 'manage-appointments', component: ManageAppointmentPage
+    path: 'services-page',
+    loadComponent: () => import('./components/services-page/services-page.page').then( m => m.ServicesPagePage)
+  },
+  {
+    path: 'staff-bio',
+    loadComponent: () => import('./components/staff-bio/staff-bio.page').then( m => m.StaffBioPage)
   },
 
 
-
+  {
+    path: 'manage-appointments', component: ManageAppointmentPage
+  },
 
 
 
