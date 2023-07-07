@@ -1,5 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 import {LoginPage} from "./components/login/login.page";
+import {LoginStaffPage} from "./components/loginStaff/loginStaff.page";
 import {SignupClient} from "./components/signup-client/signup-client.page";
 import {Tab3Page} from "./components/tab3/tab3.page";
 import {HomePage} from "./components/home/home.page";
@@ -16,6 +17,7 @@ import {ManageAppointmentPage} from "./components/manage-appointment/manage-appo
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [loggedInGuard]},
+  { path: 'loginStaff', component: LoginStaffPage, canActivate: [loggedInGuard]},
   // Add more routes for other pages
   { path: 'signup-client', component: SignupClient, canActivate: [loggedInGuard] },
   { path: 'staff-signup', component: StaffSignupClient, canActivate: [loggedInGuard] },

@@ -16,16 +16,15 @@ import {FooterPage} from "../footer/footer.page";
 import {async} from "rxjs";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: 'login.page.html',
-  styleUrls: ['login.page.scss'],
+  selector: 'app-loginStaff',
+  templateUrl: 'loginStaff.page.html',
+  styleUrls: ['loginStaff.page.scss'],
   standalone: true,
   imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf, HeaderPage, FooterPage],
 })
-export class LoginPage implements OnInit {
+export class LoginStaffPage implements OnInit {
   loginForm: FormGroup;
   isAuthenticated = false;
-  showPassword = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
               private router: Router,
@@ -49,41 +48,26 @@ export class LoginPage implements OnInit {
     return this.loginForm.get('email');
   }
 
-  getName(){
-   return this.showPassword ? 'eye-outline' : 'eye-off-outline'
-  }
-
-  getType(){
-    return this.showPassword ? 'text' : 'password'
-  }
-
-  toggleShowPassword(){
-    this.showPassword = !this.showPassword;
-  }
-
   get password() {
     return this.loginForm.get('password');
   }
 
 
-  login() {
+  loginStaff() {
     if (this.loginForm.invalid) {
       return;
     }
 
-    const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-    this.authService.login(userLoginInformation).subscribe(
+    const staffLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-
-      (value) =>{
-        this.authService.setAuthenticationState(true, value.userId);
-        this.userInformationService.setUserInformation(value);
+    this.authService.loginStaff(staffLoginInformation).subscribe(
+      (value1) =>{
+        this.authService.setAuthenticationState(true, value1.doctorId);
+        this.userInformationService.setStaffInformation(value1);
       },
       (error) => {
-        console.log(error);
-        console.log(error);
-          this.presentToast("top", error.message, 'danger', 'close-outline');
+        this.presentToast("top", error.message, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
         this.router.navigate(["/home"]);
@@ -92,7 +76,6 @@ export class LoginPage implements OnInit {
       }
 
     );
-
 
   }
 

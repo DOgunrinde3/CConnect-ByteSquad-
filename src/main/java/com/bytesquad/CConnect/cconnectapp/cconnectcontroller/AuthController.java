@@ -23,6 +23,11 @@ public class AuthController {
         return userService.login(loginDto);
     }
 
+    @PostMapping("/login-staff")
+    public StaffDto loginStaff(@RequestBody LoginDto loginDto){
+        return staffService.login(loginDto);
+    }
+
 
     @PostMapping("/register-user")
     public UserDto registerUser(@RequestBody UserRegistrationDto userRegistrationDto){

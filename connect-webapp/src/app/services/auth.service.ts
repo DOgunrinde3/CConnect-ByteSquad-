@@ -49,6 +49,10 @@ export class AuthService{
       return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails);
   }
 
+  loginStaff(loginDetails: LoginModel): Observable<DoctorModel>{
+    return this.http.post<DoctorModel>(`${BASE_URI}/login-staff`, loginDetails);
+  }
+
   update(userDetails: UserModel): Observable<UserModel>{
     return this.http.put<UserModel>(`${BASE_URI}/user/${userDetails.userId}`, userDetails);
   }
