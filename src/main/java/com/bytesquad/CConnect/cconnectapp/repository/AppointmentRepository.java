@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppointmentRepository extends MongoRepository<Appointment, String> {
 
-    @DeleteQuery
-    void deleteByAppointmentId(String Id);
 }

@@ -24,12 +24,13 @@
   color: #3880ff;
 }
 .calender-title{
-  font-size: 24px;
+  font-size: 22px;
 }
 
 ion-button{
   min-width: 100px;
 }
+
 
 .status{
   padding: 5px !important;
@@ -40,7 +41,8 @@ ion-button{
   border-radius: 5px;
 }
 .noappointment{
-  padding: 5%;
+  padding: 1%;
+  padding-bottom: 25px;
 }
 
 .buttons:hover{

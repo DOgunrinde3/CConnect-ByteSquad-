@@ -9,12 +9,12 @@
 
   <div class="title">
     <div>
-      <ion-label class="lbl-title">{{ 'DATE' }}</ion-label>
+      <ion-label class="lbl-title" color="primary">{{ 'DATE' }}</ion-label>
       <h3 class="lbl-value">{{formattedDate}}</h3>
     </div>
     <div>
 
-      <ion-label class="lbl-title">{{ 'TIME SLOT' }}</ion-label>
+      <ion-label class="lbl-title" color="primary">{{ 'TIME SLOT' }}</ion-label>
       <h3 class="lbl-value">{{ selectedTime }}</h3>
     </div>
 
@@ -22,7 +22,7 @@
 
   <div class="doctor">
 
-  <ion-label class="lbl-title">{{ 'PLEASE CHOOSE A DOCTOR' }}</ion-label>
+  <ion-label class="lbl-title" color="primary">{{ 'PLEASE CHOOSE A DOCTOR' }}</ion-label>
   <ion-select [(ngModel)]="selectedDoctor" (ngModelChange)="filterSelect()" placeholder="Any">
     <ion-select-option [value]="null"> Any </ion-select-option>
     <ion-select-option *ngFor="let doctor of doctors; let i = index"
@@ -32,7 +32,7 @@
   </ion-select>
   </div>
 
-  <ion-label class="lbl-title">{{ 'PLEASE CHOOSE A SERVICE' }}</ion-label>
+  <ion-label class="lbl-title" color="primary">{{ 'PLEASE CHOOSE A SERVICE' }}</ion-label>
   <ion-select [(ngModel)]="selectedService" placeholder="Select a service" >
     <ion-select-option *ngFor="let type of appointmentTypes; let i = index"
                 [value]="type">

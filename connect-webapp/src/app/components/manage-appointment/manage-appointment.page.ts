@@ -13,7 +13,7 @@ import {UserModel} from "../../model/User.model";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-book-appointment',
   templateUrl: './manage-appointment.page.html',
@@ -44,7 +44,8 @@ export class ManageAppointmentPage implements OnInit {
   appointmentTimeShifts: string[];
 appointment: AppointmentModel;
 
-  @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  // @ts-ignore
+  @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
 
 
   constructor(public navCtrl: NavController,
@@ -72,7 +73,7 @@ appointment: AppointmentModel;
   ionViewWillEnter(){
     this.userService.userInformation$.subscribe(user => {
       this.user = user;
-      this.getUserAppointments(user.userId);
+      this.getUserAppointments(user?.userId);
     })
 
   }
@@ -83,6 +84,7 @@ appointment: AppointmentModel;
     window.location.reload();
 
   }
+
 
   onDateSelected(date) {
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
@@ -96,9 +98,6 @@ appointment: AppointmentModel;
       this.noAppointments = false;
 
     }
-
-    this.subscriptionComplete = true;
-
 
   }
 
@@ -126,7 +125,20 @@ appointment: AppointmentModel;
       .subscribe( (userAppointments)=>
         {
           this.userAppointments = userAppointments;
+          this.eventSource = [];
+          userAppointments.forEach((appointment)=>{
+            const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
+            this.eventSource?.push({
+              title: appointment.appointmentType,
+              startTime: date,
+              endTime: date,
+              allDay: false
+            });
+          })
+          console.log(this.eventSource);
           this.onDateSelected(this.calendar.currentDate);
+          this.subscriptionComplete = true;
+
         }
       )
 

@@ -3,10 +3,8 @@
   </app-header>
   <ion-content [fullscreen]="true" >
     <div class="container">
-      <div *ngIf="!subscriptionComplete" class="loading-spinner">
-        <ion-spinner name="dots"></ion-spinner>
-      </div>
-    <ion-card class="card-calender" mode="ios" *ngIf="subscriptionComplete">
+
+    <ion-card class="card-calender" mode="ios" >
       <ion-card-title class="ion-text-center ion-margin-bottom ion-margin-vertical " mode="ios"> Manage Appointments</ion-card-title>
 
 
@@ -33,18 +31,35 @@
 
     <calendar (onCurrentDateChanged)="onDateSelected($event)"
               [calendarMode]="calendar.mode"
+              [eventSource]="eventSource"
               [currentDate]="calendar.currentDate"
               [startHour]="9"
               [endHour]="17"
+              [showEventDetail]="subscriptionComplete"
               [markDisabled]="markDisabled"
               (onTitleChanged)="onViewTitleChanged($event)"
-              [monthviewEventDetailTemplate]="monthviewDisplayEventTemplate">
+              [monthviewEventDetailTemplate]="monthviewEventDetailTemplate"
+    [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate" >
     </calendar>
 
-      <ng-template #monthviewDisplayEventTemplate>
+      <ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col" >
+        <ion-label class="calendar-box">{{view.dates[row*7+col].label}}</ion-label>
+        <div class="indicator-container">
+        <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events">
+        </div>
+        </div>
+      </ng-template>
+
+
+
+      <ng-template #monthviewEventDetailTemplate>
         <div class="noappointment">
+
   <ion-list class="event-detail-container ion-padding" has-bouncing="false" overflow-scroll="false" >
-    <ion-item *ngFor="let appointment of filteredUserAppointments" class="ion-padding-vertical">
+    <div *ngIf="!subscriptionComplete" class="loading-spinner" style="width: 100%; display: flex; justify-content: center">
+      <ion-spinner name="bubbles" color="primary"></ion-spinner>
+    </div>
+    <ion-item *ngFor="let appointment of filteredUserAppointments" class="ion-padding-vertical" >
       <ion-grid>
         <ion-row>
           <ion-col size="auto" sizeLg="10" style="display: flex; flex-direction: column; width: 100%; margin-bottom: 15px;">
@@ -84,6 +99,7 @@
 
 
     </ion-card>
+
 
 
 

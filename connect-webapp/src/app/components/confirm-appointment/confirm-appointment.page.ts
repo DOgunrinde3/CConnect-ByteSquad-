@@ -44,8 +44,10 @@ export class ConfirmAppointmentPage {
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
        this.selectedDate = this.options.appointment.appointmentDate;
        this.selectedTime = this.options.appointment.appointmentTime;
+       this.selectedDoctor = this.options.selectedDoctor;
+      this.selectedService = this.options.selectedService;
+      this.doctors =this.options.doctors;
        this.selectedDateValue = this.options.selectedDateValue;
-       this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
       this.pageReady = true;
     }
   }

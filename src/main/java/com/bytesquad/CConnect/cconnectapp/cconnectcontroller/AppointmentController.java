@@ -21,9 +21,14 @@ public class AppointmentController {
         return appointmentService.book(appointmentDto);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("user/{userId}")
     public List<AppointmentDto> getAllUsersAppointments(@PathVariable String userId){
         return appointmentService.getAllUserAppointments(userId);
+    }
+
+    @GetMapping(value = "doctor/{doctorId}")
+    public List<AppointmentDto> getAppointmentsByDoctor(@PathVariable String doctorId){
+        return appointmentService.getAppointmentsByDoctor(doctorId);
     }
 
     @DeleteMapping("/{appointmentId}")

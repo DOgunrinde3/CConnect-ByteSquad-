@@ -13,6 +13,9 @@ import {UserModel} from "../../model/User.model";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
 import {Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
+import {StaffService} from "../../services/staff.service";
+import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
+import * as moment from "moment/moment";
 
 @Component({
   selector: 'app-book-appointment',
@@ -24,7 +27,8 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 export class BookAppointmentPage implements OnInit {
 
   date: string;
-  showTime = false;
+  subscriptionComplete = true;
+
   selectedDateValue : Date;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   calendar = {
@@ -33,15 +37,21 @@ export class BookAppointmentPage implements OnInit {
     ,
 
   };
-  appointmentAvailable: boolean = false;
+  appointmentAvailable: boolean = true;
   selectedDate: string | null;
+  selectedService: string | null;
   viewTitle: string;
   selectedTime: string | undefined;
   user: UserModel;
+  doctors: DoctorModel[];
+  unAvailableTimeShifts: string[] = [];
   appointmentTimeShifts: string[];
-appointment: AppointmentModel;
+  selectedDoctor: DoctorModel | null;
+  doctorAppointments: AppointmentModel[] = [];
+  appointment: AppointmentModel;
+  appointmentTypes = Object.values(AppointmentTypeEnum);
 
-  @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
 
 
   constructor(public navCtrl: NavController,
@@ -49,6 +59,7 @@ appointment: AppointmentModel;
               private datePipe: DatePipe,
               private appointmentService: AppointmentService,
               private userService: UserInformationService,
+              private staffService: StaffService,
               private router: Router
               ) {
 
@@ -61,6 +72,8 @@ appointment: AppointmentModel;
     })
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
 
+    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
+
       //this.doctorProfile = this.navParams.data;
      // this.getAllFutureAppointmentsForDoctor(this.doctorProfile.doctorId)
 
@@ -68,15 +81,27 @@ appointment: AppointmentModel;
     // else navigate back w error saying we could not find doctor...
   }
 
+  ionViewWillEnter(){
+    this.selectedDoctor = null;
+  }
+
   onDateSelected(date) {
-    this.showTime = true;
+    this.resetAvailableTime();
     this.selectedDateValue = date;
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
+    this.selectedDoctor !== null ? this.filterUnavailableTimes() : this.resetAvailableTime()
     //this.getAvailableTimes(date);
     /** Check here if appointment is available or not **/
-    this.appointmentAvailable = true;
+    if(this.unAvailableTimeShifts.length === 0) {
+      this.appointmentAvailable = false;
+      this.subscriptionComplete = true;
+    }
 
+    else{
+      this.appointmentAvailable = true;
+      this.subscriptionComplete = true;
+    }
   }
 
 
@@ -122,13 +147,36 @@ appointment: AppointmentModel;
     // });
   }
 
+  isAvailable(time: string){
+
+    return this.unAvailableTimeShifts.includes(time);
+  }
+
+
+  filterUnavailableTimes(){
+    this.doctorAppointments
+      .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate)
+      .map( docAppoint => this.unAvailableTimeShifts = this.unAvailableTimeShifts.filter(time => time !== docAppoint.appointmentTime));
+    console.log(this.appointmentTimeShifts);
+    console.log(this.unAvailableTimeShifts);
+  }
+
+  resetAvailableTime(){
+    this.unAvailableTimeShifts = this.appointmentTimeShifts;
+}
+
+
   async openModal(appointment) {
 
 
     const modal = await this.modalController.create({
       component: ConfirmAppointmentPage,
       componentProps: {
-       appointment: appointment, selectedDateValue: this.selectedDateValue
+       appointment: appointment,
+        selectedDateValue: this.selectedDateValue,
+        selectedDoctor: this.selectedDoctor,
+        selectedService: this.selectedService,
+        doctors: this.doctors
       },
       mode: "ios"
     });
@@ -141,4 +189,33 @@ appointment: AppointmentModel;
     var current = new Date();
     return date < current;
   };
+
+  filterSelect(){
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+    if(this.selectedDoctor !== null){
+      this.subscriptionComplete = false;
+      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.doctorId)
+        .subscribe((doctorAppointments) => {
+            this.doctorAppointments = doctorAppointments;
+          this.eventSource = [];
+          doctorAppointments.forEach((appointment)=>{
+            const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
+            this.eventSource?.push({
+              title: appointment.appointmentType,
+              startTime: date,
+              endTime: date,
+              allDay: false
+            });
+          })
+            this.onDateSelected(this.selectedDate);
+          }
+        )
+    }
+
+    else{
+      this.onDateSelected(this.selectedDate);
+    }
+
+  }
+
 }

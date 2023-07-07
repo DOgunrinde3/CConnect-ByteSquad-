@@ -10,8 +10,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.NotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,8 +57,18 @@ public class AppointmentService {
 
     }
 
+    public List<AppointmentDto> getAppointmentsByDoctor(String doctorId){
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("doctorId").is(doctorId));
+
+        List<Appointment> appointmentDtos = mongoTemplate.find(query, Appointment.class);
+
+        return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
+    }
+
     public void delete(String appointmentId){
-        appointmentRepository.deleteByAppointmentId(appointmentId);
+        //appointmentRepository.deleteByAppointmentId(appointmentId);
     }
 
     private String getRandomAvailableDoctor(AppointmentDto appointmentDto){
