@@ -35,7 +35,7 @@ public class StaffService {
     private LocalDate minYear = LocalDate.now().minusYears(18);
     public StaffDto login(LoginDto staffLoginDto){
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(staffLoginDto.getEmail()));
+        query.addCriteria(Criteria.where("email").is(staffLoginDto.getEmail()));
 
         Staff staff = mongoTemplate.find(query, Staff.class)
                 .stream()
