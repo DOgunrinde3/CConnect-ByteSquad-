@@ -55,4 +55,8 @@ routeToHome(){
     this.router.navigate(["/home"]);
   }
 
+  routeToServices(){
+      this.router.navigate(["/services-page"]);
+    }
+
 }

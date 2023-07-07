@@ -37,5 +37,9 @@ export class HeaderPage implements OnInit {
     this.router.navigate(["/book"]);
   }
 
+  routeToServices(){
+      this.router.navigate(["/services-page"]);
+    }
+
 
 }
