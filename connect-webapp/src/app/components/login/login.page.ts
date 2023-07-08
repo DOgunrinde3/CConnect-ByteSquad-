@@ -77,8 +77,7 @@ export class LoginPage implements OnInit {
 
 
       (value) =>{
-        this.authService.setAuthenticationState(true, value.userId);
-        this.userInformationService.setUserInformation(value);
+        console.log(value);
       },
       (error) => {
         console.log(error);

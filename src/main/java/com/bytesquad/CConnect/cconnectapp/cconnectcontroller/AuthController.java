@@ -1,5 +1,6 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
+import com.bytesquad.CConnect.cconnectapp.configuration.CorsConfiguration;
 import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
@@ -8,6 +9,7 @@ import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +21,7 @@ public class AuthController {
     private final StaffService staffService;
 
     @PostMapping("/login")
-    public UserDto login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto){
         return userService.login(loginDto);
     }
 

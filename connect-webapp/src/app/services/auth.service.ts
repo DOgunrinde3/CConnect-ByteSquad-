@@ -46,7 +46,7 @@ export class AuthService{
     }
   }
   login(loginDetails: LoginModel): Observable<UserModel>{
-      return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails);
+      return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails, httpOptions);
   }
 
   loginStaff(loginDetails: LoginModel): Observable<DoctorModel>{
