@@ -135,7 +135,6 @@ appointment: AppointmentModel;
               allDay: false
             });
           })
-          console.log(this.eventSource);
           this.onDateSelected(this.calendar.currentDate);
           this.subscriptionComplete = true;
 
@@ -158,13 +157,6 @@ appointment: AppointmentModel;
     this.viewTitle = title;
   }
 
-  timeOnClick(time: string) {
-    this.selectedTime = time;
-
-    if (this.selectedDate){
-    this.openConfirmatModal(this.selectedDate, this.selectedTime);
-  }
-  }
 
   private openConfirmatModal(selectedDate: string, selectedTime: string) {
 

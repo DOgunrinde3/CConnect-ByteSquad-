@@ -12,11 +12,9 @@ export class UserAuthGuard implements CanActivate{
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
-      // User is logged in, allow access to the route
+    if (this.authService.isLoggedIn() && !this.authService.isStaff()) {
       return true;
     } else {
-      // User is not logged in, redirect to the login page or any desired route
       this.router.navigate(['/login']);
       return false;
     }

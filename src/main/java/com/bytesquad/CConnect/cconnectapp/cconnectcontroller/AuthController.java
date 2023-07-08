@@ -1,9 +1,7 @@
 package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 
-import com.bytesquad.CConnect.cconnectapp.configuration.CorsConfiguration;
 import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
-import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
@@ -19,6 +17,7 @@ public class AuthController {
 
     private final UserService userService;
     private final StaffService staffService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto){
@@ -41,15 +40,15 @@ public class AuthController {
         return staffService.register(staffRegistrationDto);
     }
 
-    @GetMapping("/user/{userId}")
-    public UserDto getUser(@PathVariable String userId){
-        return userService.getUser(userId);
+    @GetMapping(value = "/user/{email}", params = "role")
+    public ResponseEntity<?> getUser(@PathVariable String email, @RequestParam String role){
+           return userService.getUser(email, role);
     }
 
-    @PutMapping("/user/{userId}")
-    public UserDto getUser(@PathVariable String userId, @RequestBody UserDto userDto){
-        return userService.getUser(userId);
-    }
+//    @PutMapping("/user/{userId}")
+//    public UserDto User(@PathVariable String userId, @RequestBody UserDto userDto){
+//        return userService.getUser(userId);
+//    }
 
 
 }

@@ -14,6 +14,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
+    private static final String CLAIM_KEY_ROLE = "role";
+
 
     @Value("${jwt.secret}")
     private String secret;
@@ -21,8 +23,15 @@ public class JwtTokenUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Boolean isStaff) {
         Map<String, Object> claims = new HashMap<>();
+        if(isStaff){
+            claims.put(CLAIM_KEY_ROLE, "ROLE_STAFF");
+        }
+        else{
+            claims.put(CLAIM_KEY_ROLE, "ROLE_USER");
+        }
+         // Set the role value based on your logic
         return createToken(claims, userDetails.getUsername());
     }
 

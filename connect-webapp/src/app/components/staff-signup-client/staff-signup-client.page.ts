@@ -107,11 +107,11 @@ export class StaffSignupClient implements OnInit {
     // Perform registration logic here
     this.authService.registerStaff(staffRegistrationInformation).subscribe(
       (value) => {
-        this.userInformationService.setStaffInformation(value);
+        this.userInformationService.setUserInformation(value);
 
       },
       error => {
-        this.presentToast("top", error.message, 'danger', 'close-outline');
+        this.presentToast("top", error.error, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
         this.presentToast("top", 'Registration successful!', 'success',"checkmark-outline");

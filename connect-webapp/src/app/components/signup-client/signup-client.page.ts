@@ -87,14 +87,13 @@ export class SignupClient implements OnInit {
 
     const userRegistrationInformation =  this.userRegistrationForm.getRawValue() as UserRegistrationModel;
 
-console.log(userRegistrationInformation)
     // @ts-ignore
     // Perform registration logic here
     this.authService.registerUser(userRegistrationInformation).subscribe(
       () =>{
       },
       error => {
-        this.presentToast("top", error.message, 'danger', 'close-outline');
+        this.presentToast("top", error.error, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");

@@ -18,7 +18,7 @@ import {NotificationsPage} from "./components/notifications/notifications.page";
 })
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
-  isAuthenticated = false;
+  isAuthenticated;
 
 
   constructor(private router: Router,
@@ -27,15 +27,18 @@ export class AppComponent implements OnInit {
               private modalController: ModalController){}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn()) {
-      this.isAuthenticated = true;
 
-      return true;
-    } else {
-      // User is not logged in, redirect to the login page or any desired route
-      this.router.navigate(['/login']);
-      return false;
-    }
+  this.authService
+    .getAuthState()
+    .subscribe((value) => {
+      this.isAuthenticated=value
+
+      if(value === true){
+        this.userInfoService.getUserInformation();
+      }
+
+    });
+
 
   }
 

@@ -28,10 +28,7 @@ export class LoginPage implements OnInit {
   showPassword = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
-              private router: Router,
-              private userInformationService: UserInformationService,
-              private staffService: StaffService,
-              private toastController: ToastController) {
+  ) {
 
   }
 
@@ -73,35 +70,9 @@ export class LoginPage implements OnInit {
 
     const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-    this.authService.login(userLoginInformation).subscribe(
-      (response) =>{
-        const token = response.token;
-        localStorage.setItem('token', token);
-      },
-      (error) => {
-          this.presentToast("top", error.message, 'danger', 'close-outline');
-        // Handle errors if necessary
-      }, () => {
-        this.router.navigate(["/home"]);
-        this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
-
-      }
-
-    );
-
+    this.authService.login(userLoginInformation, false);
 
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 1500,
-      position: position,
-      icon: icon,
-      color:color
 
-    });
-
-    await toast.present();
-  }
 }

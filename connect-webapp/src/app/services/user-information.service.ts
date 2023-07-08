@@ -4,6 +4,8 @@ import {UserModel} from "../model/User.model";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {DoctorModel} from "../model/doctor.model";
+import jwt_decode from "jwt-decode";
+import {ToastController} from "@ionic/angular";
 
 
 const BASE_URI = 'http://localhost:8080/api/v1/auth/user';
@@ -15,46 +17,50 @@ const BASE_URI = 'http://localhost:8080/api/v1/auth/user';
 export class UserInformationService {
 
   // @ts-ignore
-  private userInformationSubject = new BehaviorSubject<UserModel>(null);
+  private userInformationSubject = new BehaviorSubject<any>(null);
   // @ts-ignore
-  private staffInformationSubject = new BehaviorSubject<DoctorModel>(null);
   userInformation$ = this.userInformationSubject.asObservable();
-  staffInformation$ = this.staffInformationSubject.asObservable();
 
 
   constructor(private http: HttpClient,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private toastController: ToastController) {
 
   }
 
-  setUserInformation(userInformation: UserModel) {
+  setUserInformation(userInformation: any) {
     this.userInformationSubject.next(userInformation);
   }
 
-  setStaffInformation(staffInformation: DoctorModel) {
-    this.staffInformationSubject.next(staffInformation);
-  }
 
   getUserInformation() {
-   const userId = localStorage.getItem('userId');
-      if(userId !== null) {
-  const userInfo$ = this.http.get<UserModel>(`${BASE_URI}/${userId}`);
+   const token = localStorage.getItem('token');
+    // @ts-ignore
+    const decodedToken: any = jwt_decode(token);
+
+      if(token !== null) {
+  const userInfo$ = this.http.get<any>(`${BASE_URI}/${decodedToken.sub}?role=${decodedToken.role}`);
   userInfo$.subscribe(userInfo => { this.setUserInformation(userInfo);}, error=>{
     this.authService.logout();
+    this.presentToast("top", error.error, 'danger', 'close-outline');
   } );
-        }
+  }
       else { this.authService.logout()}
   }
 
-  getStaffInformation() {
-    const doctorId = localStorage.getItem('doctorId');
-    if(doctorId !== null) {
-      const userInfo$ = this.http.get<UserModel>(`${BASE_URI}/${doctorId}`);
-      userInfo$.subscribe(userInfo => { this.setUserInformation(userInfo);}, error=>{
-        this.authService.logout();
-      } );
-    }
-    else { this.authService.logout()}
+
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: position,
+      icon: icon,
+      color:color
+
+    });
+
+    await toast.present();
   }
 
 }
