@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,6 +37,14 @@ public class User {
         User newInstance = new User();
         newInstance.userId = UUID.randomUUID().toString();
         return newInstance;
+    }
+
+    public static UserDetails build(User user){
+
+        List<GrantedAuthority> authorities =
+                usuario.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol.name())).collect(Collectors.toList());
+
+        return new UserDetails(user.getPassword(), user.getEmail(), authorithies);
     }
 
 

@@ -8,6 +8,9 @@ import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +21,14 @@ public class AuthController {
     private final UserService userService;
     private final StaffService staffService;
 
-    @PostMapping("/login")
-    public UserDto login(@RequestBody LoginDto loginDto){
-        return userService.login(loginDto);
-    }
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, BindingResult bindingResult) {
 
-    @PostMapping("/login-staff")
-    public StaffDto loginStaff(@RequestBody LoginDto loginDto){
-        return staffService.login(loginDto);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<String>("Invalid Fields.!!", HttpStatus.BAD_REQUEST);
+        }
+
+       userService.login(loginDto);
     }
 
 
@@ -47,6 +50,17 @@ public class AuthController {
     @PutMapping("/user/{userId}")
     public UserDto getUser(@PathVariable String userId, @RequestBody UserDto userDto){
         return userService.getUser(userId);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody JwtDTO jwtDto) throws ParseException {
+
+        String token = jwtProvider.refreshToken(jwtDto);
+
+        JwtDTO jwtRefresh = new JwtDTO(token);
+
+        return new ResponseEntity<JwtDTO>(jwtRefresh, HttpStatus.OK);
+
     }
 
 

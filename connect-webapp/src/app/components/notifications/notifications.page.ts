@@ -58,7 +58,7 @@ export class NotificationsPage implements OnInit {
   }
 
   getColour(){
-    return '#000000';
+    return '#ffffff';
   }
 
 
