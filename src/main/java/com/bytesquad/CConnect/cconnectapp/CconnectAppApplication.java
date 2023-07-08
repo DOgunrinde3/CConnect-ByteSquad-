@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
-@CrossOrigin(origins = "http://localhost:8100")
 public class CconnectAppApplication {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {UserModel} from "../model/User.model";
@@ -9,6 +9,10 @@ import {DoctorModel} from "../model/doctor.model";
 import {StaffRegistrationModel} from "../model/staff-registration.model";
 
 const BASE_URI = 'http://localhost:8080/api/v1/auth';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +50,7 @@ export class AuthService{
     }
   }
   login(loginDetails: LoginModel): Observable<UserModel>{
+    console.log("here")
       return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails, httpOptions);
   }
 

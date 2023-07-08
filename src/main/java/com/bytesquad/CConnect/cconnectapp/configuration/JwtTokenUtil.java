@@ -1,4 +1,4 @@
-package com.bytesquad.CConnect.cconnectapp;
+package com.bytesquad.CConnect.cconnectapp.configuration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

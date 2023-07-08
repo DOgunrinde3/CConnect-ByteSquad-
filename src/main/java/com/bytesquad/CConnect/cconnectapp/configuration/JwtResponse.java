@@ -1,4 +1,4 @@
-package com.bytesquad.CConnect.cconnectapp;
+package com.bytesquad.CConnect.cconnectapp.configuration;
 
 public class JwtResponse {
     private String token;

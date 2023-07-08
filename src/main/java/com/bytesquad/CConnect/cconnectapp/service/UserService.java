@@ -1,8 +1,8 @@
 package com.bytesquad.CConnect.cconnectapp.service;
 
 
-import com.bytesquad.CConnect.cconnectapp.JwtResponse;
-import com.bytesquad.CConnect.cconnectapp.JwtTokenUtil;
+import com.bytesquad.CConnect.cconnectapp.configuration.JwtResponse;
+import com.bytesquad.CConnect.cconnectapp.configuration.JwtTokenUtil;
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 //import repository.UserRepository;
@@ -39,6 +40,8 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
 
     private LocalDate minYear = LocalDate.now().minusYears(18);
@@ -97,6 +100,9 @@ public class UserService {
          if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
              throw new RuntimeException("User is too young");
          }
+
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
             userRepository.insert(user);
        return loginUser(user);
 
