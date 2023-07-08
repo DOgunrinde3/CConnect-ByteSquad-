@@ -32,7 +32,7 @@ public class AuthController {
 
 
     @PostMapping("/register-user")
-    public UserDto registerUser(@RequestBody UserRegistrationDto userRegistrationDto){
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDto userRegistrationDto){
         return userService.register(userRegistrationDto);
     }
 

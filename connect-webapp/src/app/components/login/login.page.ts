@@ -74,15 +74,11 @@ export class LoginPage implements OnInit {
     const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
     this.authService.login(userLoginInformation).subscribe(
-
-
-
-      (value) =>{
-        console.log(value);
+      (response) =>{
+        const token = response.token;
+        localStorage.setItem('token', token);
       },
       (error) => {
-        console.log(error);
-        console.log(error);
           this.presentToast("top", error.message, 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {

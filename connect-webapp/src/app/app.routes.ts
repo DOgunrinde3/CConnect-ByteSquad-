@@ -8,30 +8,31 @@ import {HomePage} from "./components/home/home.page";
 import {NgModule} from "@angular/core";
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {BioPage} from "./components/bio/bio.page";
-import {loggedInGuard, notLoggedInGuard} from "./services/auth.guard";
+import {UserAuthGuard} from "./services/guard/user-auth.guard";
 import {BookAppointmentPage} from "./components/book-appointment/book-appointment.page";
 import {NgCalendarModule} from "ionic7-calendar";
 import {DatePipe} from "@angular/common";
 import {StaffSignupClient} from "./components/staff-signup-client/staff-signup-client.page";
 import {ManageAppointmentPage} from "./components/manage-appointment/manage-appointment.page";
+import {NoAuthGuard} from "./services/guard/no-auth-guard";
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
-  { path: 'login', component: LoginPage, canActivate: [loggedInGuard]},
-  { path: 'loginStaff', component: LoginStaffPage, canActivate: [loggedInGuard]},
+  { path: 'login', component: LoginPage, canActivate: [NoAuthGuard]},
+  { path: 'loginStaff', component: LoginStaffPage, canActivate: [NoAuthGuard]},
   // Add more routes for other pages
-  { path: 'signup-client', component: SignupClient, canActivate: [loggedInGuard] },
-  { path: 'staff-signup', component: StaffSignupClient, canActivate: [loggedInGuard] },
+  { path: 'signup-client', component: SignupClient, canActivate: [NoAuthGuard] },
+  { path: 'staff-signup', component: StaffSignupClient, canActivate: [NoAuthGuard] },
 
-  { path: 'book', component: BookAppointmentPage, canActivate: [notLoggedInGuard] },
+  { path: 'book', component: BookAppointmentPage, canActivate: [UserAuthGuard] },
   {
-    path: 'bio', component: BioPage, canActivate: [notLoggedInGuard]
+    path: 'bio', component: BioPage, canActivate: [UserAuthGuard]
   },
   {
     path: 'home', component: HomePage
   },
 
   {
-    path: 'manage-appointments', component: ManageAppointmentPage, canActivate: [notLoggedInGuard]
+    path: 'manage-appointments', component: ManageAppointmentPage, canActivate: [UserAuthGuard]
   },
 
 

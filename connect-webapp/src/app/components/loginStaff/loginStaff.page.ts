@@ -58,24 +58,24 @@ export class LoginStaffPage implements OnInit {
       return;
     }
 
-
-    const staffLoginInformation = this.loginForm.getRawValue() as LoginModel;
-
-    this.authService.loginStaff(staffLoginInformation).subscribe(
-      (value1) =>{
-        this.authService.setAuthenticationState(true, value1.doctorId);
-        this.userInformationService.setStaffInformation(value1);
-      },
-      (error) => {
-        this.presentToast("top", error.message, 'danger', 'close-outline');
-        // Handle errors if necessary
-      }, () => {
-        this.router.navigate(["/home"]);
-        this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
-
-      }
-
-    );
+    //
+    // const staffLoginInformation = this.loginForm.getRawValue() as LoginModel;
+    //
+    // this.authService.loginStaff(staffLoginInformation).subscribe(
+    //   (value1) =>{
+    //     this.authService.setAuthenticationState(true, value1.doctorId);
+    //     this.userInformationService.setStaffInformation(value1);
+    //   },
+    //   (error) => {
+    //     this.presentToast("top", error.message, 'danger', 'close-outline');
+    //     // Handle errors if necessary
+    //   }, () => {
+    //     this.router.navigate(["/home"]);
+    //     this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
+    //
+    //   }
+    //
+    // );
 
   }
 

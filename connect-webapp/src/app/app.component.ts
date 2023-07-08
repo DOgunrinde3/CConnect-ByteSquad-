@@ -27,24 +27,24 @@ export class AppComponent implements OnInit {
               private modalController: ModalController){}
 
   ngOnInit() {
-    this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      this.isAuthenticated = isAuthenticated;
-      if (isAuthenticated){
-        this.userInfoService.getUserInformation();
-      }
-    });
+    if (this.authService.isLoggedIn()) {
+      this.isAuthenticated = true;
+
+      return true;
+    } else {
+      // User is not logged in, redirect to the login page or any desired route
+      this.router.navigate(['/login']);
+      return false;
+    }
 
   }
+
 
   logout(){
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(["/login"]);
-
-    });
+      this.authService.logout();
+    };
 
 
-
-  }
 
   routeToBook(){
     this.router.navigate(["/book"]);

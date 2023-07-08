@@ -48,7 +48,7 @@ public class UserService {
 
 
 
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
         );
@@ -62,40 +62,7 @@ public class UserService {
 
 
 
-
-
-
-
-
-
-
-    public UserDto login2(LoginDto loginDto){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("email").is(loginDto.getEmail()));
-
-        User user = mongoTemplate.find(query, User.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
-
-        if (mongoTemplate.find(query, User.class).size() > 1){
-            throw new IllegalStateException("found duplicate email" + loginDto.getEmail());
-        }
-
-        if (!user.getPassword().equals(loginDto.getPassword())){
-            throw new NotFoundException("Invalid email or password");
-
-        }
-
-        return loginUser(user);
-
-    }
-
-    private UserDto loginUser(User user){
-        return userAssembler.assemble(user);
-    }
-
-    public UserDto register(UserRegistrationDto userRegistrationDto){
+    public ResponseEntity<?> register(UserRegistrationDto userRegistrationDto){
          User user = userAssembler.disassemble(userRegistrationDto);
          if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
              throw new RuntimeException("User is too young");
@@ -104,7 +71,9 @@ public class UserService {
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
             userRepository.insert(user);
-       return loginUser(user);
+
+            LoginDto login = new LoginDto().setEmail(user.getEmail()).setPassword(user.getPassword());
+       return login(login);
 
     }
 

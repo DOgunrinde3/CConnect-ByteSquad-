@@ -91,11 +91,7 @@ console.log(userRegistrationInformation)
     // @ts-ignore
     // Perform registration logic here
     this.authService.registerUser(userRegistrationInformation).subscribe(
-      (value) =>{
-
-
-        this.userInformationService.setUserInformation(value)
-
+      () =>{
       },
       error => {
         this.presentToast("top", error.message, 'danger', 'close-outline');
@@ -104,7 +100,7 @@ console.log(userRegistrationInformation)
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
         this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/book');
+          this.navCtrl.navigateRoot('/login');
         });
       }
     );
