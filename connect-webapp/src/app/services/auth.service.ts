@@ -50,7 +50,6 @@ export class AuthService{
     }
   }
   login(loginDetails: LoginModel): Observable<UserModel>{
-    console.log("here")
       return this.http.post<UserModel>(`${BASE_URI}/login`, loginDetails, httpOptions);
   }
 

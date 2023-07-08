@@ -73,7 +73,6 @@ export class LoginPage implements OnInit {
 
     const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-    console.log(userLoginInformation);
     this.authService.login(userLoginInformation).subscribe(
 
 
