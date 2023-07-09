@@ -1,12 +1,11 @@
 <app-header></app-header>
 <ion-content class="ion-padding back" [fullscreen]="true">
+
   <ion-grid class="container">
     <ion-row style="width: 100%">
       <ion-col sizeLg="6">
+        <ion-card-title class="title">Clinic <span style="color: #3880ff">Connect</span> User Login</ion-card-title>
         <ion-card mode="ios">
-          <ion-card-header>
-            <ion-card-title>Login Page</ion-card-title>
-          </ion-card-header>
           <ion-card-content>
             <form [formGroup]="loginForm" (ngSubmit)="login()">
               <ion-list>

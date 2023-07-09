@@ -6,6 +6,10 @@ ion-menu::part(container) {
   box-shadow: 4px 0px 16px rgba(0, 0, 0, 0.18);
 }
 
+ion-app{
+  --ion-background-color: #f1f7fe !important;
+}
+
 
 ion-menu{
   --ion-background-color: #ffffff;

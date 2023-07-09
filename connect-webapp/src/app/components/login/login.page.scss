@@ -12,7 +12,7 @@ ion-list ion-item {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  padding-top: 10%;
+  padding-top: 3%;
   padding-bottom: 10%;
 }
 
@@ -37,7 +37,6 @@ ion-list ion-item {
 
 ion-card{
   min-width: 50% !important;
-  margin-top: 5%;
   --ion-background-color: #ffffff !important;
 
 }
@@ -79,6 +78,12 @@ ion-card{
   transition: all 0.3s;
 }
 
+.title{
+  font-weight: 700;
+  font-size: 2.75em;
+  letter-spacing: 1px;
+}
+
 .cssbuttons-io-button:hover .icon {
   width: calc(100% - 0.6em);
 }
@@ -100,11 +105,7 @@ ion-card{
 ion-content {
   margin: auto;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  overflow: auto;
-  --background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%) !important;
   animation: gradient 15s ease infinite;
-  background-size: 400% 400%;
-  background-attachment: fixed;
 }
 
 @keyframes gradient {
