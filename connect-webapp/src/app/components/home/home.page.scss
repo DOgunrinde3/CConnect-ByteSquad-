@@ -9,19 +9,25 @@ ion-header {
 
 .welcome-section img {
   width: 100%;
-  height: auto;
+  object-fit: cover;
 }
 
 .welcome-section {
   position: relative;
+  min-height: 60vh;
+  display: flex;
+  background-image: url('../../../assets/doctor.png');
+  background-size: cover;
+  background-position: right;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
 .welcome-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100% !important;
+  max-width: 500px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   display: flex;
@@ -31,6 +37,7 @@ ion-header {
 
 .welcome-content {
   display: flex;
+  flex-direction: column-reverse;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -43,8 +50,8 @@ ion-header {
 }
 
 .welcome-content ion-img {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 250px;
+  max-height: 250px;
 }
 
 .welcome-container button {
@@ -200,7 +207,7 @@ border-radius: 10px;
 
 
 ion-card {
-  min-width: 50% !important;
+  min-width: 50%;
   --ion-background-color: #ffffff !important;
     background: #f1f7fe;
      overflow: hidden;
