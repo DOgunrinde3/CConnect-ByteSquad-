@@ -1,28 +1,44 @@
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:200,400,500,600,700');
-
 ion-list ion-item {
-color: #205083;
-font-size: 16px;
-font-weight: bold;
---background: white;
+  color: #205083;
+  font-size: 16px;
+  font-weight: bold;
+  --background: white;
 }
 
 .container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+
+.welcome-section img {
+  width: auto;
+  height: auto;
+}
+
+.welcome-content ion-img {
   display: flex;
   justify-content: center;
-  align-items: start;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  max-width: 300px;
+  max-height: 300px;
 }
+
+.welcome-section {
+  position: relative;
+  text-align: center;
+}
+
+
 
 ion-card{
   min-width: 50% !important;
   margin-top: 5%;
   --ion-background-color: #ffffff !important;
-  background: #f1f7fe;
-     overflow: hidden;
-     border-radius: 16px;
 
 }
 

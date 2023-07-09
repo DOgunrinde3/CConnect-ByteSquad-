@@ -15,10 +15,12 @@ import {DatePipe} from "@angular/common";
 import {StaffSignupClient} from "./components/staff-signup-client/staff-signup-client.page";
 import {ManageAppointmentPage} from "./components/manage-appointment/manage-appointment.page";
 import {NoAuthGuard} from "./services/guard/no-auth-guard";
+import {ManageApptStaffPage} from "./components/manage-appt-staff/manage-appt-staff.page";
+import {StaffAuthGuard} from "./services/guard/staff-auth.guard";
 export const routes: Routes = [
   { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [NoAuthGuard]},
-  { path: 'loginStaff', component: LoginStaffPage, canActivate: [NoAuthGuard]},
+  { path: 'login-staff', component: LoginStaffPage, canActivate: [NoAuthGuard]},
   // Add more routes for other pages
   { path: 'signup-client', component: SignupClient, canActivate: [NoAuthGuard] },
   { path: 'staff-signup', component: StaffSignupClient, canActivate: [NoAuthGuard] },
@@ -33,6 +35,9 @@ export const routes: Routes = [
 
   {
     path: 'manage-appointments', component: ManageAppointmentPage, canActivate: [UserAuthGuard]
+  },
+  {
+    path: 'manage-appointments-staff', component: ManageApptStaffPage, canActivate: [StaffAuthGuard]
   },
 
 

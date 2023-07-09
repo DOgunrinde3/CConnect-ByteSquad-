@@ -1,49 +1,68 @@
 <app-header></app-header>
 <ion-content class="ion-padding back" [fullscreen]="true">
-  <div class="container">
+  <ion-grid class="container">
+    <ion-row style="width: 100%">
+      <ion-col sizeLg="6">
     <ion-card mode="ios">
       <ion-card-header>
         <ion-card-title>Login Page</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="loginStaff()">
-            <ion-list>
-
-              <ion-item>
-                <ion-label position="floating">Email</ion-label>
-                <ion-input type="email" formControlName="email"></ion-input>
-              </ion-item>
-
-              <ion-item *ngIf="email?.invalid && (email?.dirty || email?.touched)">
-                <ion-text color="danger" *ngIf="email?.errors?. ['required']">Email is required.</ion-text>
-                <ion-text color="danger" *ngIf="email?.errors?.['email']">Please enter a valid email address.</ion-text>
-              </ion-item>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <ion-list>
 
             <ion-item>
-              <ion-label position="floating">Password</ion-label>
-              <ion-input type="password" formControlName="password"></ion-input>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" formControlName="email"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+              <ion-text color="danger" *ngIf="email?.errors?. ['required']">Email is required.</ion-text>
+              <ion-text color="danger" *ngIf="email?.errors?.['email']">Please enter a valid email address.</ion-text>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Password
+              </ion-label>
+              <div style="display: flex; justify-content: space-between; width: 100%">
+                <ion-input type="{{getType()}}" formControlName="password" ></ion-input>
+                <ion-button (click)="toggleShowPassword()" ><ion-icon name="{{getName()}}"></ion-icon></ion-button>
+              </div>
             </ion-item>
 
             <ion-item *ngIf="password?.invalid && password?.touched">
               <ion-text color="danger" class="ion-padding-start">
-              <small>
-              <ion-icon name="alert-circle-outline"></ion-icon>
-               Password is required.
-              </small>
+                <small>
+                  <ion-icon name="alert-circle-outline"></ion-icon>
+                  Password is required.
+                </small>
               </ion-text>
             </ion-item>
-      </ion-list>
+          </ion-list>
 
-      <button class="cssbuttons-io-button" type="submit" [disabled]="loginForm.invalid">Login
-        <div class="icon">
-        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
-        </div>
-      </button>
-    </form>
+          <button class="cssbuttons-io-button" type="submit" [disabled]="loginForm.invalid">Login
+            <div class="icon">
+              <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
+            </div>
+          </button>
+        </form>
 
       </ion-card-content>
     </ion-card>
-  </div>
+      </ion-col>
+
+      <ion-col size="6" style="display: flex; justify-content: center">
+        <div class="welcome-section">
+        <img src="assets/doctor.png" alt="Picture of Doctor">
+        <div class="welcome-container">
+          <div class="welcome-content">
+            <ion-title>Where your health matters</ion-title>
+            <ion-img src="/assets/logo-transparent-png.png" alt="Logo"></ion-img>
+          </div>
+        </div>
+      </div> </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
 <app-footer></app-footer>

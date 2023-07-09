@@ -33,46 +33,7 @@ public class StaffService {
     private final StaffAssembler staffAssembler;
 
     private LocalDate minYear = LocalDate.now().minusYears(18);
-    public StaffDto login(LoginDto staffLoginDto){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("email").is(staffLoginDto.getEmail()));
 
-        Staff staff = mongoTemplate.find(query, Staff.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
-
-        if (mongoTemplate.find(query, Staff.class).size() > 1){
-            throw new IllegalStateException("found duplicate username" + staffLoginDto.getEmail());
-        }
-
-        if (!staff.getPassword().equals(staffLoginDto.getPassword())){
-            throw new NotFoundException("Invalid username or password");
-
-        }
-
-        return loginUser(staff);
-
-    }
-
-    private StaffDto loginUser(Staff staff){
-        return staffAssembler.assemble(staff);
-    }
-
-    public StaffDto register(StaffRegistrationDto staffRegistrationDto){
-        Staff staff = staffAssembler.disassemble(staffRegistrationDto);
-        if(staff.getBirthdate().isAfter(minYear) || staff.getBirthdate().isEqual(minYear) ){
-            throw new RuntimeException("User is too young");
-        }
-        staffRepository.insert(staff);
-        return loginUser(staff);
-
-    }
-
-    public StaffDto getStaff(String userId){
-        Staff staff = staffRepository.findById(userId).orElseThrow();
-        return staffAssembler.assemble(staff);
-    }
 
     public String getStaffName(String doctorId){
         Query query = new Query();

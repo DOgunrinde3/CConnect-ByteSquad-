@@ -76,7 +76,6 @@ export class AuthService{
 
         },
         (error) => {
-
           this.presentToast("top", error.error, 'danger', 'close-outline');
           // Handle errors if necessary
         }, () => {

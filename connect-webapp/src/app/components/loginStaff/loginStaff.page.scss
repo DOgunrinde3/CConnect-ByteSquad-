@@ -7,12 +7,33 @@ font-weight: bold;
 }
 
 .container {
+  width: 100%;
+  max-width: 1200px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: start;
   padding-top: 100px;
   padding-bottom: 100px;
 }
+
+.welcome-section img {
+  width: auto;
+  height: auto;
+}
+
+.welcome-content ion-img {
+  display: flex;
+  justify-content: center;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.welcome-section {
+  position: relative;
+  text-align: center;
+}
+
+
 
 ion-card{
   min-width: 50% !important;

@@ -190,6 +190,7 @@ export class BookAppointmentPage implements OnInit {
     return date < current;
   };
 
+
   filterSelect(){
     this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
     if(this.selectedDoctor !== null){
@@ -208,12 +209,14 @@ export class BookAppointmentPage implements OnInit {
             });
           })
             this.onDateSelected(this.selectedDate);
+
           }
         )
     }
 
     else{
       this.onDateSelected(this.selectedDate);
+      this.eventSource = {}
     }
 
   }

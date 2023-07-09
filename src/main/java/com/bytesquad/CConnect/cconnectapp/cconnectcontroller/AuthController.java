@@ -25,8 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/login-staff")
-    public StaffDto loginStaff(@RequestBody LoginDto loginDto){
-        return staffService.login(loginDto);
+    public ResponseEntity<?> loginStaff(@RequestBody LoginDto loginDto){
+        return userService.login(loginDto);
     }
 
 
@@ -35,10 +35,10 @@ public class AuthController {
         return userService.register(userRegistrationDto);
     }
 
-    @PostMapping("/register-staff")
-    public StaffDto registerStaff(@RequestBody StaffRegistrationDto staffRegistrationDto){
-        return staffService.register(staffRegistrationDto);
-    }
+//    @PostMapping("/register-staff")
+//    public StaffDto registerStaff(@RequestBody StaffRegistrationDto staffRegistrationDto){
+////        return staffService.register(staffRegistrationDto);
+//    }
 
     @GetMapping(value = "/user/{email}", params = "role")
     public ResponseEntity<?> getUser(@PathVariable String email, @RequestParam String role){

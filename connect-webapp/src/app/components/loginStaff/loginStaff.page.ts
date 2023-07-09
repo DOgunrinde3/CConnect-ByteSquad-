@@ -25,6 +25,7 @@ import {async} from "rxjs";
 export class LoginStaffPage implements OnInit {
   loginForm: FormGroup;
   isAuthenticated = false;
+  showPassword = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
               private router: Router,
@@ -52,43 +53,27 @@ export class LoginStaffPage implements OnInit {
     return this.loginForm.get('password');
   }
 
+  getName(){
+    return this.showPassword ? 'eye-outline' : 'eye-off-outline'
+  }
 
-  loginStaff() {
+  getType(){
+    return this.showPassword ? 'text' : 'password'
+  }
+
+  toggleShowPassword(){
+    this.showPassword = !this.showPassword;
+  }
+
+
+  login() {
     if (this.loginForm.invalid) {
       return;
     }
 
-    //
-    // const staffLoginInformation = this.loginForm.getRawValue() as LoginModel;
-    //
-    // this.authService.loginStaff(staffLoginInformation).subscribe(
-    //   (value1) =>{
-    //     this.authService.setAuthenticationState(true, value1.doctorId);
-    //     this.userInformationService.setStaffInformation(value1);
-    //   },
-    //   (error) => {
-    //     this.presentToast("top", error.message, 'danger', 'close-outline');
-    //     // Handle errors if necessary
-    //   }, () => {
-    //     this.router.navigate(["/home"]);
-    //     this.presentToast("top", 'Login successful!', 'success',"checkmark-outline");
-    //
-    //   }
-    //
-    // );
+    const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-  }
+    this.authService.login(userLoginInformation, true);
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 1500,
-      position: position,
-      icon: icon,
-      color:color
-
-    });
-
-    await toast.present();
   }
 }
