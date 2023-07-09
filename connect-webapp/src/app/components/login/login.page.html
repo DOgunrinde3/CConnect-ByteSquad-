@@ -2,9 +2,14 @@
 <ion-content class="ion-padding back" [fullscreen]="true">
 
   <ion-grid class="container">
-    <ion-row style="width: 100%">
-      <ion-col sizeLg="6">
+    <ion-row style="width: 100%; align-items: center">
+      <ion-col sizeLg="5.5" >
         <ion-card-title class="title">Clinic <span style="color: #3880ff">Connect</span> User Login</ion-card-title>
+        <div style="margin-top: 25px;"><ion-button>Login as Staff</ion-button> <ion-button>Sign up</ion-button></div>
+
+      </ion-col>
+
+      <ion-col sizeLg="6" style="width: 100%; justify-content: center">
         <ion-card mode="ios">
           <ion-card-content>
             <form [formGroup]="loginForm" (ngSubmit)="login()">
@@ -48,9 +53,6 @@
 
           </ion-card-content>
         </ion-card>
-      </ion-col>
-
-      <ion-col size="6" style="display: flex; justify-content: center">
          </ion-col>
     </ion-row>
 
