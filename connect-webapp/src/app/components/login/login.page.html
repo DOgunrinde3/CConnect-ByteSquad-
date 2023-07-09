@@ -4,8 +4,8 @@
   <ion-grid class="container">
     <ion-row style="width: 100%; align-items: center">
       <ion-col sizeLg="5.5" >
-        <ion-card-title class="title">Clinic <span style="color: #3880ff">Connect</span> User Login</ion-card-title>
-        <div style="margin-top: 25px;"><ion-button>Login as Staff</ion-button> <ion-button>Sign up</ion-button></div>
+        <ion-card-title class="title">Clinic <span style="color: #3880ff">Connect</span> Login</ion-card-title>
+        <div style="margin-top: 25px;"><ion-button (click)="routeToStaffLogin()" fill="outline" shape="round" size="default"mode="ios" class="ion-margin-end">Staff Login</ion-button> <ion-button (click)="routeToSignup()"  mode="ios" fill="outline" shape="round" size="default">Sign up</ion-button></div>
 
       </ion-col>
 

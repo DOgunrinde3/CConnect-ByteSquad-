@@ -22,8 +22,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginPage, canActivate: [NoAuthGuard]},
   { path: 'login-staff', component: LoginStaffPage, canActivate: [NoAuthGuard]},
   // Add more routes for other pages
-  { path: 'signup-client', component: SignupClient, canActivate: [NoAuthGuard] },
-  { path: 'staff-signup', component: StaffSignupClient, canActivate: [NoAuthGuard] },
+  { path: 'signup', component: SignupClient, canActivate: [NoAuthGuard] },
+  { path: 'signup-staff', component: StaffSignupClient, canActivate: [NoAuthGuard] },
 
   { path: 'book', component: BookAppointmentPage, canActivate: [UserAuthGuard] },
   {

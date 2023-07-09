@@ -66,7 +66,7 @@ routeToHome(){
   }
 
   routeToSignup(){
-    this.router.navigate(["/signup-client"]);
+    this.router.navigate(["/signup"]);
 
   }
 

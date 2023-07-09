@@ -45,6 +45,14 @@ export class LoginStaffPage implements OnInit {
 
 }
 
+
+  routeToLogin(){
+    this.router.navigate(["/login"]);
+  }
+
+  routeToSignup(){
+    this.router.navigate(["/signup-staff"]);
+  }
   get email() {
     return this.loginForm.get('email');
   }

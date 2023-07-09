@@ -6,9 +6,13 @@ import com.bytesquad.CConnect.cconnectapp.configuration.JwtResponse;
 import com.bytesquad.CConnect.cconnectapp.configuration.JwtTokenUtil;
 import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
+import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import com.mongodb.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +31,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 //import repository.UserRepository;
 
+import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,10 +47,11 @@ public class UserService {
     private final StaffAssembler staffAssembler;
 
     private final UserAssembler userAssembler;
-
-    private final AuthenticationManager authenticationManager;
+    private final StaffRepository staffRepository;
+    private final CustomAuthenticationProvider authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final StaffUserDetailsService staffUserDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     private String ROLE_USER = "ROLE_USER";
@@ -56,15 +64,23 @@ public class UserService {
 
 
 
-    public ResponseEntity<?> login(LoginDto loginDto) {
+    public ResponseEntity<?> login(LoginDto loginDto, boolean isStaff) {
+        String token;
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()), isStaff
             );
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+            if(isStaff){
+                UserDetails staffDetails = staffUserDetailsService.loadUserByUsername(loginDto.getEmail());
+                token = jwtTokenUtil.generateToken(staffDetails, true);
 
-            String token = jwtTokenUtil.generateToken(userDetails, false);
+            }
+            else {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+                 token = jwtTokenUtil.generateToken(userDetails, false);
+
+            }
 
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (AuthenticationException ex) {
@@ -74,14 +90,16 @@ public class UserService {
 
 
 
-    public ResponseEntity<?> register(UserRegistrationDto userRegistrationDto){
+    public ResponseEntity<?> registerUser(UserRegistrationDto userRegistrationDto){
          User user = userAssembler.disassemble(userRegistrationDto);
-         if(user.getBirthdate().isAfter(minYear) || user.getBirthdate().isEqual(minYear) ){
-             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is too young");
-         }
+        if(!isUserOldEnough(user.getBirthdate())){
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is too young");
+        }
 
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
+        String encryptPassword = encryptPassword(user.getPassword());
+
+        user.setPassword(encryptPassword);
+
         try {
             userRepository.insert(user);
         } catch (DuplicateKeyException ex) {
@@ -90,9 +108,47 @@ public class UserService {
 
             LoginDto login = new LoginDto().setEmail(user.getEmail()).setPassword(user.getPassword());
 
-       return login(login);
+       return ResponseEntity.ok(HttpStatus.CREATED);
 
     }
+
+
+    public ResponseEntity<?> registerStaff(StaffRegistrationDto staffRegistrationDto){
+        Staff staff = staffAssembler.disassemble(staffRegistrationDto);
+
+        if(isUserOldEnough(staff.getBirthdate()) == false){
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is too young");
+        }
+
+        String encryptPassword = encryptPassword(staff.getPassword());
+
+
+        staff.setPassword(encryptPassword);
+
+        try {
+            staffRepository.insert(staff);
+        } catch (DuplicateKeyException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        }
+
+        LoginDto login = new LoginDto().setEmail(staff.getEmail()).setPassword(staff.getPassword());
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
+
+    }
+
+    public boolean isUserOldEnough(LocalDate birthdate){
+        if(birthdate.isAfter(minYear) || birthdate.isEqual(minYear) ){
+            return false;
+        }
+
+        return true;
+    }
+
+    public String encryptPassword(String password){
+        return passwordEncoder.encode(password);
+    }
+
 
     public ResponseEntity<?> getUser(String email, String role){
         Query query = new Query();
@@ -111,4 +167,50 @@ public class UserService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
+
+
+    public String getStaffName(String doctorId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(doctorId));
+
+        Staff staff = mongoTemplate.find(query, Staff.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return String.format(staff.getFirstName() + " " + staff.getLastName());
+    }
+
+    public String getStaffId(String doctorName){
+        String[] nameParts = doctorName.split(" ");
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+        Query query = new Query();
+        query.addCriteria(Criteria.where("firstName").is(firstName));
+        query.addCriteria(Criteria.where("lastName").is(lastName));
+
+        Staff staff = mongoTemplate.find(query, Staff.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return staff.getUserId();
+    }
+
+    public List<StaffDto> getAllStaff(){
+        List<Staff> allStaff = staffRepository.findAll();
+        return allStaff.stream()
+                .map(staffAssembler::assemble)
+                .collect(Collectors.toList());
+
+    }
+
+    public List<UserDto> getAllUser(){
+        List<User> allUsers = userRepository.findAll();
+        return allUsers.stream()
+                .map(userAssembler::assemble)
+                .collect(Collectors.toList());
+
+    }
+
 }

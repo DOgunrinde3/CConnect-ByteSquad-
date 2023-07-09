@@ -4,6 +4,7 @@ import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.service.AppointmentService;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
+import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,11 @@ import java.util.List;
 @RequestMapping("/api/v1/staff")
 @RequiredArgsConstructor
 public class StaffController {
-    private final StaffService staffService;
+    private final UserService userService;
 
     @GetMapping()
     public List<StaffDto> getAll(){
-        return staffService.getAllStaff();
+        return userService.getAllStaff();
     }
 
 }

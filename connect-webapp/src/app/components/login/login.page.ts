@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
   showPassword = false;
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
+              private router: Router
   ) {
 
   }
@@ -48,6 +49,14 @@ export class LoginPage implements OnInit {
 
   getName(){
    return this.showPassword ? 'eye-outline' : 'eye-off-outline'
+  }
+
+  routeToStaffLogin(){
+    this.router.navigate(["/login-staff"]);
+  }
+
+  routeToSignup(){
+    this.router.navigate(["/signup"]);
   }
 
   getType(){

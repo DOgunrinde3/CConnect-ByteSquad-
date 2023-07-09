@@ -91,16 +91,17 @@ export class SignupClient implements OnInit {
     // Perform registration logic here
     this.authService.registerUser(userRegistrationInformation).subscribe(
       () =>{
-      },
-      error => {
-        this.presentToast("top", error.error, 'danger', 'close-outline');
-        // Handle errors if necessary
-      }, () => {
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
         this.platform.ready().then(() => {
           this.navCtrl.navigateRoot('/login');
         });
+      },
+      error => {
+        this.presentToast("top", error.error, 'danger', 'close-outline');
+        // Handle errors if necessary
+      }, () => {
+
       }
     );
   }

@@ -3,6 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.assembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
+import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +13,11 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AppointmentAssembler {
 
-    private final StaffService staffService;
+    private final UserService userService;
     public AppointmentDto assemble(Appointment appointment){
         return new AppointmentDto()
                 .setId(appointment.getId())
-                .setDoctor(staffService.getStaffName(appointment.getDoctorId()))
+                .setDoctor(userService.getStaffName(appointment.getDoctorId()))
                 .setPatientId(appointment.getPatientId())
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
@@ -34,7 +35,7 @@ public class AppointmentAssembler {
         LocalDate date = LocalDate.parse(appointmentDto.getAppointmentDate());
 
         return appointment
-                .setDoctorId(staffService.getStaffId(appointmentDto.getDoctor()))
+                .setDoctorId(userService.getStaffId(appointmentDto.getDoctor()))
                 .setPatientId(appointmentDto.getPatientId())
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
