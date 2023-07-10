@@ -40,4 +40,18 @@ public class StaffAssembler {
                 .setServices(staffRegistrationDto.getServices());
     }
 
+    public Staff disassembleInto(Staff staff, StaffDto staffDto){
+        LocalDate date = LocalDate.parse(staffDto.getBirthdate());
+
+
+        return staff
+                .setFirstName(staffDto.getFirstName())
+                .setLastName(staffDto.getLastName())
+                .setBirthdate(date)
+                .setEmail(staffDto.getEmail())
+                .setPhoneNumber(staffDto.getPhoneNumber())
+                .setExperience(staffDto.getExperience())
+                .setServices(staffDto.getServices());
+    }
+
 }

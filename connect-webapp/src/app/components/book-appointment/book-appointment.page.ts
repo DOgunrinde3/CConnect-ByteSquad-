@@ -11,7 +11,7 @@ import {AppointmentService} from "../../services/appointment.service";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import {StaffService} from "../../services/staff.service";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
@@ -60,7 +60,7 @@ export class BookAppointmentPage implements OnInit {
               private appointmentService: AppointmentService,
               private userService: UserInformationService,
               private staffService: StaffService,
-              private router: Router
+              private route: ActivatedRoute
               ) {
 
   }
@@ -71,7 +71,12 @@ export class BookAppointmentPage implements OnInit {
       this.user = user;
     })
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
-
+    if(this.route.snapshot.paramMap.get('date') === null ){
+      return;
+    }
+    else{
+      this.calendar.currentDate =  new Date (Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
+    }
   }
 
   ionViewWillEnter(){

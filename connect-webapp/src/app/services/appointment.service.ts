@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {LoginModel} from "../model/Login.model";
 import {UserModel} from "../model/User.model";
 import {AppointmentModel} from "../model/appointment.model";
+import {AppointmentStatusEnum} from "../model/appointment-status.enum";
 
 const BASE_URI = 'http://localhost:8080/api/v1/appointment';
 
@@ -40,8 +41,8 @@ export class AppointmentService {
 
   }
 
-  delete(appointmentId: String): void{
-     this.http.delete(`${BASE_URI}/${appointmentId}`);
+  update(appointment: AppointmentModel): Observable<AppointmentModel>{
+    return this.http.put<AppointmentModel>(`${BASE_URI}/update/${appointment.id}`, appointment);
   }
 
   getAppointmentsByDoctor(doctorId: string): Observable<AppointmentModel[]>{

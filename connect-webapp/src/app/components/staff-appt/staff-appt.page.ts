@@ -16,6 +16,8 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffService} from "../../services/staff.service";
+import {NotificationModel} from "../../model/notification.model";
+import {NotificationService} from "../../services/notification.service";
 @Component({
   selector: 'app-staff-appt',
   templateUrl: './staff-appt.page.html',
@@ -39,6 +41,7 @@ export class ManageApptStaffPage implements OnInit {
   currentDoctor: DoctorModel;
   subscriptionComplete = false;
   viewTitle: string;
+  selectedAppointment: AppointmentModel;
   selectedTime: string | undefined;
   appointment: AppointmentModel;
   filteredDoctorAppointment: AppointmentModel[];
@@ -59,7 +62,8 @@ export class ManageApptStaffPage implements OnInit {
               private userService: UserInformationService,
               private router: Router,
               private staffService: StaffService,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private notificationService: NotificationService
 
   ) {
 
@@ -93,9 +97,21 @@ export class ManageApptStaffPage implements OnInit {
   }
 
 
-  delete(appointmentId){
-    this.appointmentService.delete(appointmentId);
-    window.location.reload();
+  update(appointment: AppointmentModel, status: AppointmentStatusEnum){
+    this.selectedAppointment = appointment;
+    appointment.appointmentStatus = status;
+    this.appointmentService.update(appointment).subscribe((appointment) =>{
+      this.selectedAppointment.appointmentStatus = appointment.appointmentStatus;
+    });
+
+    let notificationModel: NotificationModel = {
+      id:null,
+      appointment: appointment,
+      notifiedFromId: this.currentDoctor.userId,
+      notifiedUserId: appointment.patient,
+    }
+
+    this.notificationService.updateNotification(notificationModel, false).subscribe( );
 
   }
 

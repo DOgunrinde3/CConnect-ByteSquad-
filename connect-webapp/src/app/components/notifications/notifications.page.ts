@@ -66,7 +66,7 @@ export class NotificationsPage {
   view(date: string){
     date = this.datePipe.transform(date);
     this.viewController.dismiss({confirm: true});
-    this.router.navigate(['/manage-appointments-staff', {date: date}]);
+    this.router.navigate(['/staff-appt', {date: date}]);
   }
 
 

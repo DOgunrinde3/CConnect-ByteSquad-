@@ -14,6 +14,8 @@ import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
+import {NotificationModel} from "../../model/notification.model";
+import {NotificationService} from "../../services/notification.service";
 @Component({
   selector: 'app-book-appointment',
   templateUrl: './manage-appointment.page.html',
@@ -34,6 +36,7 @@ export class ManageAppointmentPage implements OnInit {
   };
   appointmentAvailable: boolean = false;
   selectedDate: string | null;
+  selectedAppointment: AppointmentModel;
   formattedDate: any;
   subscriptionComplete = false;
   viewTitle: string;
@@ -54,7 +57,8 @@ appointment: AppointmentModel;
               private appointmentService: AppointmentService,
               private userService: UserInformationService,
               private router: Router,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private notificationService: NotificationService
 
   ) {
 
@@ -79,9 +83,21 @@ appointment: AppointmentModel;
   }
 
 
-  delete(appointmentId){
-    this.appointmentService.delete(appointmentId);
-    window.location.reload();
+  update(appointment: AppointmentModel, status: AppointmentStatusEnum){
+    this.selectedAppointment = appointment;
+    appointment.appointmentStatus = status;
+    this.appointmentService.update(appointment).subscribe((appointment) =>{
+      this.selectedAppointment.appointmentStatus = appointment.appointmentStatus;
+    });
+
+    let notificationModel: NotificationModel = {
+      id:null,
+      appointment: appointment,
+      notifiedFromId: this.user.userId,
+      notifiedUserId: appointment.doctor,
+    }
+
+    this.notificationService.updateNotification(notificationModel, true).subscribe( );
 
   }
 
@@ -152,6 +168,11 @@ appointment: AppointmentModel;
     this.viewTitle = title;
   }
 
+  routeToBook(){
+    let date = this.datePipe.transform(this.selectedDate);
+    this.router.navigate(['/book', {date: date}]);
+  }
+
 
   private openConfirmatModal(selectedDate: string, selectedTime: string) {
 
@@ -193,4 +214,5 @@ appointment: AppointmentModel;
     var current = new Date();
     return date < current;
   };
+  protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
 }

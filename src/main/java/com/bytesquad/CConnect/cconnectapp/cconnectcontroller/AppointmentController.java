@@ -28,9 +28,9 @@ public class AppointmentController {
         return appointmentService.getAppointmentsByDoctor(doctorId);
     }
 
-    @DeleteMapping("/{appointmentId}")
-    public void delete(@PathVariable String appointmentId){
-         appointmentService.delete(appointmentId);
+    @PutMapping(value = "update/{appointmentId}")
+    public AppointmentDto updateAppointment(@PathVariable String appointmentId, @RequestBody AppointmentDto appointment){
+         return appointmentService.update(appointmentId, appointment);
     }
 
 }

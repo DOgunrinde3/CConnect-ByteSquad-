@@ -21,6 +21,10 @@ export class NotificationService{
     return this.http.post<NotificationModel>(`${BASE_URI}/create-notification`, notification);
   }
 
+  updateNotification(notification: NotificationModel, toStaff: boolean): Observable<NotificationModel>{
+    return this.http.put<NotificationModel>(`${BASE_URI}/update-notification?toStaff=${toStaff}`, notification);
+  }
+
   getUserNotification(userId: string): Observable<NotificationModel[]>{
     return this.http.get<NotificationModel[]>(`${BASE_URI}/${userId}`);
   }

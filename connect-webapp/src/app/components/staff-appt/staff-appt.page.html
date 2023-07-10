@@ -91,7 +91,7 @@
               <ion-grid>
                 <ion-row>
                   <ion-col size="auto" sizeLg="10" style="display: flex; flex-direction: column; width: 100%; margin-bottom: 15px;">
-                    <span style="font-weight: 700; margin-bottom: 5px; font-size: 1.2em; color: #3a7be0"> {{appointment.appointmentType}} <ion-badge color="{{getColour(appointment.appointmentStatus)}} ">
+                    <span style="font-weight: 700; margin-bottom: 5px; font-size: 1.2em; color: #3a7be0" class="ion-text-wrap"> {{appointment.appointmentType}} <ion-badge color="{{getColour(appointment.appointmentStatus)}} ">
                      {{appointment.appointmentStatus}}
                     </ion-badge></span>
                     <ion-text class="event-detail "> <span style="font-weight: 800">With Patient:</span> {{appointment.patient}}</ion-text>
@@ -102,12 +102,12 @@
                   </ion-col>
                   <ion-col *ngIf="selectedDoctor.userId === currentDoctor.userId" sizeLg="2" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                    <div *ngIf="appointment.appointmentStatus === AppointmentStatusEnum.PENDING else cancel">
-                    <ion-button fill="clear" color="success"  (click)="delete(appointment.id)"  > Confirm</ion-button>
-                    <ion-button fill="clear" color="danger" (click)="delete(appointment.id)"  > Decline</ion-button>
+                    <ion-button fill="clear" color="success"  (click)="update(appointment, AppointmentStatusEnum.CONFIRMED)"  > Confirm</ion-button>
+                    <ion-button fill="clear" color="danger" (click)="update(appointment, AppointmentStatusEnum.CANCELLED)"  > Decline</ion-button>
                    </div>
 
-                    <ng-template #cancel>
-                      <ion-button fill="clear" color="danger" (click)="delete(appointment.id)"> Cancel</ion-button>
+                    <ng-template #cancel >
+                      <ion-button *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED"  fill="clear" color="danger" (click)="update(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
                     </ng-template>
                   </ion-col>
                 </ion-row>

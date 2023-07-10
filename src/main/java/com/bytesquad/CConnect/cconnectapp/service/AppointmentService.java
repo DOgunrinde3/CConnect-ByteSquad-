@@ -6,9 +6,11 @@ import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,8 +71,16 @@ public class AppointmentService {
         return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
     }
 
-    public void delete(String appointmentId){
-        //appointmentRepository.deleteByAppointmentId(appointmentId);
+    public AppointmentDto update(String appointmentId, AppointmentDto appointment){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Id").is(appointmentId));
+
+        Update update = new Update().set("appointmentStatus", appointment.getAppointmentStatus());
+        FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
+        Appointment updatedAppointment = mongoTemplate.findAndModify(query, update, options, Appointment.class);
+
+       return appointmentAssembler.assemble(updatedAppointment);
     }
 
     private String getRandomAvailableDoctor(AppointmentDto appointmentDto){

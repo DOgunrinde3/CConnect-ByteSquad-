@@ -92,12 +92,11 @@ export class ConfirmAppointmentPage{
           let notificationModel: NotificationModel = {
             id:null,
             appointment: bookAppointment,
-            notifiedFromId: value.patient,
+            notifiedFromId: this.user.userId,
             notifiedUserId: this.selectedDoctor.userId,
           }
 
-          this.notificationService.createNotification(notificationModel).subscribe( (notificationModel) => {
-          } );
+          this.notificationService.createNotification(notificationModel).subscribe( );
 
           this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
           this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);

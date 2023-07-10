@@ -201,10 +201,12 @@ public class UserService {
         query.addCriteria(Criteria.where("firstName").is(firstName));
         query.addCriteria(Criteria.where("lastName").is(lastName));
 
-        User user = mongoTemplate.find(query, User.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        User user = mongoTemplate.findOne(query, User.class);
+
+        if(user == null){
+            throw new NotFoundException("Staff Not Found");
+        }
+
 
         return user.getUserId();
     }
@@ -218,10 +220,10 @@ public class UserService {
         query.addCriteria(Criteria.where("firstName").is(firstName));
         query.addCriteria(Criteria.where("lastName").is(lastName));
 
-        Staff staff = mongoTemplate.find(query, Staff.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        Staff staff = mongoTemplate.findOne(query, Staff.class);
+               if(staff == null){
+                   throw new NotFoundException("Staff Not Found");
+               }
 
         return staff.getUserId();
     }
