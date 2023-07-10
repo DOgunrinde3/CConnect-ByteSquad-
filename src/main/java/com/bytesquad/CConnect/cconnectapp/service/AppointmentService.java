@@ -29,6 +29,8 @@ public class AppointmentService {
 
     private final AppointmentAssembler appointmentAssembler;
 
+    private final UserService userService;
+
     public AppointmentDto book(AppointmentDto appointmentDto){
 
         if(appointmentDto.getDoctor() == null){
@@ -85,12 +87,12 @@ public class AppointmentService {
                 .map(Appointment::getDoctorId)
                 .collect(Collectors.toSet());
 
-      return allDoctors
+      return userService.getStaffName(allDoctors
               .stream()
               .filter( staff -> !unAvailableDoctors.contains(staff.getUserId()) && staff.getServices().contains(appointmentDto.getAppointmentType()))
               .findFirst()
               .orElseThrow(NotFoundException::new)
-              .getUserId();
+              .getUserId());
 
 
     }

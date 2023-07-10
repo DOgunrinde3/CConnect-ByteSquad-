@@ -63,6 +63,12 @@ export class NotificationsPage {
     await toast.present();
   }
 
+  view(date: string){
+    date = this.datePipe.transform(date);
+    this.viewController.dismiss({confirm: true});
+    this.router.navigate(['/manage-appointments-staff', {date: date}]);
+  }
+
 
 
   cancelOnClick() {
@@ -80,8 +86,7 @@ export class NotificationsPage {
     else if(status === AppointmentStatusEnum.CANCELLED){
         return "danger";
     }
-    else if(status === AppointmentStatusEnum.COMPLETED){
-      return "dark"; }
+
 
     return "primary";
   }

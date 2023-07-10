@@ -80,7 +80,7 @@ getIcon = 'notifications-outline';
 
   routeToManage(){
     if(this.isStaff){
-      this.router.navigate(["/manage-appointments-staff"]);
+      this.router.navigate(["/staff-appointments"]);
     }
     else {
       this.router.navigate(["/manage-appointments"]);

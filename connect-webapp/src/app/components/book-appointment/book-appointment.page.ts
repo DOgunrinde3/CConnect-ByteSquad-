@@ -72,17 +72,11 @@ export class BookAppointmentPage implements OnInit {
     })
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
 
-    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; });
-
-      //this.doctorProfile = this.navParams.data;
-     // this.getAllFutureAppointmentsForDoctor(this.doctorProfile.doctorId)
-
-
-    // else navigate back w error saying we could not find doctor...
   }
 
   ionViewWillEnter(){
     this.selectedDoctor = null;
+    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; });
 
   }
 

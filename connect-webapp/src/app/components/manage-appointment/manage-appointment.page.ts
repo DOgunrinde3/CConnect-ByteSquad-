@@ -112,8 +112,6 @@ appointment: AppointmentModel;
     else if(status === AppointmentStatusEnum.CANCELLED){
       return "danger";
     }
-    else if(status === AppointmentStatusEnum.COMPLETED){
-      return "dark"; }
 
     return "primary";
   }

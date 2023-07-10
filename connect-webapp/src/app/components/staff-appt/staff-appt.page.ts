@@ -15,10 +15,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
+import {StaffService} from "../../services/staff.service";
 @Component({
-  selector: 'app-manage-appt-staff',
-  templateUrl: './manage-appt-staff.page.html',
-  styleUrls: ['./manage-appt-staff.page.scss'],
+  selector: 'app-staff-appt',
+  templateUrl: './staff-appt.page.html',
+  styleUrls: ['./staff-appt.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, FooterPage, HeaderPage, NgCalendarModule]
 })
@@ -35,6 +36,7 @@ export class ManageApptStaffPage implements OnInit {
   };
   selectedDate: string | null;
   formattedDate: any;
+  currentDoctor: DoctorModel;
   subscriptionComplete = false;
   viewTitle: string;
   selectedTime: string | undefined;
@@ -56,6 +58,7 @@ export class ManageApptStaffPage implements OnInit {
               private appointmentService: AppointmentService,
               private userService: UserInformationService,
               private router: Router,
+              private staffService: StaffService,
               private route: ActivatedRoute
 
   ) {
@@ -69,12 +72,22 @@ export class ManageApptStaffPage implements OnInit {
     else{
       this.calendar.currentDate =  new Date (Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
     }
+
+
   }
 
   ionViewWillEnter(){
     this.userService.userInformation$.subscribe(user => {
-      this.selectedDoctor = user;
+      this.currentDoctor = user;
       this.getDoctorAppointments(user?.userId);
+      this.staffService.getAllStaff().subscribe((value)=> {
+        this.doctors = value;
+        value.forEach( doctor => {if(doctor.userId === this.currentDoctor.userId){
+          this.selectedDoctor = doctor;
+        }} )
+
+      });
+
     })
 
   }
@@ -127,26 +140,11 @@ export class ManageApptStaffPage implements OnInit {
   }
 
   filterSelect() {
+    console.log(this.selectedDoctor);
     this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
     if (this.selectedDoctor !== null) {
       this.subscriptionComplete = false;
-      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)
-        .subscribe((doctorAppointments) => {
-            this.doctorAppointments = doctorAppointments;
-            this.eventSource = [];
-            doctorAppointments.forEach((appointment) => {
-              const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
-              this.eventSource?.push({
-                title: appointment.appointmentType,
-                startTime: date,
-                endTime: date,
-                allDay: false
-              });
-            })
-            this.onDateSelected(this.selectedDate);
-
-          }
-        )
+      this.getDoctorAppointments(this.selectedDoctor.userId);
     }
   }
 
@@ -174,8 +172,7 @@ export class ManageApptStaffPage implements OnInit {
     else if(status === AppointmentStatusEnum.CANCELLED){
       return "danger";
     }
-    else if(status === AppointmentStatusEnum.COMPLETED){
-      return "dark"; }
+
 
     return "primary";
   }
@@ -186,4 +183,5 @@ export class ManageApptStaffPage implements OnInit {
     var current = new Date();
     return date < current;
   };
+  protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
 }

@@ -37,7 +37,8 @@ export class LoginPage implements OnInit {
 
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      isStaff:[false]
     });
 
 
@@ -52,7 +53,7 @@ export class LoginPage implements OnInit {
   }
 
   routeToStaffLogin(){
-    this.router.navigate(["/login-staff"]);
+    this.router.navigate(["/signup-staff"]);
   }
 
   routeToSignup(){
@@ -71,6 +72,11 @@ export class LoginPage implements OnInit {
     return this.loginForm.get('password');
   }
 
+  get isStaff() {
+    return this.loginForm.get('isStaff');
+  }
+
+
 
   login() {
     if (this.loginForm.invalid) {
@@ -79,7 +85,7 @@ export class LoginPage implements OnInit {
 
     const userLoginInformation = this.loginForm.getRawValue() as LoginModel;
 
-    this.authService.login(userLoginInformation, false);
+    this.authService.login(userLoginInformation, this.isStaff.getRawValue());
 
   }
 

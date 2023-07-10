@@ -17,7 +17,7 @@
     <div style="display: flex; justify-content: space-between; width: 100%">
       <ion-label position="floating"  style="margin-bottom: 3em;">{{notificationModel.appointment.appointmentType}} Appointment <ion-badge color="{{getColour(notificationModel.appointment.appointmentStatus)}}">{{notificationModel.appointment.appointmentStatus}}</ion-badge></ion-label>
       <div style="display: flex; justify-content: space-between; align-items: center; height: 100%">
-        <ion-button ><ion-icon name="eye-outline"></ion-icon></ion-button>
+        <ion-button (click)="view(notificationModel.appointment.appointmentDate)"><ion-icon name="eye-outline"></ion-icon></ion-button>
         <ion-button ><ion-icon name="trash-outline"></ion-icon></ion-button>
       </div>
     </div>

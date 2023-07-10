@@ -1,0 +1,55 @@
+<ion-header class="header-style">
+  <ion-toolbar>
+    <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+  </ion-toolbar>
+</ion-header>
+<div class="container">
+<div class="info">
+
+
+  <div class="title">
+    <div>
+      <ion-label class="lbl-title" color="primary">{{ 'DATE' }}</ion-label>
+      <h3 class="lbl-value">{{formattedDate}}</h3>
+    </div>
+    <div>
+
+      <ion-label class="lbl-title" color="primary">{{ 'TIME SLOT' }}</ion-label>
+      <h3 class="lbl-value">{{ selectedTime }}</h3>
+    </div>
+
+  </div>
+
+  <div class="doctor">
+
+  <ion-label class="lbl-title" color="primary">{{ 'PLEASE CHOOSE A DOCTOR' }}</ion-label>
+  <ion-select [(ngModel)]="selectedDoctor" (ngModelChange)="filterSelect()" placeholder="Any">
+    <ion-select-option [value]="null"> Any </ion-select-option>
+    <ion-select-option *ngFor="let doctor of doctors; let i = index"
+                       [value]="doctor" >
+      {{doctor.firstName}} {{doctor.lastName}}
+    </ion-select-option>
+  </ion-select>
+  </div>
+
+  <ion-label class="lbl-title" color="primary">{{ 'PLEASE CHOOSE A SERVICE' }}</ion-label>
+  <ion-select [(ngModel)]="selectedService" placeholder="Select a service" >
+    <ion-select-option *ngFor="let type of appointmentTypes; let i = index"
+                [value]="type">
+      {{type}}
+    </ion-select-option>
+  </ion-select>
+
+
+</div>
+    <div class="confirm">
+
+      <ion-button color="success" mode="ios" (click)="confirmOnClick()" >{{ 'CONFIRM' }}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button ion-button round icon-right color="danger" mode="ios" (click)="cancelOnClick()">{{ 'CANCEL' }}
+      </ion-button>
+    </div>
+
+</div>

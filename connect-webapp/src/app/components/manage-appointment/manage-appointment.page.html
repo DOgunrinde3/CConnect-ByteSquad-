@@ -43,7 +43,7 @@
     </calendar>
 
       <ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col" >
-        <ion-label class="calendar-box">{{view.dates[row*7+col].label}}</ion-label>
+        <ion-label>{{view.dates[row*7+col].label}}</ion-label>
         <div class="indicator-container">
         <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events">
         </div>
@@ -68,32 +68,23 @@
                      {{appointment.appointmentStatus}}
                     </ion-badge></span>
                     <ion-text class="event-detail "> <span style="font-weight: 800">With Doctor:</span> {{appointment.doctor}}</ion-text>
-                    <ion-text class="ion-margin-top" style="font-size: .9em;" > Time:  {{appointment.appointmentTime}}</ion-text>
+                    <ion-text class="ion-margin-top" style="font-size: .9em;" ><span style="font-weight: 800"> Date: </span> {{formattedDate}}</ion-text>
+                    <ion-text class="ion-margin-top" style="font-size: .9em;" ><span style="font-weight: 800"> Time:  </span>{{appointment.appointmentTime}}</ion-text>
 
 
                   </ion-col>
-                  <ion-col sizeLg="2">
+                  <ion-col sizeLg="2" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                     <ion-button fill="clear" color="dark"  (click)="delete(appointment.id)"  > Update</ion-button>
                     <ion-button fill="clear" color="danger" (click)="delete(appointment.id)"  > Cancel</ion-button>
                   </ion-col>
                 </ion-row>
               </ion-grid>
 
-              <div >
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-
-                </div>
-
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                </div>
-
-              </div>
-
             </ion-item>
 
           </ion-list>
 
-        <ion-text class="ion-padding ion-margin " *ngIf="!noAppointments">No Appointments</ion-text>
+        <ion-text class="ion-padding ion-margin " *ngIf="!noAppointments&& subscriptionComplete">No Appointments</ion-text>
 
 </div>
       </ng-template>

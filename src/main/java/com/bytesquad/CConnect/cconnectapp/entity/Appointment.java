@@ -25,6 +25,7 @@ public class Appointment {
     private String Id;
     private String doctorId;
     private String patientId;
+    @Indexed(name="date", expireAfterSeconds=3600)
     private LocalDate date;
     private String time;
     //these should be an enum but I dont have time
