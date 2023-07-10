@@ -1,4 +1,4 @@
-import {Component, EnvironmentInjector, inject, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {FormsModule} from "@angular/forms";
@@ -10,6 +10,8 @@ import {ConfirmAppointmentPage} from "./components/confirm-appointment/confirm-a
 import {NotificationsPage} from "./components/notifications/notifications.page";
 import {NotificationService} from "./services/notification.service";
 import {NotificationModel} from "./model/notification.model";
+import {interval, Subscription, switchMap} from "rxjs";
+import {UserModel} from "./model/User.model";
 
 @Component({
   selector: 'app-root',
@@ -18,11 +20,16 @@ import {NotificationModel} from "./model/notification.model";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, FooterPage],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public environmentInjector = inject(EnvironmentInjector);
   isAuthenticated;
   isStaff;
+getIcon = 'notifications-outline';
   notifications: NotificationModel[];
+  user: UserModel;
+
+  loadingSubsription:Subscription
+  notficationsSuscriptionScomplete  = false;
 
 
   constructor(private router: Router,
@@ -36,18 +43,26 @@ export class AppComponent implements OnInit {
   this.authService
     .getAuthState()
     .subscribe((value) => {
-      this.isAuthenticated=value
+      this.isAuthenticated = value
 
-      if(value === true){
-        this.userInfoService.getUserInformation();
+      if (value === true) {
+        this.userInfoService.loadUserInformation();
         this.isStaff = this.authService.isStaff();
 
-        this.userInfoService.userNotifications$.subscribe((notifications)=> {
+        this.userInfoService.userNotifications$.subscribe((notifications) => {
           this.notifications = notifications;
+          this.notficationsSuscriptionScomplete = true;
         })
+        this.userInfoService.userInformation$.subscribe((user) => {
+          this.user = user;
+        })
+        this.checkForNewNotifications();
+
       }
 
-    });
+    }
+    );
+
 
   }
 
@@ -61,6 +76,8 @@ export class AppComponent implements OnInit {
     this.router.navigate(["/book"]);
   }
 
+
+
   routeToManage(){
     if(this.isStaff){
       this.router.navigate(["/manage-appointments-staff"]);
@@ -69,6 +86,23 @@ export class AppComponent implements OnInit {
       this.router.navigate(["/manage-appointments"]);
     }
   }
+
+  checkForNewNotifications(): void {
+    interval(25000)
+      .pipe(
+        switchMap(() => this.notificationService.getUserNotification(this.user.userId))
+      )
+      .subscribe(newNotifications => {
+        if (newNotifications?.length !== this.notifications?.length) {
+          this.userInfoService.setUserNotification(newNotifications);
+           this.getIcon = 'notifications';
+        }
+
+      })
+
+
+  }
+
 
   routeToBio(){
     this.router.navigate(["/bio"]);
@@ -91,6 +125,8 @@ routeToHome(){
   async openModal() {
 
     this.getAppointments();
+    this.getIcon = 'notifications-outline';
+
 
     const modal = await this.modalController.create({
       component: NotificationsPage,
@@ -107,7 +143,11 @@ routeToHome(){
     }
 
     getAppointments(){
-    this.userInfoService.getUserInformation()
+    this.userInfoService.loadUserInformation()
+    }
+
+  ngOnDestroy(){
+    this.loadingSubsription.unsubscribe();
     }
 
 }

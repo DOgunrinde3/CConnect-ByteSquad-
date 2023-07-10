@@ -102,24 +102,6 @@ export class ManageApptStaffPage implements OnInit {
 
   }
 
-  getColour(appointment: AppointmentModel){
-    if (appointment.appointmentStatus === AppointmentStatusEnum.PENDING){
-      return '#ffc409';
-
-    }
-
-    else if (appointment.appointmentStatus === AppointmentStatusEnum.CANCELLED){
-      return '#eb445a';
-
-    }
-
-    else if (appointment.appointmentStatus === AppointmentStatusEnum.CONFIRMED){
-      return '#2dd36f';
-    }
-
-    return '#000000';
-
-  }
 
   getDoctorAppointments(userId: string){
     this.appointmentService.getAppointmentsByDoctor(userId)
@@ -179,6 +161,23 @@ export class ManageApptStaffPage implements OnInit {
   }
   onViewTitleChanged(title) {
     this.viewTitle = title;
+  }
+
+  getColour(status:AppointmentStatusEnum){
+
+    if(status === AppointmentStatusEnum.PENDING){
+      return "warning";
+    }
+    else if(status === AppointmentStatusEnum.CONFIRMED){
+      return "success";
+    }
+    else if(status === AppointmentStatusEnum.CANCELLED){
+      return "danger";
+    }
+    else if(status === AppointmentStatusEnum.COMPLETED){
+      return "dark"; }
+
+    return "primary";
   }
 
 

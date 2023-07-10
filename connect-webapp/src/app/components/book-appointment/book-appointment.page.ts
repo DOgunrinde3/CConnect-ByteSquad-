@@ -72,7 +72,7 @@ export class BookAppointmentPage implements OnInit {
     })
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
 
-    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value});
+    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; });
 
       //this.doctorProfile = this.navParams.data;
      // this.getAllFutureAppointmentsForDoctor(this.doctorProfile.doctorId)
@@ -133,7 +133,7 @@ export class BookAppointmentPage implements OnInit {
     this.appointment = {
       id: null,
       doctor: null,
-      patientId: this.user.userId,
+      patient: this.user.userId,
       appointmentDate: selectedDate,
       appointmentTime: selectedTime,
       appointmentType: "",

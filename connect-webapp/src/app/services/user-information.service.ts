@@ -43,7 +43,7 @@ export class UserInformationService {
     this.userNotificationSubject.next(userNotification);
   }
 
-  getUserInformation() {
+  loadUserInformation() {
    const token = localStorage.getItem('token');
     // @ts-ignore
     const decodedToken: any = jwt_decode(token);
@@ -53,8 +53,7 @@ export class UserInformationService {
   userInfo$.subscribe(userInfo => {
 
     this.setUserInformation(userInfo);
-    this.getNotifications();
-
+      this.getNotifications();
     },
 
       error=>{

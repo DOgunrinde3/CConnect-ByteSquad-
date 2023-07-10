@@ -1,5 +1,6 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
+import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +23,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id;
-    private String appointmentId;
-    private String appointmentStatus;
+   private Appointment appointment;
     private String notifiedUserId;
     private String notifiedFromId;
 

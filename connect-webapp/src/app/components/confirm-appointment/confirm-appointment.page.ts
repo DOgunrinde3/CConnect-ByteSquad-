@@ -12,6 +12,7 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
+import {UserModel} from "../../model/User.model";
 
 
 @Component({
@@ -21,11 +22,12 @@ import {UserInformationService} from "../../services/user-information.service";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ConfirmAppointmentPage {
+export class ConfirmAppointmentPage{
 
   options: any;
   pageReady: boolean = false;
   formattedDate: any;
+  user: UserModel;
   selectedDate: any;
   selectedTime: any;
   selectedDateValue: Date;
@@ -44,6 +46,9 @@ export class ConfirmAppointmentPage {
               private userInfoService: UserInformationService,
               private toastController: ToastController,
               private notificationService: NotificationService) {
+    this.userInfoService.userInformation$.subscribe( (user) =>
+    {this.user = user}
+    );
     if (navParams.data) {
       this.options = navParams.data;
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
@@ -72,7 +77,7 @@ export class ConfirmAppointmentPage {
       let bookAppointment: AppointmentModel = {
         id: null,
         doctor: this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
-        patientId: this.options.appointment.patientId,
+        patient: this.user?.firstName + " " + this.user?.lastName,
         appointmentDate: this.selectedDate,
         appointmentTime: this.selectedTime,
         appointmentType: this.selectedService,
@@ -86,10 +91,9 @@ export class ConfirmAppointmentPage {
 
           let notificationModel: NotificationModel = {
             id:null,
-            appointmentId: value.id,
-            notifiedFromId: value.patientId,
+            appointment: bookAppointment,
+            notifiedFromId: value.patient,
             notifiedUserId: this.selectedDoctor.userId,
-            appointmentStatus: AppointmentStatusEnum.PENDING
           }
 
           this.notificationService.createNotification(notificationModel).subscribe( (notificationModel) => {

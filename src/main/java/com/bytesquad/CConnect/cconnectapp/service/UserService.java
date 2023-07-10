@@ -181,6 +181,35 @@ public class UserService {
         return String.format(staff.getFirstName() + " " + staff.getLastName());
     }
 
+    public String getUserName(String patientId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(patientId));
+
+        User user = mongoTemplate.find(query, User.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return String.format(user.getFirstName() + " " + user.getLastName());
+    }
+
+    public String getUserId(String patientName){
+        String[] nameParts = patientName.split(" ");
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+        Query query = new Query();
+        query.addCriteria(Criteria.where("firstName").is(firstName));
+        query.addCriteria(Criteria.where("lastName").is(lastName));
+
+        User user = mongoTemplate.find(query, User.class)
+                .stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        return user.getUserId();
+    }
+
+
     public String getStaffId(String doctorName){
         String[] nameParts = doctorName.split(" ");
         String firstName = nameParts[0];

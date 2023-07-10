@@ -2,7 +2,6 @@ package com.bytesquad.CConnect.cconnectapp.assembler;
 
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
-import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class AppointmentAssembler {
         return new AppointmentDto()
                 .setId(appointment.getId())
                 .setDoctor(userService.getStaffName(appointment.getDoctorId()))
-                .setPatientId(appointment.getPatientId())
+                .setPatient(userService.getUserName(appointment.getPatientId()))
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
                 .setAppointmentType(appointment.getAppointmentType())
@@ -36,7 +35,7 @@ public class AppointmentAssembler {
 
         return appointment
                 .setDoctorId(userService.getStaffId(appointmentDto.getDoctor()))
-                .setPatientId(appointmentDto.getPatientId())
+                .setPatientId(userService.getUserId(appointmentDto.getPatient()))
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
                 .setAppointmentType(appointmentDto.getAppointmentType())

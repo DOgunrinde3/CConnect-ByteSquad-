@@ -1,10 +1,12 @@
+import {AppointmentStatusEnum} from "./appointment-status.enum";
+
 export class AppointmentModel{
   id: string | null;
   doctor: string | null;
-  patientId?: string;
+  patient: string;
   appointmentDate: string;
   appointmentTime: string;
   appointmentType: string | null;
-  appointmentStatus: string;
+  appointmentStatus: AppointmentStatusEnum;
 
 }

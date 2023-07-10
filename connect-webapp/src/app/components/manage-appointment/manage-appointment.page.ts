@@ -101,25 +101,22 @@ appointment: AppointmentModel;
 
   }
 
-  getColour(appointment: AppointmentModel){
-    if (appointment.appointmentStatus === AppointmentStatusEnum.PENDING){
-      return '#ffc409';
+  getColour(status:AppointmentStatusEnum){
 
+    if(status === AppointmentStatusEnum.PENDING){
+      return "warning";
     }
-
-    else if (appointment.appointmentStatus === AppointmentStatusEnum.CANCELLED){
-      return '#eb445a';
-
+    else if(status === AppointmentStatusEnum.CONFIRMED){
+      return "success";
     }
-
-    else if (appointment.appointmentStatus === AppointmentStatusEnum.CONFIRMED){
-    return '#2dd36f';
+    else if(status === AppointmentStatusEnum.CANCELLED){
+      return "danger";
     }
+    else if(status === AppointmentStatusEnum.COMPLETED){
+      return "dark"; }
 
-    return '#000000';
-
+    return "primary";
   }
-
   getUserAppointments(userId: string){
     this.appointmentService.getUserAppointments(userId)
       .subscribe( (userAppointments)=>
@@ -164,7 +161,7 @@ appointment: AppointmentModel;
     this.appointment = {
       id: null,
       doctor: null,
-      patientId: this.user.userId,
+      patient: this.user.userId,
       appointmentDate: selectedDate,
       appointmentTime: selectedTime,
       appointmentType: "",

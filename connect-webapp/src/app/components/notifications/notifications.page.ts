@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController} from '@ionic/angular';
-import {DoctorModel} from "../../model/doctor.model";
-import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {AppointmentService} from "../../services/appointment.service";
 import {StaffService} from "../../services/staff.service";
 import {Router} from "@angular/router";
-import {AppointmentModel} from "../../model/appointment.model";
 import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
-import {notifications} from "ionicons/icons";
+import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-notifications',
@@ -23,6 +21,7 @@ export class NotificationsPage {
 
   options: any;
   notifications: NotificationModel[];
+  loadingSubscriptionDone = false;
 
 
 
@@ -40,10 +39,11 @@ export class NotificationsPage {
 
 
   ionViewWillEnter() {
-    this.userInfoService.userNotifications$.subscribe((userNotifications) => {
-      console.log(userNotifications);
+  this.userInfoService.userNotifications$.subscribe((userNotifications) => {
       this.notifications = userNotifications;
-    })
+      this.loadingSubscriptionDone = true;
+    });
+
   }
 
 
@@ -64,12 +64,26 @@ export class NotificationsPage {
   }
 
 
+
   cancelOnClick() {
     this.viewController.dismiss({confirm: false});
   }
 
-  getColour(){
-    return '#000000';
+  getColour(status:AppointmentStatusEnum){
+
+    if(status === AppointmentStatusEnum.PENDING){
+      return "warning";
+    }
+    else if(status === AppointmentStatusEnum.CONFIRMED){
+        return "success";
+    }
+    else if(status === AppointmentStatusEnum.CANCELLED){
+        return "danger";
+    }
+    else if(status === AppointmentStatusEnum.COMPLETED){
+      return "dark"; }
+
+    return "primary";
   }
 
 

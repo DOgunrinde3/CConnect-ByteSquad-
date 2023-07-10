@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 public class AppointmentDto {
     private String id;
     private String doctor;
-    private String patientId;
+    private String patient;
     private String appointmentDate;
     private String appointmentTime;
     private String appointmentType;

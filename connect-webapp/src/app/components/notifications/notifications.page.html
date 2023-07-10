@@ -8,17 +8,20 @@
 </ion-header>
 
 
+<div *ngIf="!loadingSubscriptionDone" class="loading-spinner" style="width: 100%; display: flex; justify-content: center"></div>
 
-<ion-list>
-  <ion-item [ngStyle]="{'--ion-background-color': getColour(), 'opacity': .5}" *ngFor="let notificationModel of notifications">
+<ion-list *ngIf="loadingSubscriptionDone">
+  <div *ngIf="notifications?.length === 0 else showNotifications" style="display: flex; align-items: center; justify-content: center; margin-top: 10px"> No Notifications</div>
+  <ng-template #showNotifications></ng-template>
+  <ion-item *ngFor="let notificationModel of notifications" >
     <div style="display: flex; justify-content: space-between; width: 100%">
-      <ion-label position="floating" color="success" style="margin-bottom: 3em;">Appointment {{notificationModel.appointmentStatus}}</ion-label>
+      <ion-label position="floating"  style="margin-bottom: 3em;">{{notificationModel.appointment.appointmentType}} Appointment <ion-badge color="{{getColour(notificationModel.appointment.appointmentStatus)}}">{{notificationModel.appointment.appointmentStatus}}</ion-badge></ion-label>
       <div style="display: flex; justify-content: space-between; align-items: center; height: 100%">
         <ion-button ><ion-icon name="eye-outline"></ion-icon></ion-button>
         <ion-button ><ion-icon name="trash-outline"></ion-icon></ion-button>
       </div>
     </div>
-    <ion-text style="font-size: 16px; color: #ffffff; margin-bottom: 1em;"> the text that is here is {{notificationModel.appointmentId}} </ion-text>
+    <ion-text class="event-detail "> <span style="font-weight: 800">With Patient:</span> {{notificationModel.appointment.patient}}</ion-text>
   </ion-item>
 
 </ion-list>

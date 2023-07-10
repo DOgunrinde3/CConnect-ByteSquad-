@@ -1,10 +1,10 @@
 import {AppointmentStatusEnum} from "./appointment-status.enum";
+import {AppointmentModel} from "./appointment.model";
 
 export class NotificationModel{
   id: string | null;
-  appointmentId: string;
+  appointment: AppointmentModel;
   notifiedUserId: string;
   notifiedFromId: string;
-  appointmentStatus: AppointmentStatusEnum;
 }
 
