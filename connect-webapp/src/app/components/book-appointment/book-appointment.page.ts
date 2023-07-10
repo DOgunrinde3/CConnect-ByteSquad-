@@ -83,6 +83,7 @@ export class BookAppointmentPage implements OnInit {
 
   ionViewWillEnter(){
     this.selectedDoctor = null;
+
   }
 
   onDateSelected(date) {
@@ -153,12 +154,12 @@ export class BookAppointmentPage implements OnInit {
   }
 
 
+
+
   filterUnavailableTimes(){
     this.doctorAppointments
       .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate)
       .map( docAppoint => this.unAvailableTimeShifts = this.unAvailableTimeShifts.filter(time => time !== docAppoint.appointmentTime));
-    console.log(this.appointmentTimeShifts);
-    console.log(this.unAvailableTimeShifts);
   }
 
   resetAvailableTime(){
@@ -195,7 +196,7 @@ export class BookAppointmentPage implements OnInit {
     this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
     if(this.selectedDoctor !== null){
       this.subscriptionComplete = false;
-      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.doctorId)
+      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)
         .subscribe((doctorAppointments) => {
             this.doctorAppointments = doctorAppointments;
           this.eventSource = [];

@@ -1,7 +1,7 @@
 import {AppointmentTypeEnum} from "./appointment-type.enum";
 
 export class DoctorModel{
-  doctorId: string;
+  userId: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;

@@ -18,7 +18,7 @@ import {NoAuthGuard} from "./services/guard/no-auth-guard";
 import {ManageApptStaffPage} from "./components/manage-appt-staff/manage-appt-staff.page";
 import {StaffAuthGuard} from "./services/guard/staff-auth.guard";
 export const routes: Routes = [
-  { path: '', redirectTo: '/signup-client', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [NoAuthGuard]},
   { path: 'login-staff', component: LoginStaffPage, canActivate: [NoAuthGuard]},
   // Add more routes for other pages

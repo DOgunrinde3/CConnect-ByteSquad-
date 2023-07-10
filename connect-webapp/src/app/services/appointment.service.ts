@@ -45,7 +45,6 @@ export class AppointmentService {
   }
 
   getAppointmentsByDoctor(doctorId: string): Observable<AppointmentModel[]>{
-
     return this.http.get<AppointmentModel[]>(`${BASE_URI}/doctor/${doctorId}`);
   }
 

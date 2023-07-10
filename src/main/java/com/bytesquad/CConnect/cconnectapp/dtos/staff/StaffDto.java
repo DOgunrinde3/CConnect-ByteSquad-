@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class StaffDto {
-    private String doctorId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String phoneNumber;

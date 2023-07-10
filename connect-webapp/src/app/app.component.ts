@@ -8,6 +8,8 @@ import {FooterPage} from "./components/footer/footer.page";
 import {UserInformationService} from "./services/user-information.service";
 import {ConfirmAppointmentPage} from "./components/confirm-appointment/confirm-appointment.page";
 import {NotificationsPage} from "./components/notifications/notifications.page";
+import {NotificationService} from "./services/notification.service";
+import {NotificationModel} from "./model/notification.model";
 
 @Component({
   selector: 'app-root',
@@ -19,11 +21,14 @@ import {NotificationsPage} from "./components/notifications/notifications.page";
 export class AppComponent implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
   isAuthenticated;
+  isStaff;
+  notifications: NotificationModel[];
 
 
   constructor(private router: Router,
               private authService: AuthService,
   private userInfoService: UserInformationService,
+              private notificationService: NotificationService,
               private modalController: ModalController){}
 
   ngOnInit() {
@@ -35,13 +40,16 @@ export class AppComponent implements OnInit {
 
       if(value === true){
         this.userInfoService.getUserInformation();
+        this.isStaff = this.authService.isStaff();
+
+        this.userInfoService.userNotifications$.subscribe((notifications)=> {
+          this.notifications = notifications;
+        })
       }
 
     });
 
-
   }
-
 
   logout(){
       this.authService.logout();
@@ -54,7 +62,12 @@ export class AppComponent implements OnInit {
   }
 
   routeToManage(){
-    this.router.navigate(["/manage-appointments"]);
+    if(this.isStaff){
+      this.router.navigate(["/manage-appointments-staff"]);
+    }
+    else {
+      this.router.navigate(["/manage-appointments"]);
+    }
   }
 
   routeToBio(){
@@ -77,12 +90,13 @@ routeToHome(){
 
   async openModal() {
 
+    this.getAppointments();
 
     const modal = await this.modalController.create({
       component: NotificationsPage,
-      mode: "ios"
+      mode: "ios",
     });
-    modal.present();
+    await modal.present();
 
 
 
@@ -90,6 +104,10 @@ routeToHome(){
 
   routeToServices(){
       this.router.navigate(["/services-page"]);
+    }
+
+    getAppointments(){
+    this.userInfoService.getUserInformation()
     }
 
 }

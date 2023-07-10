@@ -22,8 +22,10 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id;
-    private String notifiedUserId;
     private String appointmentId;
+    private String appointmentStatus;
+    private String notifiedUserId;
+    private String notifiedFromId;
 
 
     public static Notification newInstance(){

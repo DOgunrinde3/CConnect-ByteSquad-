@@ -17,12 +17,12 @@ export class NotificationService{
 
   }
 
-  createNotification(notification: NotificationModel): void{
-    this.http.post<UserModel>(`${BASE_URI}/create-notification`, notification);
+  createNotification(notification: NotificationModel): Observable<NotificationModel>{
+    return this.http.post<NotificationModel>(`${BASE_URI}/create-notification`, notification);
   }
 
   getUserNotification(userId: string): Observable<NotificationModel[]>{
-    return this.http.get<NotificationModel[]>(`${BASE_URI}/create-notification/${userId}`);
+    return this.http.get<NotificationModel[]>(`${BASE_URI}/${userId}`);
   }
 
 

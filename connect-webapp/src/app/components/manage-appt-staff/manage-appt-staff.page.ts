@@ -14,6 +14,7 @@ import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment
 import {ActivatedRoute, Router} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
+import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 @Component({
   selector: 'app-manage-appt-staff',
   templateUrl: './manage-appt-staff.page.html',
@@ -32,17 +33,18 @@ export class ManageApptStaffPage implements OnInit {
     ,
 
   };
-  appointmentAvailable: boolean = false;
   selectedDate: string | null;
   formattedDate: any;
   subscriptionComplete = false;
   viewTitle: string;
   selectedTime: string | undefined;
-  user: UserModel;
-  userAppointments: AppointmentModel[];
-  filteredUserAppointments: AppointmentModel[];
-  appointmentTimeShifts: string[];
   appointment: AppointmentModel;
+  filteredDoctorAppointment: AppointmentModel[];
+  selectedService: string | null;
+  doctors: DoctorModel[];
+  selectedDoctor: DoctorModel | null;
+  doctorAppointments: AppointmentModel[] = [];
+  appointmentTypes = Object.values(AppointmentTypeEnum);
 
   // @ts-ignore
   @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
@@ -61,7 +63,6 @@ export class ManageApptStaffPage implements OnInit {
   }
 
   ngOnInit(){
-    this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours();
     if(this.route.snapshot.paramMap.get('date') === null ){
       return;
     }
@@ -72,8 +73,8 @@ export class ManageApptStaffPage implements OnInit {
 
   ionViewWillEnter(){
     this.userService.userInformation$.subscribe(user => {
-      this.user = user;
-      this.getUserAppointments(user?.userId);
+      this.selectedDoctor = user;
+      this.getDoctorAppointments(user?.userId);
     })
 
   }
@@ -89,9 +90,9 @@ export class ManageApptStaffPage implements OnInit {
   onDateSelected(date) {
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.formattedDate = this.datePipe.transform(this.selectedDate, 'mediumDate');
-    this.filteredUserAppointments = this.userAppointments?.filter( appointment => appointment.appointmentDate === this.selectedDate);
+    this.filteredDoctorAppointment = this.doctorAppointments?.filter( appointment => appointment.appointmentDate === this.selectedDate);
 
-    if (this.filteredUserAppointments?.length !== 0){
+    if (this.filteredDoctorAppointment?.length !== 0){
       this.noAppointments = true;
     }
     else{
@@ -120,13 +121,13 @@ export class ManageApptStaffPage implements OnInit {
 
   }
 
-  getUserAppointments(userId: string){
-    this.appointmentService.getUserAppointments(userId)
-      .subscribe( (userAppointments)=>
+  getDoctorAppointments(userId: string){
+    this.appointmentService.getAppointmentsByDoctor(userId)
+      .subscribe( (doctorAppointments)=>
         {
-          this.userAppointments = userAppointments;
+          this.doctorAppointments = doctorAppointments;
           this.eventSource = [];
-          userAppointments.forEach((appointment)=>{
+          doctorAppointments.forEach((appointment)=>{
             const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
             this.eventSource?.push({
               title: appointment.appointmentType,
@@ -143,6 +144,29 @@ export class ManageApptStaffPage implements OnInit {
 
   }
 
+  filterSelect() {
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+    if (this.selectedDoctor !== null) {
+      this.subscriptionComplete = false;
+      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)
+        .subscribe((doctorAppointments) => {
+            this.doctorAppointments = doctorAppointments;
+            this.eventSource = [];
+            doctorAppointments.forEach((appointment) => {
+              const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
+              this.eventSource?.push({
+                title: appointment.appointmentType,
+                startTime: date,
+                endTime: date,
+                allDay: false
+              });
+            })
+            this.onDateSelected(this.selectedDate);
+
+          }
+        )
+    }
+  }
 
 
 
@@ -158,42 +182,7 @@ export class ManageApptStaffPage implements OnInit {
   }
 
 
-  private openConfirmatModal(selectedDate: string, selectedTime: string) {
 
-
-    this.appointment = {
-      id: null,
-      doctor: null,
-      patientId: this.user.userId,
-      appointmentDate: selectedDate,
-      appointmentTime: selectedTime,
-      appointmentType: "",
-      appointmentStatus: AppointmentStatusEnum.PENDING
-    };
-    this.openModal(this.appointment)
-
-    // confirmModal.onDidDismiss((data) => {
-    //   if (data.confirm) {
-    //     this.navCtrl.push(PageBookAppointmentConfirmationDetails, appointment);
-    //   }
-    // });
-  }
-
-  async openModal(appointment) {
-
-
-    const modal = await this.modalController.create({
-      component: ConfirmAppointmentPage,
-      componentProps: {
-        appointment: appointment
-      },
-      mode: "ios"
-    });
-    modal.present();
-
-
-
-  }
   markDisabled = (date: Date) => {
     var current = new Date();
     return date < current;

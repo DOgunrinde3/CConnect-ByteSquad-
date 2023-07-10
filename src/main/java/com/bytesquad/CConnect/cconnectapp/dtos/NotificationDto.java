@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 public class NotificationDto {
     private String Id;
     private String appointmentId;
-    private String apointmentStatus;
+    private String appointmentStatus;
     private String notifiedUserId;
     private String notifiedFromId;
 

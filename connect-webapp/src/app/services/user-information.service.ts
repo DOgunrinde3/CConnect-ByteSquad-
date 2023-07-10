@@ -6,6 +6,8 @@ import {AuthService} from "./auth.service";
 import {DoctorModel} from "../model/doctor.model";
 import jwt_decode from "jwt-decode";
 import {ToastController} from "@ionic/angular";
+import {NotificationService} from "./notification.service";
+import {NotificationModel} from "../model/notification.model";
 
 
 const BASE_URI = 'http://localhost:8080/api/v1/auth/user';
@@ -18,13 +20,18 @@ export class UserInformationService {
 
   // @ts-ignore
   private userInformationSubject = new BehaviorSubject<any>(null);
+  private userNotificationSubject = new BehaviorSubject<NotificationModel[]>(null);
+
   // @ts-ignore
   userInformation$ = this.userInformationSubject.asObservable();
+  userNotifications$ = this.userNotificationSubject.asObservable();
+
 
 
   constructor(private http: HttpClient,
               private authService: AuthService,
-              private toastController: ToastController) {
+              private toastController: ToastController,
+              private notificationService: NotificationService) {
 
   }
 
@@ -32,6 +39,9 @@ export class UserInformationService {
     this.userInformationSubject.next(userInformation);
   }
 
+  setUserNotification(userNotification: any) {
+    this.userNotificationSubject.next(userNotification);
+  }
 
   getUserInformation() {
    const token = localStorage.getItem('token');
@@ -40,12 +50,30 @@ export class UserInformationService {
 
       if(token !== null) {
   const userInfo$ = this.http.get<any>(`${BASE_URI}/${decodedToken.sub}?role=${decodedToken.role}`);
-  userInfo$.subscribe(userInfo => { this.setUserInformation(userInfo);}, error=>{
+  userInfo$.subscribe(userInfo => {
+
+    this.setUserInformation(userInfo);
+    this.getNotifications();
+
+    },
+
+      error=>{
     this.authService.logout();
     this.presentToast("top", error.error, 'danger', 'close-outline');
+
   } );
+
   }
       else { this.authService.logout()}
+  }
+
+   getNotifications(){
+    let userId;
+    this.userInformation$.subscribe((user) => {userId = user.userId } )
+    this.notificationService.getUserNotification(userId).subscribe(
+      (notifications)=> { this.setUserNotification(notifications);
+      }
+    )
   }
 
 

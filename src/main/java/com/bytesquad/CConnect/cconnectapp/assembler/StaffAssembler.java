@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class StaffAssembler {
     public StaffDto assemble(Staff staff){
         return new StaffDto()
-                .setDoctorId(staff.getUserId())
+                .setUserId(staff.getUserId())
                 .setPhoneNumber(staff.getPhoneNumber())
                 .setEmail(staff.getEmail())
                 .setFirstName(staff.getFirstName())

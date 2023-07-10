@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController,} from '@ionic/angular';
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {AppointmentService} from "../../services/appointment.service";
@@ -9,6 +9,9 @@ import {AppointmentModel} from "../../model/appointment.model";
 import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
+import {NotificationService} from "../../services/notification.service";
+import {NotificationModel} from "../../model/notification.model";
+import {UserInformationService} from "../../services/user-information.service";
 
 
 @Component({
@@ -38,7 +41,9 @@ export class ConfirmAppointmentPage {
               private datePipe: DatePipe,
               private staffService: StaffService,
               private router: Router,
-              private toastController: ToastController) {
+              private userInfoService: UserInformationService,
+              private toastController: ToastController,
+              private notificationService: NotificationService) {
     if (navParams.data) {
       this.options = navParams.data;
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
@@ -49,6 +54,7 @@ export class ConfirmAppointmentPage {
       this.doctors =this.options.doctors;
        this.selectedDateValue = this.options.selectedDateValue;
       this.pageReady = true;
+      this.filterSelect()
     }
   }
 
@@ -76,9 +82,22 @@ export class ConfirmAppointmentPage {
 
 
       this.appointmentService.bookAppointment(bookAppointment).subscribe(
-        () => {
+        (value) => {
+
+          let notificationModel: NotificationModel = {
+            id:null,
+            appointmentId: value.id,
+            notifiedFromId: value.patientId,
+            notifiedUserId: this.selectedDoctor.userId,
+            appointmentStatus: AppointmentStatusEnum.PENDING
+          }
+
+          this.notificationService.createNotification(notificationModel).subscribe( (notificationModel) => {
+          } );
+
           this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
           this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
+
         },
         error => {
           this.presentToast("top", error.message, 'danger', 'close-outline');
@@ -86,6 +105,8 @@ export class ConfirmAppointmentPage {
         }
       )
       this.viewController.dismiss({confirm: true});
+
+
     }
 
   }

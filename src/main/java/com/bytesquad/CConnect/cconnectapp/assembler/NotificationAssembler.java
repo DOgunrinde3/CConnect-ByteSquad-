@@ -15,6 +15,8 @@ public class NotificationAssembler {
         return new NotificationDto()
                 .setId(notification.getId())
                 .setNotifiedUserId(notification.getNotifiedUserId())
+                .setAppointmentStatus(notification.getAppointmentStatus())
+                .setNotifiedFromId(notification.getNotifiedFromId())
                 .setAppointmentId(notification.getAppointmentId());
     }
 
@@ -27,7 +29,9 @@ public class NotificationAssembler {
 
         return notification
                 .setNotifiedUserId(notificationDto.getNotifiedUserId())
-                .setAppointmentId(notificationDto.getAppointmentId());
+                .setAppointmentId(notificationDto.getAppointmentId())
+                .setAppointmentStatus(notificationDto.getAppointmentStatus())
+                .setNotifiedFromId(notificationDto.getNotifiedFromId());
     }
 
 }

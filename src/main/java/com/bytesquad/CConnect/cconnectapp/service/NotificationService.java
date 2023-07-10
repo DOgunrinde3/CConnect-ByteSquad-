@@ -24,6 +24,7 @@ public class NotificationService {
     private final NotificationAssembler notificationAssembler;
     private final NotificationRepository notificationRepository;
     private final MongoTemplate mongoTemplate;
+    private final UserService userService;
 
 
     public NotificationDto createNotification(NotificationDto notificationDto){

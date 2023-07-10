@@ -8,6 +8,9 @@ import {AppointmentService} from "../../services/appointment.service";
 import {StaffService} from "../../services/staff.service";
 import {Router} from "@angular/router";
 import {AppointmentModel} from "../../model/appointment.model";
+import {NotificationModel} from "../../model/notification.model";
+import {UserInformationService} from "../../services/user-information.service";
+import {notifications} from "ionicons/icons";
 
 @Component({
   selector: 'app-notifications',
@@ -16,23 +19,31 @@ import {AppointmentModel} from "../../model/appointment.model";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class NotificationsPage implements OnInit {
+export class NotificationsPage {
 
+  options: any;
+  notifications: NotificationModel[];
 
 
 
   constructor(public navParams: NavParams,
               public viewController: ModalController,
               private appointmentService: AppointmentService,
+              private userInfoService: UserInformationService,
               private datePipe: DatePipe,
               private staffService: StaffService,
               private router: Router,
               private toastController: ToastController) {
 
+
   }
 
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    this.userInfoService.userNotifications$.subscribe((userNotifications) => {
+      console.log(userNotifications);
+      this.notifications = userNotifications;
+    })
   }
 
 
