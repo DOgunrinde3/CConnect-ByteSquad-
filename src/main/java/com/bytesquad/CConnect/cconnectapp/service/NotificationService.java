@@ -1,11 +1,10 @@
 package com.bytesquad.CConnect.cconnectapp.service;
 
+import com.bytesquad.CConnect.cconnectapp.assembler.AppointmentAssembler;
 import com.bytesquad.CConnect.cconnectapp.assembler.NotificationAssembler;
-import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.NotificationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Notification;
-import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -15,7 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotFoundException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +23,14 @@ import java.util.stream.Collectors;
 public class NotificationService {
 
     private final NotificationAssembler notificationAssembler;
+    private final AppointmentAssembler appointmentAssembler;
+
     private final NotificationRepository notificationRepository;
     private final MongoTemplate mongoTemplate;
     private final UserService userService;
 
 
-    public NotificationDto createNotification(NotificationDto notificationDto){
+    public NotificationDto createNotification(NotificationDto notificationDto) {
 
         Notification notification = notificationAssembler.disassemble(notificationDto);
 
@@ -39,20 +40,20 @@ public class NotificationService {
 
     }
 
-    public NotificationDto updateNotification(NotificationDto notification, boolean toStaff){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("Id").is(notification.getId()));
-        String notifiedUserId ="";
+    public NotificationDto updateNotification(NotificationDto notification, boolean toStaff, String notificationId) {
 
-        if(toStaff){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("appointment.id").is(notificationId));
+        String notifiedUserId = "";
+
+        if (toStaff) {
             notifiedUserId = userService.getStaffId(notification.getNotifiedUserId());
-        }
-        else{
+        } else {
             notifiedUserId = userService.getUserId(notification.getNotifiedUserId());
         }
 
         Update update = new Update()
-                .set("appointment", notification.getAppointment())
+                .set("appointment", appointmentAssembler.disassembleForNotification(new Appointment(), notification.getAppointment()))
                 .set("notifiedUserId", notifiedUserId)
                 .set("notifiedFromId", notification.getNotifiedFromId());
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
@@ -62,17 +63,30 @@ public class NotificationService {
         return notificationAssembler.assemble(updatedNotification);
     }
 
-    public List<NotificationDto> getUserNotifications(String userId){
+    public List<NotificationDto> getUserNotifications(String userId) {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("notifiedUserId").is(userId));
 
-        List<Notification> notifications = mongoTemplate.find(query, Notification.class)
-                .stream()
-                .collect(Collectors.toList());
+        List<Notification> notifications = mongoTemplate.find(query, Notification.class);
+
+        Iterator<Notification> iterator = notifications.iterator();
+        while (iterator.hasNext()) {
+            Notification notification = iterator.next();
+            Query appointmentQuery = new Query();
+            appointmentQuery.addCriteria(Criteria.where("id").is(notification.getAppointment().getId()));
+
+            if (mongoTemplate.findOne(appointmentQuery, Appointment.class) == null) {
+                Query delete = new Query();
+                delete.addCriteria(Criteria.where("notificationId").is(notification.getNotificationId()));
+                mongoTemplate.remove(delete, Notification.class);
+            iterator.remove(); // Remove the deleted notification from the list
+            }
+
+
+        }
 
         return notifications.stream().map(notificationAssembler::assemble).collect(Collectors.toList());
-
 
     }
 }

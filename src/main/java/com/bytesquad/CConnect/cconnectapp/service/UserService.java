@@ -173,10 +173,10 @@ public class UserService {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(doctorId));
 
-        Staff staff = mongoTemplate.find(query, Staff.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        Staff staff = mongoTemplate.findOne(query, Staff.class);
+        if(staff == null){
+            throw new NotFoundException("Staff Not Found");
+        }
 
         return String.format(staff.getFirstName() + " " + staff.getLastName());
     }
@@ -185,10 +185,11 @@ public class UserService {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(patientId));
 
-        User user = mongoTemplate.find(query, User.class)
-                .stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        User user = mongoTemplate.findOne(query, User.class);
+
+        if(user == null){
+            throw new NotFoundException("Staff Not Found");
+        }
 
         return String.format(user.getFirstName() + " " + user.getLastName());
     }

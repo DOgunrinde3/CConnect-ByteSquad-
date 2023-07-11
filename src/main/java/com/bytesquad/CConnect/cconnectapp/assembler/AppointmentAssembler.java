@@ -42,4 +42,21 @@ public class AppointmentAssembler {
                 .setAppointmentStatus(appointmentDto.getAppointmentStatus());
     }
 
+    public Appointment disassembleForNotification(Appointment appointment, AppointmentDto appointmentDto) {
+
+
+        LocalDate date = LocalDate.parse(appointmentDto.getAppointmentDate());
+
+        return appointment
+                .setId(appointmentDto.getId())
+                .setDoctorId(userService.getStaffId(appointmentDto.getDoctor()))
+                .setPatientId(userService.getUserId(appointmentDto.getPatient()))
+                .setDate(date)
+                .setTime(appointmentDto.getAppointmentTime())
+                .setAppointmentType(appointmentDto.getAppointmentType())
+                .setAppointmentStatus(appointmentDto.getAppointmentStatus());
+    }
+
+
+
 }

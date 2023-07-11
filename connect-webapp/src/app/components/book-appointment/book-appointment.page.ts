@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import {FormsModule, Validators} from '@angular/forms';
-import {IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
+import {CommonModule, DatePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {IonicModule, ModalController, NavController} from '@ionic/angular';
 import {HeaderPage} from "../header/header.page";
 import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
@@ -11,7 +11,7 @@ import {AppointmentService} from "../../services/appointment.service";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import {StaffService} from "../../services/staff.service";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
@@ -39,7 +39,7 @@ export class BookAppointmentPage implements OnInit {
   };
   appointmentAvailable: boolean = true;
   selectedDate: string | null;
-  selectedService: string | null;
+  selectedService = null;
   viewTitle: string;
   selectedTime: string | undefined;
   user: UserModel;
@@ -157,7 +157,7 @@ export class BookAppointmentPage implements OnInit {
 
   filterUnavailableTimes(){
     this.doctorAppointments
-      .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate)
+      .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate && docAppoint.appointmentStatus !== AppointmentStatusEnum.CANCELLED)
       .map( docAppoint => this.unAvailableTimeShifts = this.unAvailableTimeShifts.filter(time => time !== docAppoint.appointmentTime));
   }
 
@@ -201,13 +201,14 @@ export class BookAppointmentPage implements OnInit {
           this.eventSource = [];
           doctorAppointments.forEach((appointment)=>{
             const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
+            if(appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED){
             this.eventSource?.push({
               title: appointment.appointmentType,
               startTime: date,
               endTime: date,
               allDay: false
             });
-          })
+          }})
             this.onDateSelected(this.selectedDate);
 
           }

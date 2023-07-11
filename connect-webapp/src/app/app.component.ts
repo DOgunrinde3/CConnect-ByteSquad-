@@ -88,12 +88,12 @@ getIcon = 'notifications-outline';
   }
 
   checkForNewNotifications(): void {
-    interval(25000)
+    interval(8500)
       .pipe(
         switchMap(() => this.notificationService.getUserNotification(this.user.userId))
       )
       .subscribe(newNotifications => {
-        if (newNotifications?.length !== this.notifications?.length) {
+        if ( newNotifications && newNotifications?.length !== this.notifications?.length) {
           this.userInfoService.setUserNotification(newNotifications);
            this.getIcon = 'notifications';
         }

@@ -13,6 +13,15 @@
 
 }
 
+.notification-item{
+  cursor: pointer;
+}
+.notification-item:hover
+{
+  --ion-background-color: #ffffff;
+
+}
+
 .title{
   display: flex;
   justify-content: space-between;

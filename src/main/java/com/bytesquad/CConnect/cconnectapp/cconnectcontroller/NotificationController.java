@@ -23,9 +23,9 @@ public class NotificationController {
         return notificationService.createNotification(notificationDto);
     }
 
-    @PostMapping(value = "/update-notification",params = "toStaff")
-    public NotificationDto updateNotification(@RequestBody NotificationDto notificationDto, @RequestParam boolean toStaff){
-        return notificationService.updateNotification(notificationDto,toStaff);
+    @PutMapping(value = "/update-notification/{appointmentId}",params = "toStaff")
+    public NotificationDto updateNotification(@PathVariable String appointmentId, @RequestBody NotificationDto notificationDto, @RequestParam boolean toStaff){
+        return notificationService.updateNotification(notificationDto,toStaff, appointmentId);
     }
 
     @GetMapping("{userId}")

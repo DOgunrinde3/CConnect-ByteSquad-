@@ -1,15 +1,10 @@
 package com.bytesquad.CConnect.cconnectapp.assembler;
 
-import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.NotificationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Notification;
-import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 
 @Component
@@ -20,7 +15,7 @@ public class NotificationAssembler {
 
     public NotificationDto assemble(Notification notification){
         return new NotificationDto()
-                .setId(notification.getId())
+                .setId(notification.getNotificationId())
                 .setNotifiedUserId(notification.getNotifiedUserId())
                 .setAppointment(appointmentAssembler.assemble(notification.getAppointment()))
                 .setNotifiedFromId(notification.getNotifiedFromId());
@@ -35,7 +30,7 @@ public class NotificationAssembler {
 
         return notification
                 .setNotifiedUserId(notificationDto.getNotifiedUserId())
-                .setAppointment(appointmentAssembler.disassemble(notificationDto.getAppointment()))
+                .setAppointment(appointmentAssembler.disassembleForNotification(new Appointment(), notificationDto.getAppointment()))
                 .setNotifiedFromId(notificationDto.getNotifiedFromId());
     }
 

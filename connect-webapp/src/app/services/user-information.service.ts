@@ -58,7 +58,7 @@ export class UserInformationService {
 
       error=>{
     this.authService.logout();
-    this.presentToast("top", error.error, 'danger', 'close-outline');
+    this.presentToast("top", "An error occurred, you've been logged out", 'danger', 'close-outline');
 
   } );
 

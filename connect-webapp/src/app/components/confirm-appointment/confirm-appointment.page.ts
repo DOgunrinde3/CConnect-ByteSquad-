@@ -65,18 +65,18 @@ export class ConfirmAppointmentPage{
 
 
   confirmOnClick() {
+    console.log(this.selectedService)
 
     if(this.selectedService === null){
-       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
+      this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
     }
 
     else {
 
-
       let bookAppointment: AppointmentModel = {
         id: null,
-        doctor: this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
+        doctor: this.selectedDoctor === null ? null : this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
         patient: this.user?.firstName + " " + this.user?.lastName,
         appointmentDate: this.selectedDate,
         appointmentTime: this.selectedTime,
@@ -91,9 +91,9 @@ export class ConfirmAppointmentPage{
 
           let notificationModel: NotificationModel = {
             id:null,
-            appointment: bookAppointment,
+            appointment: value as AppointmentModel,
             notifiedFromId: this.user.userId,
-            notifiedUserId: this.selectedDoctor.userId,
+            notifiedUserId: this.selectedDoctor?.userId,
           }
 
           this.notificationService.createNotification(notificationModel).subscribe( );

@@ -19,11 +19,11 @@ import java.util.UUID;
 @Data
 @Document()
 @Accessors(chain = true)
-@CompoundIndex(def = "{'doctorId': 1, 'date': 1, 'time': 1}", unique = true)
+@CompoundIndex(def = "{'doctorId': 1, 'date': 1, 'time': 1, 'appointmentStatus': 1}", unique = true)
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String Id;
+    private String id;
     private String doctorId;
     private String patientId;
     @Indexed(name="date", expireAfterSeconds=3600)
@@ -37,7 +37,7 @@ public class Appointment {
 
     public static Appointment newInstance(){
         Appointment newInstance = new Appointment();
-        newInstance.Id = UUID.randomUUID().toString();
+        newInstance.id = UUID.randomUUID().toString();
         return newInstance;
     }
 }

@@ -6,22 +6,31 @@
     <button (click)="cancelOnClick()"><ion-icon name="close-outline" size="large" ></ion-icon></button></div>
   </ion-toolbar>
 </ion-header>
-
-
+<ion-content>
+<ion-toolbar>
 <div *ngIf="!loadingSubscriptionDone" class="loading-spinner" style="width: 100%; display: flex; justify-content: center"></div>
 
 <ion-list *ngIf="loadingSubscriptionDone">
   <div *ngIf="notifications?.length === 0 else showNotifications" style="display: flex; align-items: center; justify-content: center; margin-top: 10px"> No Notifications</div>
   <ng-template #showNotifications></ng-template>
-  <ion-item *ngFor="let notificationModel of notifications" >
-    <div style="display: flex; justify-content: space-between; width: 100%">
-      <ion-label position="floating"  style="margin-bottom: 3em;">{{notificationModel.appointment.appointmentType}} Appointment <ion-badge color="{{getColour(notificationModel.appointment.appointmentStatus)}}">{{notificationModel.appointment.appointmentStatus}}</ion-badge></ion-label>
-      <div style="display: flex; justify-content: space-between; align-items: center; height: 100%">
-        <ion-button (click)="view(notificationModel.appointment.appointmentDate)"><ion-icon name="eye-outline"></ion-icon></ion-button>
+  <ion-item *ngFor="let notificationModel of notifications" (click)="view(notificationModel.appointment.appointmentDate)" class="notification-item">
+    <ion-grid style="display: flex;width: 100%" >
+      <ion-row style="display: flex; justify-content: space-between; align-items: start; width: 100%">
+        <ion-col sizeLg="10">
+      <ion-label class="ion-margin-bottom" >{{notificationModel.appointment.appointmentType}} Appointment <ion-badge color="{{getColour(notificationModel.appointment.appointmentStatus)}}">{{notificationModel.appointment.appointmentStatus}}</ion-badge></ion-label>
+         <div style="display: flex; flex-direction: column">
+          <ion-text class="event-detail"> <span style="font-weight: 800;">With Patient:</span> {{notificationModel.appointment.patient}}</ion-text>
+          <ion-text class="event-detail ion-margin-vertical"> <span style="font-weight: 800;">Date:</span> {{notificationModel.appointment.appointmentDate}}</ion-text>
+          <ion-text class="event-detail"> <span style="font-weight: 800;">Time:</span> {{notificationModel.appointment.appointmentTime}}</ion-text>
+         </div>
+        </ion-col>
+          <ion-col sizeLg="2">
         <ion-button ><ion-icon name="trash-outline"></ion-icon></ion-button>
-      </div>
-    </div>
-    <ion-text class="event-detail "> <span style="font-weight: 800">With Patient:</span> {{notificationModel.appointment.patient}}</ion-text>
+      </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-item>
 
 </ion-list>
+</ion-toolbar>
+</ion-content>
