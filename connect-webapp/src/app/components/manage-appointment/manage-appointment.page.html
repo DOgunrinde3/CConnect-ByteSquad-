@@ -55,7 +55,7 @@
       <ng-template #monthviewEventDetailTemplate>
         <div class="noappointment">
           <div style="width: 100%; display: flex; justify-content: center;">
-          <ion-button (click)="routeToBook()" >Book appointment</ion-button>
+          <ion-button (click)="routeToBook()" >Book Appointment for {{formattedDate}}</ion-button>
           </div>
           <ion-list class="event-detail-container ion-padding" has-bouncing="false" overflow-scroll="false" >
             <div *ngIf="!subscriptionComplete" class="loading-spinner" style="width: 100%; display: flex; justify-content: center">
@@ -75,7 +75,7 @@
 
                   </ion-col>
                   <ion-col *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED" sizeLg="2" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
-                    <ion-button fill="clear" color="danger" (click)="update(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
+                    <ion-button fill="clear" color="danger" (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
                   </ion-col>
                 </ion-row>
               </ion-grid>

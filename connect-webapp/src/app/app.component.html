@@ -25,7 +25,8 @@
           <ion-item><ion-icon mode="ios" name="cog-outline"></ion-icon>Services</ion-item>
           <ion-item *ngIf="!isStaff" (click)="routeToBook()"><ion-icon mode="ios" name="calendar-outline"></ion-icon>Book Appointment</ion-item>
           <ion-item *ngIf="!isStaff" (click)="routeToManage()"><ion-icon mode="ios"name="file-tray-full-outline"></ion-icon>My Bookings</ion-item>
-          <ion-item *ngIf="isStaff" (click)="routeToManage()"><ion-icon mode="ios"name="calendar-outline"></ion-icon>View Schedule</ion-item>
+          <ion-item *ngIf="isStaff" (click)="routeToManage()"><ion-icon mode="ios"name="calendar-outline"></ion-icon>
+            <div style="width: 100%; display: flex; justify-content: space-between">View Schedule<ion-badge *ngIf="pendingNotification > 0" color="warning">{{pendingNotification}}</ion-badge></div></ion-item>
           <ion-item (click)="routeToBio()"><ion-icon mode="ios" name="person-outline"></ion-icon>
             <div style="width: 100%; display: flex; justify-content: space-between">Profile<ion-badge *ngIf="isStaff" color="primary">Staff</ion-badge> </div></ion-item>
           <ion-item (click)="logout()"><ion-icon mode="ios" name="log-out-outline"></ion-icon>Logout</ion-item>

@@ -16,7 +16,7 @@
   <ion-item *ngFor="let notificationModel of notifications" (click)="view(notificationModel.appointment.appointmentDate)" class="notification-item">
     <ion-grid style="display: flex;width: 100%" >
       <ion-row style="display: flex; justify-content: space-between; align-items: start; width: 100%">
-        <ion-col sizeLg="10">
+        <ion-col sizeLg="12">
       <ion-label class="ion-margin-bottom" >{{notificationModel.appointment.appointmentType}} Appointment <ion-badge color="{{getColour(notificationModel.appointment.appointmentStatus)}}">{{notificationModel.appointment.appointmentStatus}}</ion-badge></ion-label>
          <div style="display: flex; flex-direction: column">
           <ion-text class="event-detail"> <span style="font-weight: 800;">With Patient:</span> {{notificationModel.appointment.patient}}</ion-text>
@@ -24,9 +24,6 @@
           <ion-text class="event-detail"> <span style="font-weight: 800;">Time:</span> {{notificationModel.appointment.appointmentTime}}</ion-text>
          </div>
         </ion-col>
-          <ion-col sizeLg="2">
-        <ion-button ><ion-icon name="trash-outline"></ion-icon></ion-button>
-      </ion-col>
       </ion-row>
     </ion-grid>
   </ion-item>

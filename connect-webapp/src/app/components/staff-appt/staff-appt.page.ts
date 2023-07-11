@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import {FormsModule, Validators} from '@angular/forms';
-import {IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
+import {AlertController, IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
 import {HeaderPage} from "../header/header.page";
 import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
@@ -61,6 +61,7 @@ export class ManageApptStaffPage implements OnInit {
               private appointmentService: AppointmentService,
               private userService: UserInformationService,
               private router: Router,
+              private alertController:AlertController,
               private staffService: StaffService,
               private route: ActivatedRoute,
               private notificationService: NotificationService
@@ -113,6 +114,33 @@ export class ManageApptStaffPage implements OnInit {
 
     this.notificationService.updateNotification(notificationModel, false).subscribe( );
 
+  }
+
+
+  async showConfirmationModal(appointment, status) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to proceed?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            alert.dismiss();
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.update(appointment, status);
+            alert.dismiss();
+            // Place your logic here for the confirmed action
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 

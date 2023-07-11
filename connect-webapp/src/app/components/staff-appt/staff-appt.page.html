@@ -102,12 +102,12 @@
                   </ion-col>
                   <ion-col *ngIf="selectedDoctor.userId === currentDoctor.userId" sizeLg="2" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
                    <div *ngIf="appointment.appointmentStatus === AppointmentStatusEnum.PENDING else cancel">
-                    <ion-button fill="clear" color="success"  (click)="update(appointment, AppointmentStatusEnum.CONFIRMED)"  > Confirm</ion-button>
-                    <ion-button fill="clear" color="danger" (click)="update(appointment, AppointmentStatusEnum.CANCELLED)"  > Decline</ion-button>
+                    <ion-button fill="clear" color="success"  (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CONFIRMED)"  > Confirm</ion-button>
+                    <ion-button fill="clear" color="danger" (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"  > Decline</ion-button>
                    </div>
 
                     <ng-template #cancel >
-                      <ion-button *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED"  fill="clear" color="danger" (click)="update(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
+                      <ion-button *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED"  fill="clear" color="danger" (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
                     </ng-template>
                   </ion-col>
                 </ion-row>

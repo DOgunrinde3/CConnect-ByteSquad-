@@ -20,6 +20,7 @@ import {Subscription} from "rxjs";
 export class NotificationsPage {
 
   options: any;
+  isStaff: boolean
   notifications: NotificationModel[];
   loadingSubscriptionDone = false;
 
@@ -44,6 +45,8 @@ export class NotificationsPage {
       this.loadingSubscriptionDone = true;
     });
 
+  this.isStaff =  this.navParams.data['isStaff'];
+
   }
 
 
@@ -66,7 +69,13 @@ export class NotificationsPage {
   view(date: string){
     date = this.datePipe.transform(date);
     this.viewController.dismiss({confirm: true});
-    this.router.navigate(['/staff-appointments', {date: date}]);
+    if(this.isStaff){
+      this.router.navigate(['/staff-appointments', {date: date}]);
+    }
+    else{
+      this.router.navigate(['/manage-appointments', {date: date}]);
+
+    }
   }
 
 

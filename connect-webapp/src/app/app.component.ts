@@ -1,17 +1,17 @@
 import {Component, EnvironmentInjector, inject, OnDestroy, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from '@ionic/angular';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "./services/auth.service";
 import {FooterPage} from "./components/footer/footer.page";
 import {UserInformationService} from "./services/user-information.service";
-import {ConfirmAppointmentPage} from "./components/confirm-appointment/confirm-appointment.page";
 import {NotificationsPage} from "./components/notifications/notifications.page";
 import {NotificationService} from "./services/notification.service";
 import {NotificationModel} from "./model/notification.model";
 import {interval, Subscription, switchMap} from "rxjs";
 import {UserModel} from "./model/User.model";
+import {AppointmentStatusEnum} from "./model/appointment-status.enum";
 
 @Component({
   selector: 'app-root',
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public environmentInjector = inject(EnvironmentInjector);
   isAuthenticated;
   isStaff;
+  pendingNotification = 0;
 getIcon = 'notifications-outline';
   notifications: NotificationModel[];
   user: UserModel;
@@ -52,6 +53,15 @@ getIcon = 'notifications-outline';
         this.userInfoService.userNotifications$.subscribe((notifications) => {
           this.notifications = notifications;
           this.notficationsSuscriptionScomplete = true;
+
+          this.pendingNotification = this.notifications.reduce((acc, notification) => {
+            if (notification.appointment.appointmentStatus === AppointmentStatusEnum.PENDING) {
+              return acc + 1;
+            } else {
+              return acc;
+            }
+          }, 0);
+
         })
         this.userInfoService.userInformation$.subscribe((user) => {
           this.user = user;
@@ -131,6 +141,9 @@ routeToHome(){
     const modal = await this.modalController.create({
       component: NotificationsPage,
       mode: "ios",
+      componentProps:{
+        isStaff: this.isStaff
+      }
     });
     await modal.present();
 
