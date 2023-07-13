@@ -1,6 +1,8 @@
 package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.AppointmentAssembler;
+import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
+import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
@@ -31,7 +33,7 @@ public class AppointmentService {
 
     private final AppointmentAssembler appointmentAssembler;
 
-    private final UserService userService;
+    private final StaffAssembler staffAssembler;
 
     public AppointmentDto book(AppointmentDto appointmentDto){
 
@@ -97,7 +99,7 @@ public class AppointmentService {
                 .map(Appointment::getDoctorId)
                 .collect(Collectors.toSet());
 
-      return userService.getStaffName(allDoctors
+      return staffAssembler.getStaffName(allDoctors
               .stream()
               .filter( staff -> !unAvailableDoctors.contains(staff.getUserId()) && staff.getServices().contains(appointmentDto.getAppointmentType()))
               .findFirst()

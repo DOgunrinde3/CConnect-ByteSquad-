@@ -33,6 +33,8 @@ public class StaffUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Staff not found");
         }
 
+
+
         // Create and return an instance of your UserDetails implementation (e.g., CustomUserDetails)
         return new CustomUserDetails(staff.getEmail(), staff.getPassword(), "STAFF");
 

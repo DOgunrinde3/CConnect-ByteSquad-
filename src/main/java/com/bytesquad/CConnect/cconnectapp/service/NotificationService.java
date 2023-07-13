@@ -2,6 +2,8 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.AppointmentAssembler;
 import com.bytesquad.CConnect.cconnectapp.assembler.NotificationAssembler;
+import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
+import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.NotificationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Notification;
@@ -27,7 +29,8 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final MongoTemplate mongoTemplate;
-    private final UserService userService;
+    private final UserAssembler userAssembler;
+    private final StaffAssembler staffAssembler;
 
 
     public NotificationDto createNotification(NotificationDto notificationDto) {
@@ -47,9 +50,9 @@ public class NotificationService {
         String notifiedUserId = "";
 
         if (toStaff) {
-            notifiedUserId = userService.getStaffId(notification.getNotifiedUserId());
+            notifiedUserId = staffAssembler.getStaffId(notification.getNotifiedUserId());
         } else {
-            notifiedUserId = userService.getUserId(notification.getNotifiedUserId());
+            notifiedUserId = userAssembler.getUserId(notification.getNotifiedUserId());
         }
 
         Update update = new Update()

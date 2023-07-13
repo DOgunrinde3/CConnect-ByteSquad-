@@ -9,6 +9,8 @@ import {FooterPage} from "../footer/footer.page";
 import { ActionSheetController } from '@ionic/angular';
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
+import {AppointmentModel} from "../../model/appointment.model";
+//import {UserInformationService} from "../../services/user-information.service";
 
 @Component({
   selector: 'app-bio',
@@ -46,6 +48,22 @@ export class BioPage implements OnInit {
     });
   }
 
+  update(user: UserModel, fName: string, lName: string, email: string, pNumber: string, gender: string) {
+    this.user = user;
+    user.firstName = fName;
+    user.lastName = lName;
+    user.email = email;
+    user.phoneNumber = pNumber;
+    user.gender = gender;
+    this.editToggle = false;
+    this.userService.update(user).subscribe((user) => {
+      this.user.firstName = user.firstName;
+      this.user.lastName = user.lastName;
+      this.user.email = user.email;
+      this.user.phoneNumber = user.phoneNumber;
+      this.user.gender = user.gender
+    });
+  }
 
   async editImg() {
     const actionSheet = await this.actionSheetController.create({
@@ -77,15 +95,15 @@ export class BioPage implements OnInit {
     await actionSheet.present();
   }
 
-  saveInformation() {
-    this.user.firstName = this.firstNameTemp;
-    this.user.lastName = this.lastNameTemp;
-    this.user.email = this.emailTemp;
-    this.user.phoneNumber = this.phoneNumberTemp;
-    this.user.gender = this.genderTemp;
-    this.editToggle = false;
-    this.authService.update(this.user);
-  }
+  // saveInformation() {
+  //   this.user.firstName = this.firstNameTemp;
+  //   this.user.lastName = this.lastNameTemp;
+  //   this.user.email = this.emailTemp;
+  //   this.user.phoneNumber = this.phoneNumberTemp;
+  //   this.user.gender = this.genderTemp;
+  //   this.editToggle = false;
+  //   this.authService.update(this.user);
+  // }
 
   editMode() {
     if(this.editToggle) {

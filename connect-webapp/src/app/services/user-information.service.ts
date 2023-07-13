@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {UserModel} from "../model/User.model";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "./auth.service";
@@ -8,6 +8,7 @@ import jwt_decode from "jwt-decode";
 import {ToastController} from "@ionic/angular";
 import {NotificationService} from "./notification.service";
 import {NotificationModel} from "../model/notification.model";
+import {AppointmentModel} from "../model/appointment.model";
 
 
 const BASE_URI = 'http://localhost:8080/api/v1/auth/user';
@@ -66,6 +67,9 @@ export class UserInformationService {
       else { this.authService.logout()}
   }
 
+  update(user: UserModel): Observable<UserModel>{
+    return this.http.put<UserModel>(`${BASE_URI}/update/${user.userId}`, user);
+  }
    getNotifications(){
     let userId;
     this.userInformation$.subscribe((user) => {userId = user.userId } )

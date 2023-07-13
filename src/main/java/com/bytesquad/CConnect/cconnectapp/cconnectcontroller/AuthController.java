@@ -3,6 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
+import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
 import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +45,10 @@ public class AuthController {
            return userService.getUser(email, role);
     }
 
-//    @PutMapping("/user/{userId}")
-//    public UserDto User(@PathVariable String userId, @RequestBody UserDto userDto){
-//        return userService.getUser(userId);
-//    }
+    @PutMapping("/user/update/{userId}")
+    public UserDto User(@PathVariable String userId, @RequestBody UserDto userDto){
+        return userService.update(userId, userDto);
+    }
 
 
 }

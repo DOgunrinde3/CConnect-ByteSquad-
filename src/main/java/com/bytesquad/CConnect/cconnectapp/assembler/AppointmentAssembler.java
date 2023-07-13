@@ -12,12 +12,13 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AppointmentAssembler {
 
-    private final UserService userService;
+    private final UserAssembler userAssembler;
+    private final StaffAssembler staffAssembler;
     public AppointmentDto assemble(Appointment appointment){
         return new AppointmentDto()
                 .setId(appointment.getId())
-                .setDoctor(userService.getStaffName(appointment.getDoctorId()))
-                .setPatient(userService.getUserName(appointment.getPatientId()))
+                .setDoctor(staffAssembler.getStaffName(appointment.getDoctorId()))
+                .setPatient(userAssembler.getUserName(appointment.getPatientId()))
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
                 .setAppointmentType(appointment.getAppointmentType())
@@ -34,8 +35,8 @@ public class AppointmentAssembler {
         LocalDate date = LocalDate.parse(appointmentDto.getAppointmentDate());
 
         return appointment
-                .setDoctorId(userService.getStaffId(appointmentDto.getDoctor()))
-                .setPatientId(userService.getUserId(appointmentDto.getPatient()))
+                .setDoctorId(staffAssembler.getStaffId(appointmentDto.getDoctor()))
+                .setPatientId(userAssembler.getUserId(appointmentDto.getPatient()))
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
                 .setAppointmentType(appointmentDto.getAppointmentType())
@@ -49,8 +50,8 @@ public class AppointmentAssembler {
 
         return appointment
                 .setId(appointmentDto.getId())
-                .setDoctorId(userService.getStaffId(appointmentDto.getDoctor()))
-                .setPatientId(userService.getUserId(appointmentDto.getPatient()))
+                .setDoctorId(staffAssembler.getStaffId(appointmentDto.getDoctor()))
+                .setPatientId(userAssembler.getUserId(appointmentDto.getPatient()))
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
                 .setAppointmentType(appointmentDto.getAppointmentType())

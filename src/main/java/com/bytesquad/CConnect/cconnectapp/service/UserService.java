@@ -10,15 +10,18 @@ import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.staff.StaffDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
+import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.entity.User;
 import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import com.bytesquad.CConnect.cconnectapp.repository.UserRepository;
 import com.mongodb.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -169,65 +172,7 @@ public class UserService {
     }
 
 
-    public String getStaffName(String doctorId){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(doctorId));
 
-        Staff staff = mongoTemplate.findOne(query, Staff.class);
-        if(staff == null){
-            throw new NotFoundException("Staff Not Found");
-        }
-
-        return String.format(staff.getFirstName() + " " + staff.getLastName());
-    }
-
-    public String getUserName(String patientId){
-        Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(patientId));
-
-        User user = mongoTemplate.findOne(query, User.class);
-
-        if(user == null){
-            throw new NotFoundException("Staff Not Found");
-        }
-
-        return String.format(user.getFirstName() + " " + user.getLastName());
-    }
-
-    public String getUserId(String patientName){
-        String[] nameParts = patientName.split(" ");
-        String firstName = nameParts[0];
-        String lastName = nameParts[1];
-        Query query = new Query();
-        query.addCriteria(Criteria.where("firstName").is(firstName));
-        query.addCriteria(Criteria.where("lastName").is(lastName));
-
-        User user = mongoTemplate.findOne(query, User.class);
-
-        if(user == null){
-            throw new NotFoundException("Staff Not Found");
-        }
-
-
-        return user.getUserId();
-    }
-
-
-    public String getStaffId(String doctorName){
-        String[] nameParts = doctorName.split(" ");
-        String firstName = nameParts[0];
-        String lastName = nameParts[1];
-        Query query = new Query();
-        query.addCriteria(Criteria.where("firstName").is(firstName));
-        query.addCriteria(Criteria.where("lastName").is(lastName));
-
-        Staff staff = mongoTemplate.findOne(query, Staff.class);
-               if(staff == null){
-                   throw new NotFoundException("Staff Not Found");
-               }
-
-        return staff.getUserId();
-    }
 
     public List<StaffDto> getAllStaff(){
         List<Staff> allStaff = staffRepository.findAll();
@@ -243,6 +188,24 @@ public class UserService {
                 .map(userAssembler::assemble)
                 .collect(Collectors.toList());
 
+    }
+
+    public UserDto update(String userId, UserDto user)
+    {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+
+        Update update = new Update()
+                .set("firstName", user.getFirstName())
+                .set("lastName", user.getLastName())
+                .set("email", user.getEmail())
+                .set("phoneNumber", user.getPhoneNumber());
+                //.set("", user.getGender());
+
+        FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
+        User updatedUser = mongoTemplate.findAndModify(query, update, options, User.class);
+        return userAssembler.assemble(updatedUser);
     }
 
 }

@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {AppointmentModel} from "../model/appointment.model";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {DoctorModel} from "../model/doctor.model";
+import {NotificationModel} from "../model/notification.model";
 
 const BASE_URI = 'http://localhost:8080/api/v1/staff';
 
@@ -11,6 +12,13 @@ const BASE_URI = 'http://localhost:8080/api/v1/staff';
 })
 
 export class StaffService{
+
+  private staffInformationSubject = new BehaviorSubject<any>(null);
+  private staffNotificationSubject = new BehaviorSubject<NotificationModel[]>(null);
+
+  staffInformation$ = this.staffInformationSubject.asObservable();
+  staffNotifications$ = this.staffNotificationSubject.asObservable();
+
   constructor(private http: HttpClient) {
   }
 
