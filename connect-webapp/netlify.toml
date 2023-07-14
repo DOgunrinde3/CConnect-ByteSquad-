@@ -1,0 +1,4 @@
+[[redirects]]
+from = "/*"
+to = "/app.component.html"
+status = 200
