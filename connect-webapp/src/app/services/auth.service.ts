@@ -76,7 +76,7 @@ export class AuthService{
 
         },
         (error) => {
-          this.presentToast("top", error.error, 'danger', 'close-outline');
+          this.presentToast("top", 'Invalid Email or Password', 'danger', 'close-outline');
           // Handle errors if necessary
         }, () => {
           this.router.navigate(["/home"]);

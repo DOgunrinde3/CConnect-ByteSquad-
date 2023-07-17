@@ -1,0 +1,19 @@
+<ion-header class="header-style">
+  <ion-toolbar>
+    <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+  </ion-toolbar>
+</ion-header>
+<div class="container">
+  <div class="info">
+    Start Time
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    End Time
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
+      </ng-template>
+    </ion-modal>  </div>
+
+</div>

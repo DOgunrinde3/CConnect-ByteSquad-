@@ -16,13 +16,15 @@ import {UserModel} from "../../model/User.model";
 
 
 @Component({
-  selector: 'app-confirm-appointment',
-  templateUrl: './confirm-appointment.page.html',
-  styleUrls: ['./confirm-appointment.page.scss'],
+  selector: 'app-confirm-time',
+  templateUrl: './confirm-time.page.html',
+  styleUrls: ['./confirm-time.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ConfirmAppointmentPage{
+
+
+export class ConfirmTimePage{
 
   options: any;
   pageReady: boolean = false;
@@ -35,6 +37,8 @@ export class ConfirmAppointmentPage{
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
+  hourValues = ['09','10','11','12','13','14','15','16','17'];
+
 
 
   constructor(public navParams: NavParams,
@@ -47,19 +51,19 @@ export class ConfirmAppointmentPage{
               private toastController: ToastController,
               private notificationService: NotificationService) {
     this.userInfoService.userInformation$.subscribe( (user) =>
-    {this.user = user}
+      {this.user = user}
     );
     if (navParams.data) {
-      this.options = navParams.data;
-       this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
-       this.selectedDate = this.options.appointment.appointmentDate;
-       this.selectedTime = this.options.appointment.appointmentTime;
-       this.selectedDoctor = this.options.selectedDoctor;
-      this.selectedService = this.options.selectedService;
-      this.doctors =this.options.doctors;
-       this.selectedDateValue = this.options.selectedDateValue;
-      this.pageReady = true;
-      this.filterSelect()
+      // this.options = navParams.data;
+      // // this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
+      // this.selectedDate = this.options.appointment.appointmentDate;
+      // this.selectedTime = this.options.appointment.appointmentTime;
+      // this.selectedDoctor = this.options.selectedDoctor;
+      // this.selectedService = this.options.selectedService;
+      // this.doctors =this.options.doctors;
+      // this.selectedDateValue = this.options.selectedDateValue;
+      // this.pageReady = true;
+      // this.filterSelect()
     }
   }
 

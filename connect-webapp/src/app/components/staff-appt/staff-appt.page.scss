@@ -25,6 +25,13 @@
   --ion-background-color: #3880ff;
 }
 
+.modal{
+  min-height: 500px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
 .title{
   display: flex;
   width: 100%;

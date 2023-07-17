@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import {FormsModule, Validators} from '@angular/forms';
-import {AlertController, IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
+import {AlertController, IonicModule, IonModal, ModalController, NavController, NavParams} from '@ionic/angular';
 import {HeaderPage} from "../header/header.page";
 import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
@@ -18,6 +18,9 @@ import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffService} from "../../services/staff.service";
 import {NotificationModel} from "../../model/notification.model";
 import {NotificationService} from "../../services/notification.service";
+import { OverlayEventDetail } from '@ionic/core/components';
+import {ConfirmTimePage} from "../confirm-time/confirm-time.page";
+
 @Component({
   selector: 'app-staff-appt',
   templateUrl: './staff-appt.page.html',
@@ -53,6 +56,10 @@ export class ManageApptStaffPage implements OnInit {
 
   // @ts-ignore
   @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
+  @ViewChild(IonModal) modal: IonModal;
+
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  name: string;
 
 
   constructor(public navCtrl: NavController,
@@ -87,7 +94,7 @@ export class ManageApptStaffPage implements OnInit {
       this.getDoctorAppointments(user?.userId);
       this.staffService.getAllStaff().subscribe((value)=> {
         this.doctors = value;
-        value.forEach( doctor => {if(doctor.userId === this.currentDoctor.userId){
+        value.forEach( doctor => {if(doctor?.userId === this.currentDoctor?.userId){
           this.selectedDoctor = doctor;
         }} )
 
@@ -95,6 +102,21 @@ export class ManageApptStaffPage implements OnInit {
 
     })
 
+  }
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirm() {
+    this.modal.dismiss("this has been confirmed", 'confirm');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      this.message = `Hello, ${ev.detail.data}!`;
+    }
   }
 
 
@@ -113,6 +135,23 @@ export class ManageApptStaffPage implements OnInit {
     }
 
     this.notificationService.updateNotification(notificationModel, false).subscribe( );
+
+  }
+
+
+  async openTimeModal() {
+
+
+    const modal = await this.modalController.create({
+      component: ConfirmTimePage,
+      componentProps: {
+
+      },
+      mode: "ios"
+    });
+    modal.present();
+
+
 
   }
 

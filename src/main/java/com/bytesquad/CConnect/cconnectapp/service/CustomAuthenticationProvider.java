@@ -2,7 +2,10 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.Response;
 
 @RequiredArgsConstructor
 @Component
@@ -39,11 +43,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
 
         if (userDetails == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new BadCredentialsException("Wrong Credentials");
         }
 
         if(!passwordEncoder.matches(password, userDetails.getPassword())){
-            throw new NotAuthorizedException("invalid password");
+            throw new BadCredentialsException("Wrong Credentials");
         }
 
 

@@ -36,7 +36,7 @@ export const routes: Routes = [
   },
   {
     path: 'staff-appointments', component: ManageApptStaffPage, canActivate: [StaffAuthGuard]
-  },
+  }
 
 
 
