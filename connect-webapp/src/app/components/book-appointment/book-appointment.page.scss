@@ -1,4 +1,4 @@
-.card-calender{
+.card-calender {
   border-radius: 5px;
   color: #000000;
   max-width: 750px;
@@ -11,7 +11,7 @@
   }
 }
 
-.filter{
+.filter {
   width: 100%;
   max-width: 750px;
   display: flex;
@@ -26,17 +26,27 @@
   justify-content: center;
   align-items: start;
   padding-bottom: 5%;
+
 }
 
-.calender-title{
+.calender-title {
   font-size: 22px;
 }
 
-ion-button{
+ion-content {
+  --background: rgba(255, 255, 255, 0.7);
+  background-image: url('../../../assets/icon/bg1.jpg') !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+
+ion-button {
   min-width: 100px;
 }
 
-.buttons{
+.buttons {
   --background-hover: #000000 !important;
 }
 
@@ -91,23 +101,23 @@ ion-modal {
   --ion-background-color: #ffffff;
 }
 
-.select-filter:hover{
+.select-filter:hover {
   --ion-background-color: #3880ff;
 }
 
-.title{
+.title {
   display: flex;
   width: 100%;
   align-items: center;
 }
 
-.select-filter:hover .select-title{
+.select-filter:hover .select-title {
   color: #ffffff !important;
 }
 
 .select-title {
   font-size: 15px !important;
-  color:#000000 !important;
+  color: #000000 !important;
   font-weight: 600 !important;
 }
 

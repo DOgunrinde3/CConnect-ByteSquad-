@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final StaffUserDetailsServiceImpl staffUserDetailsServiceImpl;
+    private final StaffUserDetailsService staffUserDetailsService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails;
         if (isStaff) {
-            userDetails = staffUserDetailsServiceImpl.loadUserByUsername(username);
+            userDetails = staffUserDetailsService.loadUserByUsername(username);
         } else {
             userDetails = userDetailsServiceImpl.loadUserByUsername(username);
         }

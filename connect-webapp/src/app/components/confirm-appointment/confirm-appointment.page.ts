@@ -22,7 +22,7 @@ import {UserModel} from "../../model/User.model";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ConfirmAppointmentPage{
+export class ConfirmAppointmentPage {
 
   options: any;
   pageReady: boolean = false;
@@ -46,18 +46,19 @@ export class ConfirmAppointmentPage{
               private userInfoService: UserInformationService,
               private toastController: ToastController,
               private notificationService: NotificationService) {
-    this.userInfoService.userInformation$.subscribe( (user) =>
-    {this.user = user}
+    this.userInfoService.userInformation$.subscribe((user) => {
+        this.user = user
+      }
     );
     if (navParams.data) {
       this.options = navParams.data;
-       this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
-       this.selectedDate = this.options.appointment.appointmentDate;
-       this.selectedTime = this.options.appointment.appointmentTime;
-       this.selectedDoctor = this.options.selectedDoctor;
+      this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
+      this.selectedDate = this.options.appointment.appointmentDate;
+      this.selectedTime = this.options.appointment.appointmentTime;
+      this.selectedDoctor = this.options.selectedDoctor;
       this.selectedService = this.options.selectedService;
-      this.doctors =this.options.doctors;
-       this.selectedDateValue = this.options.selectedDateValue;
+      this.doctors = this.options.doctors;
+      this.selectedDateValue = this.options.selectedDateValue;
       this.pageReady = true;
       this.filterSelect()
     }
@@ -66,12 +67,12 @@ export class ConfirmAppointmentPage{
 
   confirmOnClick() {
 
-    if(this.selectedService === null){
+    if (this.selectedService === null) {
       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
-    }
+    } else {
 
-    else {
+      console.log(this.selectedDate);
 
       let bookAppointment: AppointmentModel = {
         id: null,
@@ -84,18 +85,17 @@ export class ConfirmAppointmentPage{
       }
 
 
-
       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         (value) => {
 
           let notificationModel: NotificationModel = {
-            id:null,
+            id: null,
             appointment: value as AppointmentModel,
             notifiedFromId: this.user.userId,
             notifiedUserId: this.selectedDoctor?.userId,
           }
 
-          this.notificationService.createNotification(notificationModel).subscribe( );
+          this.notificationService.createNotification(notificationModel).subscribe();
 
           this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
           this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
@@ -118,10 +118,9 @@ export class ConfirmAppointmentPage{
     this.viewController.dismiss({confirm: false});
   }
 
-  filterSelect(){
+  filterSelect() {
     this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
   }
-
 
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
@@ -130,7 +129,7 @@ export class ConfirmAppointmentPage{
       duration: 1500,
       position: position,
       icon: icon,
-      color:color
+      color: color
 
     });
 

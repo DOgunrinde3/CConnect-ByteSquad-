@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class StaffUserDetailsServiceImpl implements UserDetailsService {
+public class StaffUserDetailsService implements UserDetailsService {
 
     private final MongoTemplate mongoTemplate;
 

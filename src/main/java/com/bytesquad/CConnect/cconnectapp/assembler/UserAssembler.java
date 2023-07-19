@@ -48,14 +48,15 @@ public class UserAssembler {
     }
 
 
-    public String getUserName(String patientId) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(patientId));
+    public String getUserName(String userId) {
+        Query userQuery = new Query();
+        userQuery.addCriteria(Criteria.where("userId").is(userId));
 
-        User user = mongoTemplate.findOne(query, User.class);
+        User user = mongoTemplate.findOne(userQuery, User.class);
+
 
         if (user == null) {
-            throw new NotFoundException("Staff Not Found");
+            throw new NotFoundException("User Not Found");
         }
 
         return String.format(user.getFirstName() + " " + user.getLastName());
@@ -65,14 +66,14 @@ public class UserAssembler {
         String[] nameParts = patientName.split(" ");
         String firstName = nameParts[0];
         String lastName = nameParts[1];
-        Query query = new Query();
-        query.addCriteria(Criteria.where("firstName").is(firstName));
-        query.addCriteria(Criteria.where("lastName").is(lastName));
+        Query userIdQuery = new Query();
+        userIdQuery.addCriteria(Criteria.where("firstName").is(firstName));
+        userIdQuery.addCriteria(Criteria.where("lastName").is(lastName));
 
-        User user = mongoTemplate.findOne(query, User.class);
+        User user = mongoTemplate.findOne(userIdQuery, User.class);
 
         if (user == null) {
-            throw new NotFoundException("Staff Not Found");
+            throw new NotFoundException("User Not Found");
         }
 
 

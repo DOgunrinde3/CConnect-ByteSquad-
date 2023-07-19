@@ -1,6 +1,6 @@
 <ion-header class="header-style">
   <ion-toolbar>
-    <ion-img src="/assets/logo-transparent-png.png" class="logo"> </ion-img>
+    <ion-img class="logo" src="/assets/logo-transparent-png.png"></ion-img>
   </ion-toolbar>
 </ion-header>
 <div class="container">
@@ -12,20 +12,39 @@
 
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime [(ngModel)]="dates"  id="startDatetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
-        <ion-datetime [(ngModel)]="dates"  id="endDatetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
+        <ion-datetime [(ngModel)]="startDatetime" [preferWheel]="true" hourCycle="h12" hourValues="09,10,11,0,1,2,3,4,5"
+                      id="startDatetime"
+                      minTime="09:00"
+                      minuteValues="0"
+                      presentation="date-time"
+                      value="startDatetime"></ion-datetime>
 
       </ng-template>
-    </ion-modal>  </div>
+    </ion-modal>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime [(ngModel)]="endDatetime" [preferWheel]="true" hourCycle="h12" hourValues="09,10,11,0,1,2,3,4,5"
+                      id="endDatetime"
+                      minTime="09:00"
+                      minuteValues="0"
+                      presentation="date-time"
+
+                      value="endDatetime"></ion-datetime>
+
+      </ng-template>
+    </ion-modal>
+
+  </div>
 
 
   <div class="confirm">
 
-    <ion-button color="success" mode="ios" (click)="confirmOnClick()" >{{ 'CONFIRM' }}
+    <ion-button (click)="confirmOnClick()" color="success" disabled="{{!canConfirm()}}" mode="ios">{{ 'CONFIRM' }}
       <ion-icon name="arrow-forward"></ion-icon>
     </ion-button>
 
-    <ion-button ion-button round icon-right color="danger" mode="ios" (click)="cancelOnClick()">{{ 'CANCEL' }}
+    <ion-button (click)="cancelOnClick()" color="danger" icon-right ion-button mode="ios" round>{{ 'CANCEL' }}
     </ion-button>
   </div>
 

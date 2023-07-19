@@ -49,7 +49,7 @@ public class UserService {
     private final CustomAuthenticationProvider authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final StaffUserDetailsServiceImpl staffUserDetailsServiceImpl;
+    private final StaffUserDetailsService staffUserDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     private String ROLE_USER = "ROLE_USER";
@@ -67,7 +67,7 @@ public class UserService {
             );
 
             if (isStaff) {
-                UserDetails staffDetails = staffUserDetailsServiceImpl.loadUserByUsername(loginDto.getEmail());
+                UserDetails staffDetails = staffUserDetailsService.loadUserByUsername(loginDto.getEmail());
                 token = jwtTokenUtil.generateToken(staffDetails, true);
 
             } else {

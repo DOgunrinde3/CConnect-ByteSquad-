@@ -1,4 +1,4 @@
-.card-calender{
+.card-calender {
   border-radius: 5px;
   color: #000000;
   max-width: 750px;
@@ -13,6 +13,7 @@
     padding-top: 10px !important;
   }
 }
+
 .select-filter {
   display: flex;
   width: 100%;
@@ -21,61 +22,72 @@
   --ion-background-color: #ffffff;
 }
 
-.select-filter:hover{
+.select-filter:hover {
   --ion-background-color: #3880ff;
 }
 
-.modal{
+.modal {
   min-height: 500px;
   display: flex;
   align-content: center;
   justify-content: center;
 }
 
-.title{
+.title {
   display: flex;
   width: 100%;
   align-items: center;
 }
 
-.select-filter:hover .select-title{
+.select-filter:hover .select-title {
   color: #ffffff !important;
 }
 
 .select-title {
   font-size: 15px !important;
-  color:#000000 !important;
+  color: #000000 !important;
   font-weight: 600 !important;
 }
 
-.filter{
+.filter {
   width: 100%;
   max-width: 750px;
   display: flex;
   padding-top: 5%;
   justify-content: center;
 }
+
 .container {
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: start;
   padding-bottom: 5%;
+
 }
 
-.date{
+ion-content {
+  --background: rgba(255, 255, 255, 0.7);
+  background-image: url('../../../assets/icon/bg1.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.date {
   color: #3880ff;
 }
-.calender-title{
+
+.calender-title {
   font-size: 22px;
 }
 
-ion-button{
+ion-button {
   min-width: 100px;
 }
 
 
-.status{
+.status {
   padding: 5px !important;
   font-size: .9em;
   display: flex;
@@ -83,12 +95,13 @@ ion-button{
   border: #0d0d0d 1px solid;
   border-radius: 5px;
 }
-.noappointment{
+
+.noappointment {
   padding: 1%;
   padding-bottom: 25px;
 }
 
-.buttons:hover{
+.buttons:hover {
   --ion-background-color: #000000;
 }
 
@@ -146,7 +159,7 @@ ion-modal {
   transition: .15s ease;
 }
 
-.event-detail-container{
+.event-detail-container {
   --ion-background-color: #ffffff !important;
 }
 

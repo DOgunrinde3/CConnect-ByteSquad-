@@ -1,17 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController,} from '@ionic/angular';
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {AppointmentService} from "../../services/appointment.service";
 import {DoctorModel} from "../../model/doctor.model";
-import {AppointmentModel} from "../../model/appointment.model";
 import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
-import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import {NotificationService} from "../../services/notification.service";
-import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
+import {format, parseISO} from 'date-fns'
 import {UserModel} from "../../model/User.model";
 
 
@@ -24,24 +22,22 @@ import {UserModel} from "../../model/User.model";
 })
 
 
-export class ConfirmTimePage{
+export class ConfirmTimePage implements OnInit {
 
   options: any;
   pageReady: boolean = false;
   formattedDate: any;
   user: UserModel;
-  startDatetime: any;
-  endDatetime: any;
+  startDatetime = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
+  endDatetime = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
   selectedTime: any;
   selectedDateValue: Date;
   selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
-  dates: [];
   appointmentTypes = Object.values(AppointmentTypeEnum);
-  hourValues = ['09','10','11','12','13','14','15','16','17'];
-
-
+  hourValues = ['09', '10', '11', '12', '13', '14', '15', '16', '17'];
+  protected readonly Date = Date;
 
   constructor(public navParams: NavParams,
               public viewController: ModalController,
@@ -52,8 +48,9 @@ export class ConfirmTimePage{
               private userInfoService: UserInformationService,
               private toastController: ToastController,
               private notificationService: NotificationService) {
-    this.userInfoService.userInformation$.subscribe( (user) =>
-      {this.user = user}
+    this.userInfoService.userInformation$.subscribe((user) => {
+        this.user = user
+      }
     );
 
     if (navParams.data) {
@@ -70,32 +67,45 @@ export class ConfirmTimePage{
     }
   }
 
-
-
-
   cancelOnClick() {
     this.presentToast("top", "Cancelled", 'danger', 'close-outline');
     this.viewController.dismiss({confirm: false});
   }
 
-  confirmOnClick(){
-    this.appointmentService.createAppointmentFromRange(this.startDatetime, this.endDatetime);
+  ngOnInit() {
+    format(parseISO(this.startDatetime), 'yyyy-MM-dd, HH:mm a');
+    format(parseISO(this.endDatetime), 'yyyy-MM-dd, HH:mm a');
+  }
+
+  confirmOnClick() {
+
+
+    const appointments = [];
+    const startTime = format(parseISO(this.startDatetime), 'yyyy-MM-dd, HH:mm a');
+
+    console.log(this.startDatetime + " " + startTime);
+
+
+    this.appointmentService.createAppointmentFromRange(null);
   }
 
 
+  canConfirm(): boolean {
+    const startTime = new Date(this.startDatetime);
+    const endTime = new Date(this.endDatetime);
+    return startTime < endTime;
+  }
 
-    async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
     const toast = await this.toastController.create({
       message: message,
       duration: 1500,
       position: position,
       icon: icon,
-      color:color
+      color: color
 
     });
 
     await toast.present();
   }
-
-  protected readonly Date = Date;
 }
