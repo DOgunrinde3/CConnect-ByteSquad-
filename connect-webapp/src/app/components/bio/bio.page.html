@@ -1,6 +1,5 @@
 <app-header></app-header>
   <ion-content  *ngIf="isAuthenticated" [fullscreen]="true">
-
   <div class="blank">
     <ion-toggle [(ngModel)]="editToggle" (ionChange)="editMode()">EDIT</ion-toggle>
   </div>
@@ -10,51 +9,81 @@
       <ion-row>
         <ion-col class="profileCol" size-xs="12" size-sm="4.7" size-lg="4.7">
           <div class="profileImg">
-            <ion-img [class.imgDefault]="!editToggle" [class.imgEdit]="editToggle" (click)="editImg()" [src]="photo"></ion-img>
-            <!--<div class="edit-overlay" *ngIf="editToggle">Edit</div>-->
+            <ion-img [class.imgDefault]="!editToggle" [class.imgEdit]="editToggle"  [src]="photo"></ion-img>
             <ion-icon name="pencil" class="pencilIcon" *ngIf="editToggle"></ion-icon>
           </div>
         </ion-col>
         <ion-col class="gapCol" size-xs="0" size-sm="0.5" size-lg="0.5"></ion-col>
         <ion-col  class="titleCol" size-xs="12" size-sm="6.8" size-lg="6.8">
-          <br/><br/><br/><br/><br/>
-          <div class="title"*ngIf="editToggle" >
-            <ion-input [(ngModel)]="firstNameTemp" placeholder="First Name"></ion-input>
-            <ion-input [(ngModel)]="lastNameTemp" placeholder="Last Name"></ion-input>
+          <br/><br/><br/><br/><br/><br/>
+          <div class="title" *ngIf="editToggle" >
+            <ion-input [(ngModel)]="firstNameTemp" placeholder="First Name" (ionInput)="validateFirstName()"></ion-input>
+            <ion-input [(ngModel)]="lastNameTemp" placeholder="Last Name" (ionInput)="validateLastName()"></ion-input>
+          </div>
+
+          <div class="custom-div ion-hide-sm-down" *ngIf="editToggle">
+            <ion-label *ngIf="!firstNameValid" color="danger" class="errorLabelT fade-in-label" ><ion-icon name="alert-circle-outline" color="danger"></ion-icon> First Name is required</ion-label>
+          </div>
+          <div class="custom-div ion-hide-sm-down" *ngIf="editToggle">
+
+            <ion-label *ngIf="!lastNameValid" color="danger" class="errorLabelT fade-in-label"><ion-icon name="alert-circle-outline"color="danger"></ion-icon> Last Name is required</ion-label>
           </div>
           <div class="title" *ngIf="!editToggle">{{ user?.firstName }} {{ user?.lastName}}</div>
+        </ion-col>
+        <ion-col size-xs="12" >
+          <div *ngIf="editToggle" class="custom-div ion-hide-sm-up">
+            <ion-icon *ngIf="!firstNameValid" name="alert-circle-outline" class="alert-icon1" color="danger"></ion-icon>
+            <ion-label *ngIf="!firstNameValid" color="danger" class="error-label fade-in-label" >First Name is required</ion-label>
+          </div>
+          <div *ngIf="editToggle" class="custom-div ion-hide-sm-up">
+            <ion-icon *ngIf="!lastNameValid" name="alert-circle-outline" class="alert-icon1" color="danger"></ion-icon>
+            <ion-label *ngIf="!lastNameValid" color="danger" class="error-label fade-in-label">Last Name is required</ion-label>
+          </div>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size-xs="1.8" size-sm="5.2" size-lg="5.2"></ion-col>
-        <ion-col class="info1Col" size-xs="2.7" size-sm="1.5" size-lg="1">
-          <p>Email: </p> <br/>
-          <p>Phone: </p> <br/>
-          <p>Gender: </p>
-        </ion-col>
-        <ion-col  class="info2Col" size-xs="7.5" size-sm="5.3" size-lg="5.8">
-          <div *ngIf="editToggle">
-            <ion-input [(ngModel)]="emailTemp" class="emailInput" placeholder="Email"></ion-input>
-            <ion-input [(ngModel)]="phoneNumberTemp" class="pNumberInput" placeholder="Phone Number"></ion-input>
-            <ion-input [(ngModel)]="genderTemp" placeholder="Gender"></ion-input>
-          </div>
-          <div *ngIf="!editToggle">
-            <p> {{ user?.email }}  </p> <br/>
-            <p> {{ user?.phoneNumber }} </p>  <br/>
-            <p> {{ user?.gender }} </p> <br/>
 
-          </div>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-xs="1.4" size-sm="5.2" size-lg="5.2"></ion-col>
+
+        <ion-col  size-xs="9.6" size-sm="5" size-lg="5">
+          <ion-item lines="none" >
+            <ion-label position="static"> Email: </ion-label>
+            <div *ngIf="!editToggle" class="field">
+              {{ user?.email }}
+            </div>
+            <ion-input [(ngModel)]="emailTemp" class="align-right" *ngIf="editToggle"  placeholder="email@domain.com" (ionInput)="validateEmail()" ></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!emailValid && editToggle" lines="none">
+            <ion-label  color="danger" class="fade-in-label errorLabel" > <ion-icon  name="alert-circle-outline" color="danger">
+            </ion-icon> Please enter a valid email</ion-label>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-label position="static"> Phone Number: </ion-label>
+            <div *ngIf="!editToggle" class="field">
+              {{ user?.phoneNumber }}
+            </div>
+            <ion-input [(ngModel)]="phoneNumberTemp" class="align-right" *ngIf="editToggle"  placeholder="xxxxxxxxxx" (ionInput)="validatePhoneNumber()"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!phoneNumberValid && editToggle" lines="none">
+            <ion-label color="danger" class="fade-in-label errorLabel"><ion-icon  name="alert-circle-outline"  color="danger">
+            </ion-icon> Please enter a valid phone number</ion-label>
+          </ion-item>
+
         </ion-col>
+        <ion-col size-xs="1" size-sm="1.8" size-lg="1.8"></ion-col>
       </ion-row>
 
     <div *ngIf="editToggle" class="saveButton">
-      <ion-button (click)="update(user, firstNameTemp, lastNameTemp, emailTemp, phoneNumberTemp, genderTemp)">Save</ion-button>
+      <ion-button [disabled]="!firstNameValid || !lastNameValid || !phoneNumberValid || !emailValid" (click)="update(user, firstNameTemp, lastNameTemp, emailTemp, phoneNumberTemp)">Update</ion-button>
     </div>
     <div class="blank"></div>
 
   </ion-grid>
-
 </ion-content>
 
 <app-footer></app-footer>

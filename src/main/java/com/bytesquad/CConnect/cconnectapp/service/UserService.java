@@ -200,7 +200,6 @@ public class UserService {
                 .set("lastName", user.getLastName())
                 .set("email", user.getEmail())
                 .set("phoneNumber", user.getPhoneNumber());
-                //.set("", user.getGender());
 
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 

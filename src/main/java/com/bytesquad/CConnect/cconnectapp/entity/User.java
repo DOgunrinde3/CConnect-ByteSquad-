@@ -1,6 +1,5 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
-import com.bytesquad.CConnect.cconnectapp.enums.Gender;
 import lombok.*;
 
 import lombok.experimental.Accessors;
@@ -9,8 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -28,7 +25,6 @@ public class User {
     private String phoneNumber;
     @Indexed(unique=true)
     private String email;
-    private Gender gender;
     private LocalDate birthdate;
     private String password;
 

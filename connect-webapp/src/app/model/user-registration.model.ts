@@ -5,5 +5,4 @@ export class UserRegistrationModel {
   email: string;
   password: string;
   birthDate: string;
-  gender: string;
 }

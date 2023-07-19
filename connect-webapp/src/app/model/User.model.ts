@@ -5,5 +5,4 @@ export class UserModel {
   phoneNumber: string;
   birthDate: Date;
   email: string;
-  gender: string;
 }

@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IonicModule, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { IonCardContent, IonicModule, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -11,6 +11,8 @@ import {HeaderPage} from "../header/header.page";
 import {ConfirmAppointmentPage} from "../confirm-appointment/confirm-appointment.page";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffRegistrationModel} from "../../model/staff-registration.model";
+import type { Animation } from '@ionic/angular';
+import { AnimationController, IonCard } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup-client',
@@ -23,6 +25,15 @@ export class StaffSignupClient implements OnInit {
 
 
   staffRegistrationForm: FormGroup;
+  activeBreadcrumb: string = 'intro';
+  showPassword = false;
+  emailValid: boolean = true;
+  phoneNumberValid: boolean = true;
+
+  @ViewChild(IonCardContent , { read: ElementRef }) card: ElementRef<HTMLIonCardElement>;
+
+  private animation1: Animation;
+  private animation2: Animation;
 
   appointmentTypes = Object.values(AppointmentTypeEnum);
 
@@ -32,10 +43,30 @@ export class StaffSignupClient implements OnInit {
               private platform: Platform,
               private navCtrl: NavController,
               private userInformationService: UserInformationService,
-              private toastController: ToastController) {
+              private toastController: ToastController,
+              private animationCtrl: AnimationController) {
+  }
 
+  ngAfterViewInit() {
+    this.animation1 = this.animationCtrl
+      .create()
+      .addElement(this.card.nativeElement)
+      .duration(300)
+      .iterations(1)
+      .fromTo('transform', 'translateX(0px)', 'translateX(-70px)')
+      .fromTo('opacity', '1', '0')
+      .fromTo('transform', 'translateX(70px)', 'translateX(0px)')
+      .fromTo('opacity', '0', '1');
 
-
+    this.animation2 = this.animationCtrl
+      .create()
+      .addElement(this.card.nativeElement)
+      .duration(300)
+      .iterations(1)
+      .fromTo('transform', 'translateX(0px)', 'translateX(70px)')
+      .fromTo('opacity', '1', '0')
+      .fromTo('transform', 'translateX(-70px)', 'translateX(0px)')
+      .fromTo('opacity', '0', '1');
   }
 
   ngOnInit(){
@@ -46,16 +77,27 @@ export class StaffSignupClient implements OnInit {
       experience: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
       birthdate: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
       services: ['', [Validators.required]],
-
-
     });
-
   }
 
+  validateEmail() {
+    this.emailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.email?.value);
+  }
 
+  validatePhoneNumber() {
+    this.phoneNumberValid = /^\d{10}$/.test(this.phoneNumber?.value);
+  }
+
+  getName(){
+    return this.showPassword ? 'eye-outline' : 'eye-off-outline'
+  }
+
+  getType(){
+    return this.showPassword ? 'text' : 'password'
+  }
 
   get email() {
     return this.staffRegistrationForm.get('email');
@@ -94,17 +136,44 @@ export class StaffSignupClient implements OnInit {
     return this.staffRegistrationForm.get('services');
   }
 
+  get confirmPassword() {
+    return this.staffRegistrationForm.get('confirmPassword');
+  }
 
+  toggleShowPassword(){
+    this.showPassword = !this.showPassword;
+  }
 
-  // passwordMatch(): boolean {
-  //   return this.password?.value !== this.confirmPassword?.value;
-  // }
+  passwordMatch(): boolean {
+    return this.password?.value == this.confirmPassword?.value;
+  }
+
+  goToNext() {
+    this.animation1.play();
+    if (this.activeBreadcrumb === 'intro') {
+      this.activeBreadcrumb = 'contacts';
+    } else if (this.activeBreadcrumb === 'contacts') {
+      this.activeBreadcrumb = 'id';
+    } else if (this.activeBreadcrumb === 'id') {
+      this.activeBreadcrumb = 'password';
+    }
+  }
+
+  goToPrevious() {
+    this.animation2.play();
+    if (this.activeBreadcrumb === 'contacts') {
+      this.activeBreadcrumb = 'intro';
+    } else if (this.activeBreadcrumb === 'id') {
+      this.activeBreadcrumb = 'contacts';
+    } else if (this.activeBreadcrumb === 'password') {
+      this.activeBreadcrumb = 'id';
+    }
+  }
 
   register(): void {
 
     const staffRegistrationInformation =  this.staffRegistrationForm.getRawValue() as StaffRegistrationModel;
 
-    // Perform registration logic here
     this.authService.registerStaff(staffRegistrationInformation).subscribe(
       () =>{
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");

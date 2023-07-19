@@ -12,5 +12,4 @@ public class UserRegistrationDto {
     private String email;
     private String password;
     private String birthdate;
-    private String gender;
 }
