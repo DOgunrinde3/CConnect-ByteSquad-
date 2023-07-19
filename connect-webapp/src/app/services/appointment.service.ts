@@ -41,6 +41,11 @@ export class AppointmentService {
 
   }
 
+  createAppointmentFromRange(before: Date, after:Date){
+console.log(before);
+    console.log(after);
+}
+
   update(appointment: AppointmentModel): Observable<AppointmentModel>{
     return this.http.put<AppointmentModel>(`${BASE_URI}/update/${appointment.id}`, appointment);
   }

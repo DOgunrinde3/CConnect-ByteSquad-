@@ -30,7 +30,8 @@ export class ConfirmTimePage{
   pageReady: boolean = false;
   formattedDate: any;
   user: UserModel;
-  selectedDate: any;
+  startDatetime: any;
+  endDatetime: any;
   selectedTime: any;
   selectedDateValue: Date;
   selectedService = null;
@@ -70,67 +71,20 @@ export class ConfirmTimePage{
   }
 
 
-  confirmOnClick() {
 
-    if(this.selectedService === null){
-      this.presentToast("top", "Please select a service", 'danger', 'close-outline');
-
-    }
-
-    else {
-
-      let bookAppointment: AppointmentModel = {
-        id: null,
-        doctor: this.selectedDoctor === null ? null : this.selectedDoctor?.firstName + " " + this.selectedDoctor?.lastName,
-        patient: this.user?.firstName + " " + this.user?.lastName,
-        appointmentDate: this.selectedDate,
-        appointmentTime: this.selectedTime,
-        appointmentType: this.selectedService,
-        appointmentStatus: AppointmentStatusEnum.PENDING
-      }
-
-
-
-      this.appointmentService.bookAppointment(bookAppointment).subscribe(
-        (value) => {
-
-          let notificationModel: NotificationModel = {
-            id:null,
-            appointment: value as AppointmentModel,
-            notifiedFromId: this.user.userId,
-            notifiedUserId: this.selectedDoctor?.userId,
-          }
-
-          this.notificationService.createNotification(notificationModel).subscribe( );
-
-          this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
-          this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
-
-        },
-        error => {
-          this.presentToast("top", error.message, 'danger', 'close-outline');
-          // Handle errors if necessary
-        }
-      )
-      this.viewController.dismiss({confirm: true});
-
-
-    }
-
-  }
 
   cancelOnClick() {
     this.presentToast("top", "Cancelled", 'danger', 'close-outline');
     this.viewController.dismiss({confirm: false});
   }
 
-  filterSelect(){
-    console.log(this.dates);
+  confirmOnClick(){
+    this.appointmentService.createAppointmentFromRange(this.startDatetime, this.endDatetime);
   }
 
 
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
+    async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
     const toast = await this.toastController.create({
       message: message,
       duration: 1500,
@@ -143,4 +97,5 @@ export class ConfirmTimePage{
     await toast.present();
   }
 
+  protected readonly Date = Date;
 }

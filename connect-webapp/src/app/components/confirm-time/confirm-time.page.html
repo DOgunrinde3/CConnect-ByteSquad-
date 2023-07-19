@@ -6,14 +6,27 @@
 <div class="container">
   <div class="info">
     Start Time
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
     End Time
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
 
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime [(ngModel)]="dates" (click)="filterSelect()" id="datetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
+        <ion-datetime [(ngModel)]="dates"  id="startDatetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
+        <ion-datetime [(ngModel)]="dates"  id="endDatetime" minuteValues="0" hourCycle="h12" minTime="09:00" hourValues="09,10,11,0,1,2,3,4,5"></ion-datetime>
+
       </ng-template>
     </ion-modal>  </div>
+
+
+  <div class="confirm">
+
+    <ion-button color="success" mode="ios" (click)="confirmOnClick()" >{{ 'CONFIRM' }}
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-button>
+
+    <ion-button ion-button round icon-right color="danger" mode="ios" (click)="cancelOnClick()">{{ 'CANCEL' }}
+    </ion-button>
+  </div>
 
 </div>
