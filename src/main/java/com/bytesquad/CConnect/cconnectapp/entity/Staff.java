@@ -1,12 +1,15 @@
 package com.bytesquad.CConnect.cconnectapp.entity;
 
-import lombok.*;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +27,7 @@ public class Staff {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    @Indexed(unique=true)
+    @Indexed(unique = true)
     private String email;
     private LocalDate birthdate;
     private String password;
@@ -32,8 +35,7 @@ public class Staff {
     private List<String> services;
 
 
-
-    public static Staff newInstance(){
+    public static Staff newInstance() {
         Staff newInstance = new Staff();
         newInstance.userId = UUID.randomUUID().toString();
         return newInstance;

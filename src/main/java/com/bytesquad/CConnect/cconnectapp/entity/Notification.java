@@ -25,7 +25,7 @@ public class Notification {
     private String notifiedFromId;
 
 
-    public static Notification newInstance(){
+    public static Notification newInstance() {
         Notification newInstance = new Notification();
         newInstance.notificationId = UUID.randomUUID().toString();
         return newInstance;

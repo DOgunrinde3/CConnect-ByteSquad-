@@ -2,7 +2,6 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.assembler.AppointmentAssembler;
 import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
-import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
@@ -14,11 +13,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.NotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,23 +31,23 @@ public class AppointmentService {
 
     private final StaffAssembler staffAssembler;
 
-    public AppointmentDto book(AppointmentDto appointmentDto){
+    public AppointmentDto book(AppointmentDto appointmentDto) {
 
-        if(appointmentDto.getDoctor() == null){
-           appointmentDto.setDoctor(getRandomAvailableDoctor(appointmentDto));
+        if (appointmentDto.getDoctor() == null) {
+            appointmentDto.setDoctor(getRandomAvailableDoctor(appointmentDto));
         }
 
         Appointment appointment = appointmentAssembler.disassemble(appointmentDto);
 
-            appointmentRepository.insert(appointment);
+        appointmentRepository.insert(appointment);
 
         return appointmentAssembler.assemble(appointment);
 
     }
 
-    public List<AppointmentDto> getAllUserAppointments(String userid){
+    public List<AppointmentDto> getAllUserAppointments(String userid) {
 
-        if(userid.isEmpty() || userid == null){
+        if (userid.isEmpty() || userid == null) {
             return List.of();
         }
         Query query = new Query();
@@ -63,7 +59,7 @@ public class AppointmentService {
 
     }
 
-    public List<AppointmentDto> getAppointmentsByDoctor(String doctorId){
+    public List<AppointmentDto> getAppointmentsByDoctor(String doctorId) {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("doctorId").is(doctorId));
@@ -73,7 +69,7 @@ public class AppointmentService {
         return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
     }
 
-    public AppointmentDto update(String appointmentId, AppointmentDto appointment){
+    public AppointmentDto update(String appointmentId, AppointmentDto appointment) {
         Query query = new Query();
         query.addCriteria(Criteria.where("Id").is(appointmentId));
 
@@ -82,12 +78,11 @@ public class AppointmentService {
 
         Appointment updatedAppointment = mongoTemplate.findAndModify(query, update, options, Appointment.class);
 
-       return appointmentAssembler.assemble(updatedAppointment);
+        return appointmentAssembler.assemble(updatedAppointment);
     }
 
-    private String getRandomAvailableDoctor(AppointmentDto appointmentDto){
-      List<Staff> allDoctors = mongoTemplate.findAll(Staff.class);
-
+    private String getRandomAvailableDoctor(AppointmentDto appointmentDto) {
+        List<Staff> allDoctors = mongoTemplate.findAll(Staff.class);
 
 
         Query query = new Query();
@@ -99,12 +94,12 @@ public class AppointmentService {
                 .map(Appointment::getDoctorId)
                 .collect(Collectors.toSet());
 
-      return staffAssembler.getStaffName(allDoctors
-              .stream()
-              .filter( staff -> !unAvailableDoctors.contains(staff.getUserId()) && staff.getServices().contains(appointmentDto.getAppointmentType()))
-              .findFirst()
-              .orElseThrow(NotFoundException::new)
-              .getUserId());
+        return staffAssembler.getStaffName(allDoctors
+                .stream()
+                .filter(staff -> !unAvailableDoctors.contains(staff.getUserId()) && staff.getServices().contains(appointmentDto.getAppointmentType()))
+                .findFirst()
+                .orElseThrow(NotFoundException::new)
+                .getUserId());
 
 
     }

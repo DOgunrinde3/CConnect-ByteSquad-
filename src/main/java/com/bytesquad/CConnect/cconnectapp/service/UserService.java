@@ -2,9 +2,9 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 
 import com.bytesquad.CConnect.cconnectapp.assembler.StaffAssembler;
+import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.configuration.JwtResponse;
 import com.bytesquad.CConnect.cconnectapp.configuration.JwtTokenUtil;
-import com.bytesquad.CConnect.cconnectapp.assembler.UserAssembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
@@ -29,7 +29,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-//import repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,9 +38,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-  private final MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final StaffAssembler staffAssembler;
 
@@ -57,10 +56,7 @@ public class UserService {
     private String ROLE_STAFF = "ROLE_STAFF";
 
 
-
-
     private LocalDate minYear = LocalDate.now().minusYears(18);
-
 
 
     public ResponseEntity<?> login(LoginDto loginDto, boolean isStaff) {
@@ -70,14 +66,13 @@ public class UserService {
                     new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()), isStaff
             );
 
-            if(isStaff){
+            if (isStaff) {
                 UserDetails staffDetails = staffUserDetailsServiceImpl.loadUserByUsername(loginDto.getEmail());
                 token = jwtTokenUtil.generateToken(staffDetails, true);
 
-            }
-            else {
+            } else {
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDto.getEmail());
-                 token = jwtTokenUtil.generateToken(userDetails, false);
+                token = jwtTokenUtil.generateToken(userDetails, false);
 
             }
 
@@ -88,10 +83,9 @@ public class UserService {
     }
 
 
-
-    public ResponseEntity<?> registerUser(UserRegistrationDto userRegistrationDto){
-         User user = userAssembler.disassemble(userRegistrationDto);
-        if(!isUserOldEnough(user.getBirthdate())){
+    public ResponseEntity<?> registerUser(UserRegistrationDto userRegistrationDto) {
+        User user = userAssembler.disassemble(userRegistrationDto);
+        if (!isUserOldEnough(user.getBirthdate())) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is too young");
         }
 
@@ -105,17 +99,17 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
 
-            LoginDto login = new LoginDto().setEmail(user.getEmail()).setPassword(user.getPassword());
+        LoginDto login = new LoginDto().setEmail(user.getEmail()).setPassword(user.getPassword());
 
-       return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.ok(HttpStatus.CREATED);
 
     }
 
 
-    public ResponseEntity<?> registerStaff(StaffRegistrationDto staffRegistrationDto){
+    public ResponseEntity<?> registerStaff(StaffRegistrationDto staffRegistrationDto) {
         Staff staff = staffAssembler.disassemble(staffRegistrationDto);
 
-        if(isUserOldEnough(staff.getBirthdate()) == false){
+        if (isUserOldEnough(staff.getBirthdate()) == false) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is too young");
         }
 
@@ -136,29 +130,27 @@ public class UserService {
 
     }
 
-    public boolean isUserOldEnough(LocalDate birthdate){
-        if(birthdate.isAfter(minYear) || birthdate.isEqual(minYear) ){
+    public boolean isUserOldEnough(LocalDate birthdate) {
+        if (birthdate.isAfter(minYear) || birthdate.isEqual(minYear)) {
             return false;
         }
 
         return true;
     }
 
-    public String encryptPassword(String password){
+    public String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
 
 
-    public ResponseEntity<?> getUser(String email, String role){
+    public ResponseEntity<?> getUser(String email, String role) {
         Query query = new Query();
         query.addCriteria(Criteria.where("email").is(email));
 
-        if(role.equals(ROLE_USER)){
+        if (role.equals(ROLE_USER)) {
             User user = mongoTemplate.findOne(query, User.class);
             return ResponseEntity.ok(userAssembler.assemble(user));
-        }
-
-        else if(role.equals(ROLE_STAFF)){
+        } else if (role.equals(ROLE_STAFF)) {
             Staff staff = mongoTemplate.findOne(query, Staff.class);
             return ResponseEntity.ok(staffAssembler.assemble(staff));
         }
@@ -168,9 +160,7 @@ public class UserService {
     }
 
 
-
-
-    public List<StaffDto> getAllStaff(){
+    public List<StaffDto> getAllStaff() {
         List<Staff> allStaff = staffRepository.findAll();
         return allStaff.stream()
                 .map(staffAssembler::assemble)
@@ -178,7 +168,7 @@ public class UserService {
 
     }
 
-    public List<UserDto> getAllUser(){
+    public List<UserDto> getAllUser() {
         List<User> allUsers = userRepository.findAll();
         return allUsers.stream()
                 .map(userAssembler::assemble)
@@ -186,8 +176,7 @@ public class UserService {
 
     }
 
-    public UserDto update(String userId, UserDto user)
-    {
+    public UserDto update(String userId, UserDto user) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
 
@@ -202,7 +191,6 @@ public class UserService {
         User updatedUser = mongoTemplate.findAndModify(query, update, options, User.class);
         return userAssembler.assemble(updatedUser);
     }
-
 
 
 }

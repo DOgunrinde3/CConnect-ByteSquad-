@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
-@Service("staffUserDetailsServiceImpl")
+@Service
 @RequiredArgsConstructor
 public class StaffUserDetailsServiceImpl implements UserDetailsService {
 
@@ -25,12 +25,11 @@ public class StaffUserDetailsServiceImpl implements UserDetailsService {
         Query query = new Query();
         query.addCriteria(Criteria.where("email").is(email));
 
-            Staff staff = mongoTemplate.findOne(query, Staff.class);
+        Staff staff = mongoTemplate.findOne(query, Staff.class);
 
         if (staff == null) {
             throw new UsernameNotFoundException("Staff not found");
         }
-
 
 
         // Create and return an instance of your UserDetails implementation (e.g., CustomUserDetails)

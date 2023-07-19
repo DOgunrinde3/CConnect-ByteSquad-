@@ -39,10 +39,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Wrong Credentials");
         }
 
-        if(!passwordEncoder.matches(password, userDetails.getPassword())){
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Wrong Credentials");
         }
-
 
 
         Authentication authenticatedToken;
@@ -60,7 +59,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    public Authentication authenticate(Authentication authentication, boolean isStaff){
+    public Authentication authenticate(Authentication authentication, boolean isStaff) {
         this.isStaff = isStaff;
         return authenticate(authentication);
     }

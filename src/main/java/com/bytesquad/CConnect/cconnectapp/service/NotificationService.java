@@ -83,7 +83,7 @@ public class NotificationService {
                 Query delete = new Query();
                 delete.addCriteria(Criteria.where("notificationId").is(notification.getNotificationId()));
                 mongoTemplate.remove(delete, Notification.class);
-            iterator.remove(); // Remove the deleted notification from the list
+                iterator.remove(); // Remove the deleted notification from the list
             }
 
 

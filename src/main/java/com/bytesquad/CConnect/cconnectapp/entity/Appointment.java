@@ -26,7 +26,7 @@ public class Appointment {
     private String id;
     private String doctorId;
     private String patientId;
-    @Indexed(name="date", expireAfterSeconds=3600)
+    @Indexed(name = "date", expireAfterSeconds = 3600)
     private LocalDate date;
     private String time;
     //these should be an enum but I dont have time
@@ -34,8 +34,7 @@ public class Appointment {
     private String appointmentStatus;
 
 
-
-    public static Appointment newInstance(){
+    public static Appointment newInstance() {
         Appointment newInstance = new Appointment();
         newInstance.id = UUID.randomUUID().toString();
         return newInstance;

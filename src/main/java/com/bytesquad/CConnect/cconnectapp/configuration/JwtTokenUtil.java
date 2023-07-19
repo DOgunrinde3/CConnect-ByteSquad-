@@ -25,13 +25,12 @@ public class JwtTokenUtil {
 
     public String generateToken(UserDetails userDetails, Boolean isStaff) {
         Map<String, Object> claims = new HashMap<>();
-        if(isStaff){
+        if (isStaff) {
             claims.put(CLAIM_KEY_ROLE, "ROLE_STAFF");
-        }
-        else{
+        } else {
             claims.put(CLAIM_KEY_ROLE, "ROLE_USER");
         }
-         // Set the role value based on your logic
+        // Set the role value based on your logic
         return createToken(claims, userDetails.getUsername());
     }
 

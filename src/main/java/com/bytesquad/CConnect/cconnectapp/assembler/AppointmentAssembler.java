@@ -2,7 +2,6 @@ package com.bytesquad.CConnect.cconnectapp.assembler;
 
 import com.bytesquad.CConnect.cconnectapp.dtos.AppointmentDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
-import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
