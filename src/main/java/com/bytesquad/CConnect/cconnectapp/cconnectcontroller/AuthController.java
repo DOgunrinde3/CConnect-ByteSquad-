@@ -4,7 +4,6 @@ import com.bytesquad.CConnect.cconnectapp.dtos.StaffRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.LoginDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.UserRegistrationDto;
 import com.bytesquad.CConnect.cconnectapp.dtos.user.UserDto;
-import com.bytesquad.CConnect.cconnectapp.service.StaffService;
 import com.bytesquad.CConnect.cconnectapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
-    private final StaffService staffService;
 
 
     @PostMapping("/login")
