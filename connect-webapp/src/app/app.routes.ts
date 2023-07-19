@@ -7,6 +7,7 @@ import {HomePage} from "./components/home/home.page";
 import {NgModule} from "@angular/core";
 import { IonicStorageModule } from '@ionic/storage-angular';
 import {BioPage} from "./components/bio/bio.page";
+import {DoctorBioPage} from "./components/doctor-bio/doctor-bio.page";
 import {UserAuthGuard} from "./services/guard/user-auth.guard";
 import {BookAppointmentPage} from "./components/book-appointment/book-appointment.page";
 import {NgCalendarModule} from "ionic7-calendar";
@@ -26,6 +27,9 @@ export const routes: Routes = [
   { path: 'book', component: BookAppointmentPage, canActivate: [UserAuthGuard] },
   {
     path: 'bio', component: BioPage, canActivate: [UserAuthGuard]
+  },
+  {
+    path: 'doctor-bio', component: DoctorBioPage, canActivate: [StaffAuthGuard]
   },
   {
     path: 'home', component: HomePage

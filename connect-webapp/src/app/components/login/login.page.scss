@@ -148,7 +148,7 @@ ion-content {
 
 @keyframes wave {
   2% {
-    transform: translateX(1);
+    transform: translateX(100%);
   }
 
   25% {
@@ -164,6 +164,6 @@ ion-content {
   }
 
   100% {
-    transform: translateX(1);
+    transform: translateX(100%);
   }
 }

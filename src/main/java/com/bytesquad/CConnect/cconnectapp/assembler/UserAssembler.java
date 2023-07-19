@@ -27,8 +27,7 @@ public class UserAssembler {
                 .setEmail(user.getEmail())
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
-                .setBirthDate(user.getBirthdate().toString())
-                .setGender(user.getGender());
+                .setBirthDate(user.getBirthdate().toString());
     }
 
     public User disassemble(UserRegistrationDto userRegistrationDto){

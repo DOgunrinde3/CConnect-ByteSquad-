@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "./services/auth.service";
 import {FooterPage} from "./components/footer/footer.page";
 import {UserInformationService} from "./services/user-information.service";
+import {StaffService} from "./services/staff.service";
 import {NotificationsPage} from "./components/notifications/notifications.page";
 import {NotificationService} from "./services/notification.service";
 import {NotificationModel} from "./model/notification.model";
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isAuthenticated;
   isStaff;
   pendingNotification = 0;
-getIcon = 'notifications-outline';
+  getIcon = 'notifications-outline';
   notifications: NotificationModel[];
   user: UserModel;
 
@@ -35,7 +36,8 @@ getIcon = 'notifications-outline';
 
   constructor(private router: Router,
               private authService: AuthService,
-  private userInfoService: UserInformationService,
+              private userInfoService: UserInformationService,
+              private staffService: StaffService,
               private notificationService: NotificationService,
               private modalController: ModalController){}
 
@@ -118,9 +120,13 @@ getIcon = 'notifications-outline';
     this.router.navigate(["/bio"]);
   }
 
-routeToHome(){
-    this.router.navigate(["/home"]);
+  routeToDoctorBio(){
+    this.router.navigate(["/doctor-bio"]);
   }
+
+  routeToHome(){
+      this.router.navigate(["/home"]);
+    }
 
   routeToSignup(){
     this.router.navigate(["/signup"]);
