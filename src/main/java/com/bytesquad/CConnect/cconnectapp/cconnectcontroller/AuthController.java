@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -47,6 +49,12 @@ public class AuthController {
     @PutMapping("/user/update/{userId}")
     public UserDto User(@PathVariable String userId, @RequestBody UserDto userDto){
         return userService.update(userId, userDto);
+    }
+
+
+    @GetMapping("/staff")
+    public List<StaffDto> getAll(){
+        return userService.getAllStaff();
     }
 
 //    @PutMapping("/staff/update/{userId}")
