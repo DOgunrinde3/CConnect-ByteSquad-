@@ -36,6 +36,7 @@ export class ConfirmTimePage{
   selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
+  dates: [];
   appointmentTypes = Object.values(AppointmentTypeEnum);
   hourValues = ['09','10','11','12','13','14','15','16','17'];
 
@@ -53,6 +54,7 @@ export class ConfirmTimePage{
     this.userInfoService.userInformation$.subscribe( (user) =>
       {this.user = user}
     );
+
     if (navParams.data) {
       // this.options = navParams.data;
       // // this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
@@ -123,7 +125,7 @@ export class ConfirmTimePage{
   }
 
   filterSelect(){
-    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+    console.log(this.dates);
   }
 
 

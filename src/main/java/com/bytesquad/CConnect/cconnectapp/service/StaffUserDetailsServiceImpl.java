@@ -2,8 +2,6 @@ package com.bytesquad.CConnect.cconnectapp.service;
 
 import com.bytesquad.CConnect.cconnectapp.entity.CustomUserDetails;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
-import com.bytesquad.CConnect.cconnectapp.entity.User;
-import com.bytesquad.CConnect.cconnectapp.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service("staffUserDetailsService")
 @RequiredArgsConstructor
-public class StaffUserDetailsService implements UserDetailsService {
+public class StaffUserDetailsServiceImpl implements UserDetailsService {
 
     private final MongoTemplate mongoTemplate;
 
