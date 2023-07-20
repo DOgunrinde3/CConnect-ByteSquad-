@@ -1,12 +1,12 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.12'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' // Use the appropriate version here
 }
 
 group = 'com.bytesquad.CConnect'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '17' // Update to the appropriate Java version
 
 configurations {
     compileOnly {
@@ -21,8 +21,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jersey'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    // Spring Boot Starter Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Spring Security
@@ -48,8 +46,6 @@ tasks.named('test') {
 
 jar {
     manifest {
-        attributes(
-                'Main-Class': 'com/bytesquad/CConnect/cconnectapp/CconnectAppApplication.java'
-        )
+        attributes 'Main-Class': 'com.bytesquad.CConnect.cconnectapp.CconnectAppApplication'
     }
 }
