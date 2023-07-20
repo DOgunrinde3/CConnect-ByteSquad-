@@ -1,25 +1,21 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {AppointmentModel} from "../model/appointment.model";
 import {BehaviorSubject, Observable} from "rxjs";
 import {DoctorModel} from "../model/doctor.model";
 import {NotificationModel} from "../model/notification.model";
-import {UserModel} from "../model/User.model";
 import {AuthService} from "./auth.service";
-import jwt_decode from "jwt-decode";
 
-const BASE_URI = 'http://localhost:8080/api/v1/auth/staff';
+const BASE_URI = '/api/v1/auth/staff';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class StaffService{
+export class StaffService {
 
   private staffInformationSubject = new BehaviorSubject<any>(null);
-  private staffNotificationSubject = new BehaviorSubject<NotificationModel[]>(null);
-
   staffInformation$ = this.staffInformationSubject.asObservable();
+  private staffNotificationSubject = new BehaviorSubject<NotificationModel[]>(null);
   staffNotifications$ = this.staffNotificationSubject.asObservable();
 
   constructor(private http: HttpClient,
@@ -56,11 +52,11 @@ export class StaffService{
   //   else { this.authService.logout()}
   // }
 
-  update(staff: DoctorModel): Observable<DoctorModel>{
+  update(staff: DoctorModel): Observable<DoctorModel> {
     return this.http.put<DoctorModel>(`${BASE_URI}/update/${staff.userId}`, staff);
   }
 
-  getAllStaff(): Observable<DoctorModel[]>{
+  getAllStaff(): Observable<DoctorModel[]> {
     return this.http.get<DoctorModel[]>(`${BASE_URI}`);
 
   }
