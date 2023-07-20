@@ -76,6 +76,7 @@ export class AuthService {
   }
 
   loginStaff(loginDetails: LoginModel): Observable<DoctorModel> {
+    console.log(`${BASE_URI}/login-staff`);
     return this.http.post<DoctorModel>(`${BASE_URI}/login-staff`, loginDetails);
   }
 
