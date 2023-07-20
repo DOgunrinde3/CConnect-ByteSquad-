@@ -22,35 +22,6 @@ export class StaffService {
               private authService: AuthService) {
   }
 
-  // setStaffInformation(staffInformation: any) {
-  //   this.staffInformationSubject.next(staffInformation);
-  // }
-  //
-  // setStaffNotification(staffNotification: any) {
-  //   this.staffNotificationSubject.next(staffNotification);
-  // }
-  // loadStaffInformation() {
-  //   const token = localStorage.getItem('token');
-  //   // @ts-ignore
-  //   const decodedToken: any = jwt_decode(token);
-  //
-  //   if(token !== null) {
-  //     const userInfo$ = this.http.get<any>(`${BASE_URI}/${decodedToken.sub}?role=${decodedToken.role}`);
-  //     staffInfo$.subscribe(userInfo => {
-  //
-  //         this.setStaffInformation(userInfo);
-  //         this.getNotifications();
-  //       },
-  //
-  //       error=>{
-  //         this.authService.logout();
-  //         this.presentToast("top", "An error occurred, you've been logged out", 'danger', 'close-outline');
-  //
-  //       } );
-  //
-  //   }
-  //   else { this.authService.logout()}
-  // }
 
   update(staff: DoctorModel): Observable<DoctorModel> {
     return this.http.put<DoctorModel>(`${BASE_URI}/update/${staff.userId}`, staff);
