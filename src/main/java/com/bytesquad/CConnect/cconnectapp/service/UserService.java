@@ -63,15 +63,15 @@ public class UserService {
         String token;
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()), isStaff
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail().toLowerCase(), loginDto.getPassword()), isStaff
             );
 
             if (isStaff) {
-                UserDetails staffDetails = staffUserDetailsService.loadUserByUsername(loginDto.getEmail());
+                UserDetails staffDetails = staffUserDetailsService.loadUserByUsername(loginDto.getEmail().toLowerCase());
                 token = jwtTokenUtil.generateToken(staffDetails, true);
 
             } else {
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDto.getEmail());
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDto.getEmail().toLowerCase());
                 token = jwtTokenUtil.generateToken(userDetails, false);
 
             }
