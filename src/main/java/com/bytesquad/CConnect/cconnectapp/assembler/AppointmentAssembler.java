@@ -13,18 +13,19 @@ public class AppointmentAssembler {
 
     private final UserAssembler userAssembler;
     private final StaffAssembler staffAssembler;
-    public AppointmentDto assemble(Appointment appointment){
+
+    public AppointmentDto assemble(Appointment appointment) {
         return new AppointmentDto()
                 .setId(appointment.getId())
                 .setDoctor(staffAssembler.getStaffName(appointment.getDoctorId()))
-                .setPatient(userAssembler.getUserName(appointment.getPatientId()))
+                .setPatient(appointment.getPatientId() == null ? null : userAssembler.getUserName(appointment.getPatientId()))
                 .setAppointmentDate(appointment.getDate().toString())
                 .setAppointmentTime(appointment.getTime().toString())
                 .setAppointmentType(appointment.getAppointmentType())
                 .setAppointmentStatus(appointment.getAppointmentStatus());
     }
 
-    public Appointment disassemble(AppointmentDto appointmentDto){
+    public Appointment disassemble(AppointmentDto appointmentDto) {
         return disassembleInto(Appointment.newInstance(), appointmentDto);
     }
 
@@ -35,7 +36,7 @@ public class AppointmentAssembler {
 
         return appointment
                 .setDoctorId(staffAssembler.getStaffId(appointmentDto.getDoctor()))
-                .setPatientId(userAssembler.getUserId(appointmentDto.getPatient()))
+                .setPatientId(appointmentDto.getPatient() == null ? null : userAssembler.getUserId(appointmentDto.getPatient()))
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
                 .setAppointmentType(appointmentDto.getAppointmentType())
@@ -50,13 +51,12 @@ public class AppointmentAssembler {
         return appointment
                 .setId(appointmentDto.getId())
                 .setDoctorId(staffAssembler.getStaffId(appointmentDto.getDoctor()))
-                .setPatientId(userAssembler.getUserId(appointmentDto.getPatient()))
+                .setPatientId(appointmentDto.getPatient() == null ? null : userAssembler.getUserId(appointmentDto.getPatient()))
                 .setDate(date)
                 .setTime(appointmentDto.getAppointmentTime())
                 .setAppointmentType(appointmentDto.getAppointmentType())
                 .setAppointmentStatus(appointmentDto.getAppointmentStatus());
     }
-
 
 
 }

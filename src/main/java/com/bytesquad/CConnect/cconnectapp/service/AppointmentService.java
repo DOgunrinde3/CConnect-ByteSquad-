@@ -12,9 +12,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +34,18 @@ public class AppointmentService {
 
     private final StaffAssembler staffAssembler;
 
-    public AppointmentDto book(AppointmentDto appointmentDto) {
+
+    public List<ResponseEntity<?>> bulkBook(List<AppointmentDto> appointmentDto) {
+
+        return appointmentDto
+                .stream()
+                .map(appointmentDto1 -> book(appointmentDto1))
+                .collect(Collectors.toList());
+
+
+    }
+
+    public ResponseEntity<?> book(AppointmentDto appointmentDto) {
 
         if (appointmentDto.getDoctor() == null) {
             appointmentDto.setDoctor(getRandomAvailableDoctor(appointmentDto));
@@ -39,9 +53,14 @@ public class AppointmentService {
 
         Appointment appointment = appointmentAssembler.disassemble(appointmentDto);
 
-        appointmentRepository.insert(appointment);
 
-        return appointmentAssembler.assemble(appointment);
+        try {
+            Appointment createdAppointment = appointmentRepository.insert(appointment);
+
+            return ResponseEntity.ok(createdAppointment);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Appointment already exists");
+        }
 
     }
 
@@ -73,8 +92,19 @@ public class AppointmentService {
         Query query = new Query();
         query.addCriteria(Criteria.where("Id").is(appointmentId));
 
+        if (appointment.getAppointmentStatus().equals("Cancelled")) {
+            Query newQuery = new Query();
+            newQuery.addCriteria(Criteria.where("time").is(appointment.getAppointmentTime()));
+            newQuery.addCriteria(Criteria.where("date").is(LocalDate.parse(appointment.getAppointmentDate())));
+            newQuery.addCriteria(Criteria.where("appointmentStatus").is("Cancelled"));
+
+
+            mongoTemplate.remove(newQuery, Appointment.class);
+        }
+
         Update update = new Update().set("appointmentStatus", appointment.getAppointmentStatus());
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+
 
         Appointment updatedAppointment = mongoTemplate.findAndModify(query, update, options, Appointment.class);
 

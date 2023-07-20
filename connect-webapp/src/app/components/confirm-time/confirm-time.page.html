@@ -5,41 +5,55 @@
 </ion-header>
 <div class="container">
   <div class="info">
-    Start Time
-    <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
-    End Time
-    <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
+    <div class="ion-text-left" style="display: flex; align-items: center; font-size: large;">
+      <ion-label>Start Time:</ion-label>
+      <ion-datetime-button datetime="startDatetime" style="width: 100%;"></ion-datetime-button>
+    </div>
 
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime [(ngModel)]="startDatetime" [preferWheel]="true" hourCycle="h12" hourValues="09,10,11,0,1,2,3,4,5"
-                      id="startDatetime"
-                      minTime="09:00"
-                      minuteValues="0"
-                      presentation="date-time"
-                      value="startDatetime"></ion-datetime>
+    <div class="ion-text-left ion-margin-vertical" style="display: flex; align-items: center; font-size: large;">
+      <ion-label>End Time:</ion-label>
+      <ion-datetime-button datetime="endDatetime" style="width: 100%;"></ion-datetime-button>
+    </div>
 
-      </ng-template>
-    </ion-modal>
 
-    <ion-modal [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime [(ngModel)]="endDatetime" [preferWheel]="true" hourCycle="h12" hourValues="09,10,11,0,1,2,3,4,5"
-                      id="endDatetime"
-                      minTime="09:00"
-                      minuteValues="0"
-                      presentation="date-time"
-                      timezone="America/New_York"
+    <ion-label style="font-size: large">Total Hours: {{totalHours}}</ion-label>
 
-                      value="endDatetime"></ion-datetime>
-
-      </ng-template>
-    </ion-modal>
 
   </div>
 
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime [(ngModel)]="startDatetime" [preferWheel]="true" color="primary"
+                    hourCycle="h12"
+                    hourValues="09,10,11,0,1,2,3,4,5"
+                    id="startDatetime"
+                    minTime="09:00"
+                    minuteValues="0"
+                    presentation="date-time"
+                    value="startDatetime"></ion-datetime>
 
-  <div class="confirm">
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime (ionChange)="splitUpDates()" [(ngModel)]="endDatetime" [preferWheel]="true"
+                    color="primary"
+                    hourCycle="h12"
+                    hourValues="09,10,11,0,1,2,3,4,5"
+                    id="endDatetime"
+                    minTime="09:00"
+                    minuteValues="0"
+                    presentation="date-time"
+                    timezone="America/New_York"
+
+                    value="endDatetime"></ion-datetime>
+
+    </ng-template>
+  </ion-modal>
+
+
+  <div *ngIf="subscriptionComplete" class="confirm">
 
     <ion-button (click)="confirmOnClick()" color="success" disabled="{{!canConfirm()}}" mode="ios">{{ 'CONFIRM' }}
       <ion-icon name="arrow-forward"></ion-icon>
@@ -47,6 +61,11 @@
 
     <ion-button (click)="cancelOnClick()" color="danger" icon-right ion-button mode="ios" round>{{ 'CANCEL' }}
     </ion-button>
+  </div>
+
+  <div *ngIf="!subscriptionComplete" class="loading-spinner"
+       style="width: 100%; display: flex; justify-content: center">
+    <ion-spinner color="primary" name="bubbles"></ion-spinner>
   </div>
 
 </div>

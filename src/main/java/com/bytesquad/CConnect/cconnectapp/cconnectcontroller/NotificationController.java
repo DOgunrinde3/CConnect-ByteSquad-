@@ -3,6 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.cconnectcontroller;
 import com.bytesquad.CConnect.cconnectapp.dtos.NotificationDto;
 import com.bytesquad.CConnect.cconnectapp.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class NotificationController {
     }
 
     @PutMapping(value = "/update-notification/{appointmentId}", params = "toStaff")
-    public NotificationDto updateNotification(@PathVariable String appointmentId, @RequestBody NotificationDto notificationDto, @RequestParam boolean toStaff) {
+    public ResponseEntity<?> updateNotification(@PathVariable String appointmentId, @RequestBody NotificationDto notificationDto, @RequestParam boolean toStaff) {
         return notificationService.updateNotification(notificationDto, toStaff, appointmentId);
     }
 

@@ -7,10 +7,11 @@ import {AppointmentService} from "../../services/appointment.service";
 import {DoctorModel} from "../../model/doctor.model";
 import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
-import {NotificationService} from "../../services/notification.service";
 import {UserInformationService} from "../../services/user-information.service";
 import {formatInTimeZone} from 'date-fns-tz'
 import {UserModel} from "../../model/User.model";
+import {AppointmentModel} from "../../model/appointment.model";
+import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 
 
 @Component({
@@ -28,11 +29,14 @@ export class ConfirmTimePage implements OnInit {
   pageReady: boolean = false;
   formattedDate: any;
   user: UserModel;
+  subscriptionComplete = true;
+  totalHours = 0;
   tzoffset = (new Date()).getTimezoneOffset() * 60000;
   startDatetime = ""
   endDatetime = ""
   selectedTime: any;
-  selectedDateValue: Date;
+  appointments: AppointmentModel[] = [];
+  selectedDate: string
   selectedService = null;
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
@@ -48,25 +52,19 @@ export class ConfirmTimePage implements OnInit {
               private router: Router,
               private userInfoService: UserInformationService,
               private toastController: ToastController,
-              private notificationService: NotificationService) {
+  ) {
     this.userInfoService.userInformation$.subscribe((user) => {
         this.user = user
       }
     );
 
     if (navParams.data) {
-      // this.options = navParams.data;
-      // // this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
-      // this.selectedDate = this.options.appointment.appointmentDate;
-      // this.selectedTime = this.options.appointment.appointmentTime;
-      // this.selectedDoctor = this.options.selectedDoctor;
-      // this.selectedService = this.options.selectedService;
-      // this.doctors =this.options.doctors;
-      // this.selectedDateValue = this.options.selectedDateValue;
-      // this.pageReady = true;
-      // this.filterSelect()
+      this.options = navParams.data;
+      this.selectedDate = this.options.date;
+
     }
   }
+
 
   cancelOnClick() {
     this.presentToast("top", "Cancelled", 'danger', 'close-outline');
@@ -74,22 +72,69 @@ export class ConfirmTimePage implements OnInit {
   }
 
   ngOnInit() {
-    this.startDatetime = new Date(Date.now() - this.tzoffset).toISOString()
-    this.endDatetime = new Date(Date.now() - this.tzoffset).toISOString()
+    this.startDatetime = new Date(new Date(this.selectedDate).setHours(24, 0, 0, 0) - this.tzoffset).toISOString()
+    this.endDatetime = new Date(new Date(this.selectedDate).setHours(24, 0, 0, 0) - this.tzoffset).toISOString()
   }
 
   confirmOnClick() {
 
+    this.subscriptionComplete = false;
 
-    const appointments = [];
-    const startTime = formatInTimeZone(this.startDatetime, 'Canada/Saskatchewan', 'yyyy-MM-dd, h:mm a');
-    const endTime = formatInTimeZone(this.endDatetime, 'Canada/Saskatchewan', 'yyyy-MM-dd, h:mm a');
+    this.appointmentService.createAppointmentFromRange(this.appointments).subscribe(
+      () => {
+
+        this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
+        this.viewController.dismiss({confirm: true});
+      },
+      error => {
+        this.presentToast("top", error.message, 'danger', 'close-outline');
+        // Handle errors if necessary
+      }
+    );
+  }
+
+  splitUpDates(): void {
+    this.totalHours = 0;
+    if (!this.canConfirm()) {
+      return;
+    }
+    const startDate = new Date(this.startDatetime);
+    const endDate = new Date(this.endDatetime);
+
+    const chunks = [];
+
+    while (startDate < endDate) {
+      // Check if the current chunk falls within 9:00 AM and 5:00 PM
+      if (startDate.getHours() >= 9 && startDate.getHours() <= 16) {
+        const formattedDate = formatInTimeZone(startDate, 'Canada/Saskatchewan', 'yyyy-MM-dd,h:mm a');
+        chunks.push(formattedDate);
+      }
+      startDate.setHours(startDate.getHours() + 1);
+    }
+
+    this.totalHours = chunks.length;
+
+    chunks.forEach(date => this.createVacationModel(date))
+
+  }
 
 
-    console.log(endTime + " " + startTime);
+  createVacationModel(date) {
+    let [dateStr, timeStr] = date.split(',');
 
 
-    this.appointmentService.createAppointmentFromRange(null);
+    let vacationAppointment: AppointmentModel = {
+      id: null,
+      doctor: this.user?.firstName + " " + this.user?.lastName,
+      patient: null,
+      appointmentDate: dateStr,
+      appointmentTime: timeStr,
+      appointmentType: 'Out of Office',
+      appointmentStatus: AppointmentStatusEnum.CONFIRMED
+    }
+
+    this.appointments.push(vacationAppointment);
+
   }
 
 

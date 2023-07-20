@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AppointmentModel} from "../model/appointment.model";
+import {AppointmentStatusEnum} from "../model/appointment-status.enum";
 
 const BASE_URI = 'http://localhost:8080/api/v1/appointment';
 
@@ -14,8 +15,7 @@ const appointmentHours = [
   '1:00 PM',
   '2:00 PM',
   '3:00 PM',
-  '4:00 PM',
-  '5:00 PM'
+  '4:00 PM'
 ];
 
 @Injectable({
@@ -40,11 +40,13 @@ export class AppointmentService {
   }
 
   createAppointmentFromRange(appointmentDetails): Observable<AppointmentModel[]> {
-    return this.http.post<AppointmentModel[]>(`${BASE_URI}/book`, appointmentDetails);
+    return this.http.post<AppointmentModel[]>(`${BASE_URI}/bulk-book`, appointmentDetails);
 
   }
 
-  update(appointment: AppointmentModel): Observable<AppointmentModel> {
+  update(appointment: AppointmentModel, status: AppointmentStatusEnum): Observable<AppointmentModel> {
+
+    appointment.appointmentStatus = status;
     return this.http.put<AppointmentModel>(`${BASE_URI}/update/${appointment.id}`, appointment);
   }
 

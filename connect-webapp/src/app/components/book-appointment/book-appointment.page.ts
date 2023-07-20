@@ -29,11 +29,11 @@ export class BookAppointmentPage implements OnInit {
   date: string;
   subscriptionComplete = true;
 
-  selectedDateValue : Date;
+  selectedDateValue: Date;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   calendar = {
     mode: 'month' as CalendarMode,
-    currentDate: new Date(Date.now() + ( 3600 * 1000 * 24))
+    currentDate: new Date(Date.now() + (3600 * 1000 * 24))
     ,
 
   };
@@ -51,7 +51,8 @@ export class BookAppointmentPage implements OnInit {
   appointment: AppointmentModel;
   appointmentTypes = Object.values(AppointmentTypeEnum);
 
-  @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  eventSource;
 
 
   constructor(public navCtrl: NavController,
@@ -61,27 +62,27 @@ export class BookAppointmentPage implements OnInit {
               private userService: UserInformationService,
               private staffService: StaffService,
               private route: ActivatedRoute
-              ) {
+  ) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
     this.userService.userInformation$.subscribe(user => {
       this.user = user;
     })
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
-    if(this.route.snapshot.paramMap.get('date') === null ){
+    if (this.route.snapshot.paramMap.get('date') === null) {
       return;
-    }
-    else{
-      this.calendar.currentDate =  new Date (Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
+    } else {
+      this.calendar.currentDate = new Date(Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
     }
   }
 
-  ionViewWillEnter(){
-    this.selectedDoctor = null;
-    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; });
+  ionViewWillEnter() {
+    this.staffService.getAllStaff().subscribe((value) => {
+      this.doctors = value;
+    });
 
   }
 
@@ -93,18 +94,14 @@ export class BookAppointmentPage implements OnInit {
     this.selectedDoctor !== null ? this.filterUnavailableTimes() : this.resetAvailableTime()
     //this.getAvailableTimes(date);
     /** Check here if appointment is available or not **/
-    if(this.unAvailableTimeShifts.length === 0) {
+    if (this.unAvailableTimeShifts.length === 0) {
       this.appointmentAvailable = false;
       this.subscriptionComplete = true;
-    }
-
-    else{
+    } else {
       this.appointmentAvailable = true;
       this.subscriptionComplete = true;
     }
   }
-
-
 
 
   next() {
@@ -114,6 +111,7 @@ export class BookAppointmentPage implements OnInit {
   back() {
     this.myCal.slidePrev();
   }
+
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
@@ -121,9 +119,80 @@ export class BookAppointmentPage implements OnInit {
   timeOnClick(time: string) {
     this.selectedTime = time;
 
-    if (this.selectedDate){
-    this.openConfirmatModal(this.selectedDate, this.selectedTime);
+    if (this.selectedDate) {
+      this.openConfirmatModal(this.selectedDate, this.selectedTime);
+    }
   }
+
+  isAvailable(time: string) {
+
+    return this.unAvailableTimeShifts.includes(time);
+  }
+
+  filterUnavailableTimes() {
+    this.doctorAppointments
+      .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate && docAppoint.appointmentStatus !== AppointmentStatusEnum.CANCELLED)
+      .map(docAppoint => this.unAvailableTimeShifts = this.unAvailableTimeShifts.filter(time => time !== docAppoint.appointmentTime));
+  }
+
+  resetAvailableTime() {
+    this.unAvailableTimeShifts = this.appointmentTimeShifts;
+  }
+
+  async openModal(appointment) {
+
+
+    const modal = await this.modalController.create({
+      component: ConfirmAppointmentPage,
+      componentProps: {
+        appointment: appointment,
+        selectedDateValue: this.selectedDateValue,
+        selectedDoctor: this.selectedDoctor,
+        selectedService: this.selectedService,
+        doctors: this.doctors
+      },
+      mode: "ios"
+    });
+    modal.present();
+
+
+  }
+
+  markDisabled = (date: Date) => {
+    var current = new Date();
+    return date < current;
+  };
+
+  filterSelect(event) {
+    this.selectedDoctor = event.detail.value;
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+    console.log(this.selectedDoctor);
+    if (this.selectedDoctor !== null) {
+      this.subscriptionComplete = false;
+      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)
+        .subscribe((doctorAppointments) => {
+            this.doctorAppointments = doctorAppointments;
+            this.eventSource = [];
+            doctorAppointments.forEach((appointment) => {
+              const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
+              if (appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED) {
+                this.eventSource?.push({
+                  title: appointment.appointmentType,
+                  startTime: date,
+                  endTime: date,
+                  allDay: false
+                });
+              }
+            })
+            this.onDateSelected(this.selectedDate);
+
+          }
+        )
+    } else {
+      this.onDateSelected(this.selectedDate);
+      this.eventSource = {}
+    }
+
   }
 
   private openConfirmatModal(selectedDate: string, selectedTime: string) {
@@ -138,88 +207,13 @@ export class BookAppointmentPage implements OnInit {
       appointmentType: "",
       appointmentStatus: AppointmentStatusEnum.PENDING
     };
-     this.openModal(this.appointment)
+    this.openModal(this.appointment)
 
     // confirmModal.onDidDismiss((data) => {
     //   if (data.confirm) {
     //     this.navCtrl.push(PageBookAppointmentConfirmationDetails, appointment);
     //   }
     // });
-  }
-
-  isAvailable(time: string){
-
-    return this.unAvailableTimeShifts.includes(time);
-  }
-
-
-
-
-  filterUnavailableTimes(){
-    this.doctorAppointments
-      .filter(docAppoint => docAppoint.appointmentDate === this.selectedDate && docAppoint.appointmentStatus !== AppointmentStatusEnum.CANCELLED)
-      .map( docAppoint => this.unAvailableTimeShifts = this.unAvailableTimeShifts.filter(time => time !== docAppoint.appointmentTime));
-  }
-
-  resetAvailableTime(){
-    this.unAvailableTimeShifts = this.appointmentTimeShifts;
-}
-
-
-  async openModal(appointment) {
-
-
-    const modal = await this.modalController.create({
-      component: ConfirmAppointmentPage,
-      componentProps: {
-       appointment: appointment,
-        selectedDateValue: this.selectedDateValue,
-        selectedDoctor: this.selectedDoctor,
-        selectedService: this.selectedService,
-        doctors: this.doctors
-      },
-      mode: "ios"
-    });
-    modal.present();
-
-
-
-  }
-  markDisabled = (date: Date) => {
-    var current = new Date();
-    return date < current;
-  };
-
-
-  filterSelect(){
-    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
-    if(this.selectedDoctor !== null){
-      this.subscriptionComplete = false;
-      this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)
-        .subscribe((doctorAppointments) => {
-            this.doctorAppointments = doctorAppointments;
-          this.eventSource = [];
-          doctorAppointments.forEach((appointment)=>{
-            const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
-            if(appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED){
-            this.eventSource?.push({
-              title: appointment.appointmentType,
-              startTime: date,
-              endTime: date,
-              allDay: false
-            });
-          }})
-            this.onDateSelected(this.selectedDate);
-
-          }
-        )
-    }
-
-    else{
-      this.onDateSelected(this.selectedDate);
-      this.eventSource = {}
-    }
-
   }
 
 }

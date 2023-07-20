@@ -1,65 +1,66 @@
-
 <app-header>
 </app-header>
-<ion-content [fullscreen]="true" >
-    <ion-grid class="filter">
-      <ion-row style="width: 100%" class="ion-justify-content-between">
-        <ion-card sizeLg="6" class="select-filter ion-padding" mode="ios" style="width: 100%;">
-          <div class="title">
-            <ion-icon name="person-circle-outline"class="ion-margin-end" size="large"></ion-icon>
-            <ion-label class="select-title">Select a Doctor</ion-label>
-          </div>
-          <ion-select
-            label=""
-            class="always-flip ion-justify-content-end"
-            id="trigger-button"
-            toggleIcon="caret-down-sharp"
-            interface="popover"
-            color="#000000"
-            placeholder="Any"
-            [(ngModel)]="selectedDoctor" (ngModelChange)="filterSelect()"
-          >
-            <ion-select-option [value]="null"> Any </ion-select-option>
-            <ion-select-option *ngFor="let doctor of doctors; let i = index"
-                               [value]="doctor" >
-              {{doctor.firstName}} {{doctor.lastName}}
-            </ion-select-option>
-          </ion-select>
+<ion-content [fullscreen]="true">
+  <ion-grid class="filter">
+    <ion-row class="ion-justify-content-between" style="width: 100%">
+      <ion-card class="select-filter ion-padding" mode="ios" sizeLg="6" style="width: 100%;">
+        <div class="title">
+          <ion-icon class="ion-margin-end" name="person-circle-outline" size="large"></ion-icon>
+          <ion-label class="select-title">Select a Doctor</ion-label>
+        </div>
+        <ion-select
+          (ionChange)="filterSelect($event)"
+          class="always-flip ion-justify-content-end"
+          color="#000000"
+          id="trigger-button"
+          interface="popover"
+          label=""
+          placeholder="Any"
+          toggleIcon="caret-down-sharp"
+        >
+          <ion-select-option [value]="null"> Any</ion-select-option>
+          <ion-select-option *ngFor="let doctor of doctors; let i = index"
+                             [value]="doctor">
+            {{doctor.firstName}} {{doctor.lastName}}
+          </ion-select-option>
+        </ion-select>
 
 
-        </ion-card >
+      </ion-card>
 
-        <ion-card sizeLg="6" class="select-filter ion-padding" mode="ios" style="width: 100%; cursor: pointer;" id="open-modal" (click)="openTimeModal()" >
-          <div class="title">
-            <ion-icon name="add-circle-outline"class="ion-margin-end" size="large"></ion-icon>
-            <ion-label class="select-title">Book Out Time</ion-label>
-          </div>
+      <ion-card (click)="openTimeModal()" class="select-filter ion-padding" id="open-modal" mode="ios"
+                sizeLg="6" style="width: 100%; cursor: pointer;">
+        <div class="title">
+          <ion-icon class="ion-margin-end" name="add-circle-outline" size="large"></ion-icon>
+          <ion-label class="select-title">Book Out Time</ion-label>
+        </div>
 
-        </ion-card >
+      </ion-card>
 
-      </ion-row>
-    </ion-grid>
+    </ion-row>
+  </ion-grid>
   <div class="container">
 
-    <ion-card class="card-calender" mode="ios" >
-      <ion-card-title class="ion-text-center ion-margin-bottom ion-margin-vertical " mode="ios"> Staff Appointments</ion-card-title>
+    <ion-card class="card-calender" mode="ios">
+      <ion-card-title class="ion-text-center ion-margin-bottom ion-margin-vertical " mode="ios"> Staff Appointments
+      </ion-card-title>
 
 
       <ion-row class="ion-justify-content-center">
         <!-- Move back one screen of the slides -->
-        <ion-col sizeSm="0" sizeLg="2" class="ion-text-start">
-          <ion-button fill="clear" (click)="back()">
+        <ion-col class="ion-text-start" sizeLg="2" sizeSm="0">
+          <ion-button (click)="back()" fill="clear">
             <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
 
-        <ion-col sizeSm="8" sizeLg="8" class="ion-text-center">
+        <ion-col class="ion-text-center" sizeLg="8" sizeSm="8">
           <h2 class="calender-title">{{ viewTitle }}</h2>
         </ion-col>
 
         <!-- Move forward one screen of the slides -->
-        <ion-col sizeSm="1" sizeLg="2" class="ion-text-end" >
-          <ion-button fill="clear" (click)="next()">
+        <ion-col class="ion-text-end" sizeLg="2" sizeSm="1">
+          <ion-button (click)="next()" fill="clear">
             <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
@@ -67,62 +68,79 @@
 
 
       <calendar (onCurrentDateChanged)="onDateSelected($event)"
-                [calendarMode]="calendar.mode"
-                [eventSource]="eventSource"
-                [currentDate]="calendar.currentDate"
-                [startHour]="9"
-                [endHour]="17"
-                [showEventDetail]="subscriptionComplete"
-                [markDisabled]="markDisabled"
                 (onTitleChanged)="onViewTitleChanged($event)"
+                [calendarMode]="calendar.mode"
+                [currentDate]="calendar.currentDate"
+                [endHour]="17"
+                [eventSource]="eventSource"
+                [markDisabled]="markDisabled"
+                [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
                 [monthviewEventDetailTemplate]="monthviewEventDetailTemplate"
-                [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate" >
+                [showEventDetail]="subscriptionComplete"
+                [startHour]="9">
       </calendar>
 
-      <ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col" >
-        <ion-label class="calendar-box">{{view.dates[row*7+col].label}}</ion-label>
+      <ng-template #monthviewDisplayEventTemplate let-col="col" let-row="row" let-view="view">
+        <ion-label class="calendar-box">{{view.dates[row * 7 + col].label}}</ion-label>
         <div class="indicator-container">
-          <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events">
+          <div *ngFor="let e of view.dates[row*7+col].events" class="event-indicator">
           </div>
         </div>
       </ng-template>
 
 
-
       <ng-template #monthviewEventDetailTemplate>
         <div class="noappointment">
 
-          <ion-list class="event-detail-container ion-padding" has-bouncing="false" overflow-scroll="false" >
-            <div *ngIf="!subscriptionComplete" class="loading-spinner" style="width: 100%; display: flex; justify-content: center">
-              <ion-spinner name="bubbles" color="primary"></ion-spinner>
+          <ion-list class="event-detail-container ion-padding" has-bouncing="false" overflow-scroll="false">
+            <div *ngIf="!subscriptionComplete" class="loading-spinner"
+                 style="width: 100%; display: flex; justify-content: center">
+              <ion-spinner color="primary" name="bubbles"></ion-spinner>
             </div>
-            <ion-item *ngFor="let appointment of filteredDoctorAppointment" class="ion-padding-vertical" >
+            <ion-item *ngFor="let appointment of filteredDoctorAppointment" class="ion-padding-vertical">
               <ion-grid>
                 <ion-row>
-                  <ion-col size="auto" sizeLg="10" style="display: flex; flex-direction: column; width: 100%; margin-bottom: 15px;">
-                    <span style="font-weight: 700; margin-bottom: 5px; font-size: 1.2em; color: #3a7be0" class="ion-text-wrap"> {{appointment.appointmentType}} <ion-badge color="{{getColour(appointment.appointmentStatus)}} ">
+                  <ion-col size="auto" sizeLg="10"
+                           style="display: flex; flex-direction: column; width: 100%; margin-bottom: 15px;">
+                    <span class="ion-text-wrap"
+                          style="font-weight: 700; margin-bottom: 5px; font-size: 1.2em; color: #3a7be0"> {{appointment.appointmentType}}
+                      <ion-badge color="{{getColour(appointment.appointmentStatus)}} ">
                      {{appointment.appointmentStatus}}
                     </ion-badge></span>
-                    <ion-text class="event-detail "> <span style="font-weight: 800">With Patient:</span> {{appointment.patient}}</ion-text>
-                    <ion-text class="ion-margin-top" style="font-size: .9em;" ><span style="font-weight: 800"> Date: </span> {{formattedDate}}</ion-text>
-                    <ion-text class="ion-margin-top" style="font-size: .9em;" ><span style="font-weight: 800"> Time:  </span>{{appointment.appointmentTime}}</ion-text>
+                    <ion-text class="event-detail "><span
+                      style="font-weight: 800">With Patient:</span> {{appointment.patient}}</ion-text>
+                    <ion-text class="ion-margin-top" style="font-size: .9em;"><span
+                      style="font-weight: 800"> Date: </span> {{formattedDate}}</ion-text>
+                    <ion-text class="ion-margin-top" style="font-size: .9em;"><span
+                      style="font-weight: 800"> Time:  </span>{{appointment.appointmentTime}}</ion-text>
 
 
                   </ion-col>
-                  <ion-col *ngIf="selectedDoctor.userId === currentDoctor.userId" sizeLg="2" style="display: flex; flex-direction: column; align-items: center; justify-content: center">
-                   <div *ngIf="appointment.appointmentStatus === AppointmentStatusEnum.PENDING else cancel">
-                    <ion-button fill="clear" color="success"  (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CONFIRMED)"  > Confirm</ion-button>
-                    <ion-button fill="clear" color="danger" (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"  > Decline</ion-button>
-                   </div>
+                  <ion-col *ngIf="selectedDoctor.userId === currentDoctor.userId" sizeLg="2"
+                           style="display: flex; flex-direction: column; align-items: center; justify-content: center">
+                    <div *ngIf="appointment.appointmentStatus === AppointmentStatusEnum.PENDING else cancel">
+                      <ion-button (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CONFIRMED)"
+                                  color="success"
+                                  fill="clear"> Confirm
+                      </ion-button>
+                      <ion-button (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"
+                                  color="danger"
+                                  fill="clear"> Decline
+                      </ion-button>
+                    </div>
 
-                    <ng-template #cancel >
-                      <ion-button *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED"  fill="clear" color="danger" (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"  > Cancel</ion-button>
+                    <ng-template #cancel>
+                      <ion-button (click)="showConfirmationModal(appointment, AppointmentStatusEnum.CANCELLED)"
+                                  *ngIf="appointment.appointmentStatus !== AppointmentStatusEnum.CANCELLED"
+                                  color="danger"
+                                  fill="clear"> Cancel
+                      </ion-button>
                     </ng-template>
                   </ion-col>
                 </ion-row>
               </ion-grid>
 
-              <div >
+              <div>
                 <div style="display: flex; align-items: center; justify-content: space-between;">
 
                 </div>
@@ -136,15 +154,15 @@
 
           </ion-list>
 
-          <ion-text class="ion-padding ion-margin " *ngIf="!noAppointments && subscriptionComplete">No Appointments</ion-text>
+          <ion-text *ngIf="!appointmentAvailable && subscriptionComplete" class="ion-padding ion-margin ">No
+            Appointments
+          </ion-text>
 
         </div>
       </ng-template>
 
 
     </ion-card>
-
-
 
 
   </div>
