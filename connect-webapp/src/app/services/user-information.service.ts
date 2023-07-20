@@ -9,7 +9,7 @@ import {NotificationService} from "./notification.service";
 import {NotificationModel} from "../model/notification.model";
 
 
-const BASE_URI = '/api/v1/auth/user';
+const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/auth/user';
 
 @Injectable({
   providedIn: 'root'

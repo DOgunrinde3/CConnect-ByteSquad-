@@ -11,7 +11,7 @@ import {ToastController} from "@ionic/angular";
 import jwt_decode from 'jwt-decode';
 
 
-const BASE_URI = '/api/v1/auth';
+const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/auth';
 
 
 const token = localStorage.getItem('token');

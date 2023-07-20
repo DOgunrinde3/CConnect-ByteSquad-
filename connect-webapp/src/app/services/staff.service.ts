@@ -5,7 +5,7 @@ import {DoctorModel} from "../model/doctor.model";
 import {NotificationModel} from "../model/notification.model";
 import {AuthService} from "./auth.service";
 
-const BASE_URI = '/api/v1/auth/staff';
+const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/auth/staff';
 
 @Injectable({
   providedIn: 'root'
