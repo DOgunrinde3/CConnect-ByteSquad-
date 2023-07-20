@@ -81,7 +81,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "proxyConfig": "proxy-dev.conf.json",
+          "options": {
+            "outputPath": "www",
+            "proxyConfig": "proxy.conf.dev.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
