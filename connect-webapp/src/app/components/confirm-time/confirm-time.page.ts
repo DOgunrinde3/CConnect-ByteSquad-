@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 import {StaffService} from "../../services/staff.service";
 import {NotificationService} from "../../services/notification.service";
 import {UserInformationService} from "../../services/user-information.service";
-import {format, parseISO} from 'date-fns'
+import {formatInTimeZone} from 'date-fns-tz'
 import {UserModel} from "../../model/User.model";
 
 
@@ -28,8 +28,9 @@ export class ConfirmTimePage implements OnInit {
   pageReady: boolean = false;
   formattedDate: any;
   user: UserModel;
-  startDatetime = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
-  endDatetime = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
+  tzoffset = (new Date()).getTimezoneOffset() * 60000;
+  startDatetime = ""
+  endDatetime = ""
   selectedTime: any;
   selectedDateValue: Date;
   selectedService = null;
@@ -73,17 +74,19 @@ export class ConfirmTimePage implements OnInit {
   }
 
   ngOnInit() {
-    format(parseISO(this.startDatetime), 'yyyy-MM-dd, HH:mm a');
-    format(parseISO(this.endDatetime), 'yyyy-MM-dd, HH:mm a');
+    this.startDatetime = new Date(Date.now() - this.tzoffset).toISOString()
+    this.endDatetime = new Date(Date.now() - this.tzoffset).toISOString()
   }
 
   confirmOnClick() {
 
 
     const appointments = [];
-    const startTime = format(parseISO(this.startDatetime), 'yyyy-MM-dd, HH:mm a');
+    const startTime = formatInTimeZone(this.startDatetime, 'Canada/Saskatchewan', 'yyyy-MM-dd, h:mm a');
+    const endTime = formatInTimeZone(this.endDatetime, 'Canada/Saskatchewan', 'yyyy-MM-dd, h:mm a');
 
-    console.log(this.startDatetime + " " + startTime);
+
+    console.log(endTime + " " + startTime);
 
 
     this.appointmentService.createAppointmentFromRange(null);

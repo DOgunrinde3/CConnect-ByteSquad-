@@ -30,8 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
   notifications: NotificationModel[];
   user: UserModel;
 
-  loadingSubsription:Subscription
-  notficationsSuscriptionScomplete  = false;
+  loadingSubsription: Subscription
+  notficationsSuscriptionScomplete = false;
 
 
   constructor(private router: Router,
@@ -39,62 +39,60 @@ export class AppComponent implements OnInit, OnDestroy {
               private userInfoService: UserInformationService,
               private staffService: StaffService,
               private notificationService: NotificationService,
-              private modalController: ModalController){}
+              private modalController: ModalController) {
+  }
 
   ngOnInit() {
 
-  this.authService
-    .getAuthState()
-    .subscribe((value) => {
-      this.isAuthenticated = value
+    this.authService
+      .getAuthState()
+      .subscribe((value) => {
+          this.isAuthenticated = value
 
-      if (value === true) {
-        this.userInfoService.loadUserInformation();
-        this.isStaff = this.authService.isStaff();
+          if (value === true) {
+            this.userInfoService.loadUserInformation();
+            this.isStaff = this.authService.isStaff();
 
-        this.userInfoService.userNotifications$.subscribe((notifications) => {
-          this.notifications = notifications;
-          this.notficationsSuscriptionScomplete = true;
+            this.userInfoService.userNotifications$.subscribe((notifications) => {
+              this.notifications = notifications;
+              this.notficationsSuscriptionScomplete = true;
 
-          this.pendingNotification = this.notifications.reduce((acc, notification) => {
-            if (notification.appointment.appointmentStatus === AppointmentStatusEnum.PENDING) {
-              return acc + 1;
-            } else {
-              return acc;
-            }
-          }, 0);
+              this.pendingNotification = this.notifications?.reduce((acc, notification) => {
+                if (notification.appointment.appointmentStatus === AppointmentStatusEnum.PENDING) {
+                  return acc + 1;
+                } else {
+                  return acc;
+                }
+              }, 0);
 
-        })
-        this.userInfoService.userInformation$.subscribe((user) => {
-          this.user = user;
-        })
-        this.checkForNewNotifications();
+            })
+            this.userInfoService.userInformation$.subscribe((user) => {
+              this.user = user;
+            })
+            this.checkForNewNotifications();
 
-      }
+          }
 
-    }
-    );
+        }
+      );
 
 
   }
 
-  logout(){
-      this.authService.logout();
-    };
+  logout() {
+    this.authService.logout();
+  };
 
 
-
-  routeToBook(){
+  routeToBook() {
     this.router.navigate(["/book"]);
   }
 
 
-
-  routeToManage(){
-    if(this.isStaff){
+  routeToManage() {
+    if (this.isStaff) {
       this.router.navigate(["/staff-appointments"]);
-    }
-    else {
+    } else {
       this.router.navigate(["/manage-appointments"]);
     }
   }
@@ -105,9 +103,9 @@ export class AppComponent implements OnInit, OnDestroy {
         switchMap(() => this.notificationService.getUserNotification(this.user.userId))
       )
       .subscribe(newNotifications => {
-        if ( newNotifications && newNotifications?.length !== this.notifications?.length) {
+        if (newNotifications && newNotifications?.length !== this.notifications?.length) {
           this.userInfoService.setUserNotification(newNotifications);
-           this.getIcon = 'notifications';
+          this.getIcon = 'notifications';
         }
 
       })
@@ -116,25 +114,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  routeToBio(){
+  routeToBio() {
     this.router.navigate(["/bio"]);
   }
 
-  routeToDoctorBio(){
+  routeToDoctorBio() {
     this.router.navigate(["/doctor-bio"]);
   }
 
-  routeToHome(){
-      this.router.navigate(["/home"]);
-    }
+  routeToHome() {
+    this.router.navigate(["/home"]);
+  }
 
-  routeToSignup(){
+  routeToSignup() {
     this.router.navigate(["/signup"]);
 
   }
 
 
-  routeToLogin(){
+  routeToLogin() {
     this.router.navigate(["/login"]);
   }
 
@@ -147,26 +145,25 @@ export class AppComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: NotificationsPage,
       mode: "ios",
-      componentProps:{
+      componentProps: {
         isStaff: this.isStaff
       }
     });
     await modal.present();
 
 
-
   }
 
-  routeToServices(){
-      this.router.navigate(["/services-page"]);
-    }
+  routeToServices() {
+    this.router.navigate(["/services-page"]);
+  }
 
-    getAppointments(){
+  getAppointments() {
     this.userInfoService.loadUserInformation()
-    }
+  }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.loadingSubsription.unsubscribe();
-    }
+  }
 
 }
