@@ -22,13 +22,9 @@ ion-content {
   background-size: cover;
 }
 
-.ion-select {
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
-ion-select-option {
-  padding-left: 0;
+ion-select {
+  white-space: nowrap;
+  margin-left: auto;
 }
 
 .imgDefault {
@@ -87,17 +83,12 @@ ion-grid {
 }
 
 .saveButton {
-  position: relative;
-  left: 50%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
   font-size: 20px;
 }
 
-
-@media  (max-width: 276px) {
-  .info1Col {
-    min-width: 55px;
-  }
-}
 
 @media  (max-width: 576px) {
 
@@ -105,22 +96,14 @@ ion-grid {
     background-image: url('../../../assets/icon/bg2.jpg');
   }
 
-  .emailInput {
-    margin-top: -3px;
-  }
-
-  .pNumberInput {
-    margin-top: 13px;
-    margin-bottom: 5px;
-  }
-
-  .alert-icon2 {
-    margin-top: 10px;
+  ion-item {
+    font-size: 16px;
   }
 
   .saveButton {
-    position: relative;
-    left: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 20px;
   }
 
@@ -147,6 +130,7 @@ ion-grid {
     text-align: center;
     font-family: "Segoe UI Semibold", cursive;
     position: inherit;
+    color: #000133;
   }
 
   .titleCol {
@@ -173,16 +157,6 @@ ion-grid {
     border-radius: 50%;
     overflow: hidden;
   }
-
-  .info1Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 16px;
-  }
-
-  .info2Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 16px;
-  }
 }
 
 @media (min-width: 576px) and (max-width: 992px) {
@@ -197,6 +171,7 @@ ion-grid {
   .title {
     font-size: 40px;
     font-family: "Franklin Gothic light";
+    color: #000133
   }
 
   .titleCol {
@@ -219,16 +194,6 @@ ion-grid {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
     border-radius: 50%;
     overflow: hidden;
-  }
-
-  .info1Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 18px;
-  }
-
-  .info2Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 18px;
   }
 }
 
@@ -258,6 +223,7 @@ ion-grid {
   .title {
     font-size: 50px;
     font-family: "Franklin Gothic light";
+    color: #000133
   }
 
   ion-img {
@@ -266,15 +232,5 @@ ion-grid {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
     border-radius: 50%;
     overflow: hidden;
-  }
-
-  .info1Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 18px;
-  }
-
-  .info2Col {
-    font-family: "Segoe UI Semibold", cursive;
-    font-size: 18px;
   }
 }
