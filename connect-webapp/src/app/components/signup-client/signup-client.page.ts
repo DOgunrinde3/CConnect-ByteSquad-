@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { IonCardContent, IonicModule, NavController, Platform, ToastController } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
@@ -10,6 +10,7 @@ import {FooterPage} from "../footer/footer.page";
 import {HeaderPage} from "../header/header.page";
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -19,13 +20,14 @@ import { AnimationController, IonCard } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage],
 })
-export class SignupClient implements OnInit {
+export class SignupClient implements OnInit, OnDestroy {
 
   userRegistrationForm: FormGroup;
   activeBreadcrumb: string = 'intro';
   showPassword = false;
   emailValid: boolean = true;
   phoneNumberValid: boolean = true;
+  loadingSubscription: Subscription[] = [];
 
   @ViewChild(IonCardContent , { read: ElementRef }) card: ElementRef<HTMLIonCardElement>;
 
@@ -160,7 +162,7 @@ export class SignupClient implements OnInit {
 
     // @ts-ignore
 
-    this.authService.registerUser(userRegistrationInformation).subscribe(
+    this.loadingSubscription.push(this.authService.registerUser(userRegistrationInformation).subscribe(
       () =>{
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
@@ -174,7 +176,7 @@ export class SignupClient implements OnInit {
       }, () => {
 
       }
-    );
+    ));
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
@@ -188,6 +190,10 @@ export class SignupClient implements OnInit {
     });
 
     await toast.present();
+  }
+
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
   }
 
 }

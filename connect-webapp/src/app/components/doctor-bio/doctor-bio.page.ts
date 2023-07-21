@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {IonicModule, ViewWillEnter, ViewWillLeave} from '@ionic/angular';
@@ -14,6 +14,7 @@ import {AppointmentModel} from "../../model/appointment.model";
 import {UserModel} from "../../model/User.model";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffSignupClient} from "../staff-signup-client/staff-signup-client.page";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-doctor-bio',
@@ -22,7 +23,7 @@ import {StaffSignupClient} from "../staff-signup-client/staff-signup-client.page
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HeaderPage, FooterPage, ReactiveFormsModule, NgOptimizedImage],
 })
-export class DoctorBioPage implements OnInit {
+export class DoctorBioPage implements OnInit, OnDestroy {
   isAuthenticated = false;
   editToggle: boolean = false;
   staff: DoctorModel;
@@ -42,6 +43,8 @@ export class DoctorBioPage implements OnInit {
   experienceValid: boolean = true;
 
   appointmentTypes = Object.values(AppointmentTypeEnum);
+
+  loadingSubscription: Subscription[] = [];
   constructor(private authService: AuthService,
               private router: Router, //private actionSheetController: ActionSheetController,
               private userService: UserInformationService,
@@ -49,12 +52,12 @@ export class DoctorBioPage implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.userInformation$.subscribe((staff) => {
+    this.loadingSubscription.push(this.userService.userInformation$.subscribe((staff) => {
       this.staff = staff;
       if (this.staff){
         this.isAuthenticated = true;
       }
-    });
+    }));
   }
 
   validateFirstName() {
@@ -90,14 +93,14 @@ export class DoctorBioPage implements OnInit {
 
     this.userService.setUserInformation(staff);
 
-    this.staffService.update(staff).subscribe((staff) => {
+    this.loadingSubscription.push(this.staffService.update(staff).subscribe((staff) => {
       this.staff.firstName = staff.firstName;
       this.staff.lastName = staff.lastName;
       this.staff.email = staff.email;
       this.staff.phoneNumber = staff.phoneNumber;
       this.staff.experience = staff.experience;
       this.staff.services = staff.services;
-     });
+     }));
   }
 
   editMode() {
@@ -109,5 +112,9 @@ export class DoctorBioPage implements OnInit {
       this.experienceTemp = this.staff?.experience;
       this.serviceTemp = this.staff?.services;
     }
+  }
+
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {IonicModule, ViewWillEnter, ViewWillLeave} from '@ionic/angular';
@@ -10,6 +10,7 @@ import { ActionSheetController } from '@ionic/angular';
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
 import {AppointmentModel} from "../../model/appointment.model";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-bio',
@@ -18,7 +19,7 @@ import {AppointmentModel} from "../../model/appointment.model";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HeaderPage, FooterPage, ReactiveFormsModule, NgOptimizedImage],
 })
-export class BioPage implements OnInit {
+export class BioPage implements OnInit, OnDestroy {
   isAuthenticated = false;
   editToggle: boolean = false;
   user: UserModel;
@@ -33,6 +34,24 @@ export class BioPage implements OnInit {
   lastNameValid: boolean = true;
   emailValid: boolean = true;
   phoneNumberValid: boolean = true;
+
+  loadingSubscription: Subscription[] = [];
+
+
+  constructor(private authService: AuthService,
+              private router: Router, //private actionSheetController: ActionSheetController,
+              private userService: UserInformationService) {
+  }
+
+  ngOnInit() {
+    this.loadingSubscription.push(this.userService.userInformation$.subscribe((user) => {
+      this.user = user;
+
+      if (this.user){
+        this.isAuthenticated = true;
+      }
+    }));
+  }
 
   validateFirstName() {
     this.firstNameValid = !!this.firstNameTemp;
@@ -49,20 +68,6 @@ export class BioPage implements OnInit {
   validatePhoneNumber() {
     this.phoneNumberValid = /^\d{10}$/.test(this.phoneNumberTemp);
   }
-  constructor(private authService: AuthService,
-              private router: Router, //private actionSheetController: ActionSheetController,
-              private userService: UserInformationService) {
-  }
-
-  ngOnInit() {
-    this.userService.userInformation$.subscribe((user) => {
-      this.user = user;
-
-      if (this.user){
-        this.isAuthenticated = true;
-      }
-    });
-  }
 
 
   update(user: UserModel, fName: string, lName: string, email: string, pNumber: string) {
@@ -74,44 +79,13 @@ export class BioPage implements OnInit {
 
     this.editToggle = false;
 
-    this.userService.update(user).subscribe((user) => {
+    this.loadingSubscription.push(this.userService.update(user).subscribe((user) => {
       this.user.firstName = user.firstName;
       this.user.lastName = user.lastName;
       this.user.email = user.email;
       this.user.phoneNumber = user.phoneNumber;
-    });
+    }));
   }
-
-  // async editImg() {
-  //   const actionSheet = await this.actionSheetController.create({
-  //     header: 'Options',
-  //     buttons: [
-  //       {
-  //         text: 'Delete',
-  //         role: 'destructive',
-  //         icon: 'trash',
-  //         handler: () => {
-  //         }
-  //       },
-  //       {
-  //         text: 'Update',
-  //         icon: 'create',
-  //         handler: () => {
-  //         }
-  //       },
-  //
-  //       {
-  //         text: 'Cancel',
-  //         icon: 'close',
-  //         role: 'cancel',
-  //         handler: () => {
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await actionSheet.present();
-  // }
-
 
   editMode() {
     if(this.editToggle) {
@@ -120,5 +94,9 @@ export class BioPage implements OnInit {
       this.emailTemp = this.user?.email;
       this.phoneNumberTemp = this.user?.phoneNumber;
     }
+  }
+
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
   }
 }

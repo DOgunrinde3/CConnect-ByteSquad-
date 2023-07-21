@@ -17,12 +17,13 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class NotificationsPage {
+export class NotificationsPage implements OnDestroy{
 
   options: any;
   isStaff: boolean
   notifications: NotificationModel[];
   loadingSubscriptionDone = false;
+  loadingSubscription: Subscription[] =[];
 
 
 
@@ -40,10 +41,10 @@ export class NotificationsPage {
 
 
   ionViewWillEnter() {
-  this.userInfoService.userNotifications$.subscribe((userNotifications) => {
+  this.loadingSubscription.push(this.userInfoService.userNotifications$.subscribe((userNotifications) => {
       this.notifications = userNotifications;
       this.loadingSubscriptionDone = true;
-    });
+    }));
 
   this.isStaff =  this.navParams.data['isStaff'];
 
@@ -100,5 +101,7 @@ export class NotificationsPage {
     return "primary";
   }
 
-
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
+  }
 }

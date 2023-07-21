@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController,} from '@ionic/angular';
@@ -13,6 +13,7 @@ import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -22,7 +23,7 @@ import {UserModel} from "../../model/User.model";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ConfirmAppointmentPage{
+export class ConfirmAppointmentPage implements OnDestroy{
 
   options: any;
   pageReady: boolean = false;
@@ -35,6 +36,7 @@ export class ConfirmAppointmentPage{
   selectedDoctor: DoctorModel;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
+  loadingSubscription: Subscription[] =[];
 
 
   constructor(public navParams: NavParams,
@@ -46,9 +48,9 @@ export class ConfirmAppointmentPage{
               private userInfoService: UserInformationService,
               private toastController: ToastController,
               private notificationService: NotificationService) {
-    this.userInfoService.userInformation$.subscribe( (user) =>
+    this.loadingSubscription.push(this.userInfoService.userInformation$.subscribe( (user) =>
     {this.user = user}
-    );
+    ));
     if (navParams.data) {
       this.options = navParams.data;
        this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
@@ -86,7 +88,7 @@ export class ConfirmAppointmentPage{
 
 
 
-      this.appointmentService.bookAppointment(bookAppointment).subscribe(
+      this.loadingSubscription.push(this.appointmentService.bookAppointment(bookAppointment).subscribe(
         (value) => {
 
           let notificationModel: NotificationModel = {
@@ -106,7 +108,7 @@ export class ConfirmAppointmentPage{
           this.presentToast("top", error.message, 'danger', 'close-outline');
           // Handle errors if necessary
         }
-      )
+      ))
       this.viewController.dismiss({confirm: true});
 
 
@@ -136,6 +138,11 @@ export class ConfirmAppointmentPage{
     });
 
     await toast.present();
+  }
+
+  ngOnDestroy(){
+    // prevent memory leak when component destroyed
+    this.loadingSubscription.forEach(s => s.unsubscribe());
   }
 
 }

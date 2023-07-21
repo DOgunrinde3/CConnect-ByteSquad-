@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import {FormsModule, Validators} from '@angular/forms';
 import {AlertController, IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
@@ -16,6 +16,7 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
 import {NotificationModel} from "../../model/notification.model";
 import {NotificationService} from "../../services/notification.service";
+import {Subscription} from "rxjs";
 @Component({
   selector: 'app-book-appointment',
   templateUrl: './manage-appointment.page.html',
@@ -23,7 +24,7 @@ import {NotificationService} from "../../services/notification.service";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HeaderPage, NgCalendarModule, FooterPage, DatePipe]
 })
-export class ManageAppointmentPage implements OnInit {
+export class ManageAppointmentPage implements OnInit, OnDestroy {
 
   date: string;
   noAppointments = false;
@@ -45,7 +46,8 @@ export class ManageAppointmentPage implements OnInit {
   userAppointments: AppointmentModel[];
   filteredUserAppointments: AppointmentModel[];
   appointmentTimeShifts: string[];
-appointment: AppointmentModel;
+  appointment: AppointmentModel;
+  loadingSubscription: Subscription[] =[];
 
   // @ts-ignore
   @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
@@ -76,10 +78,10 @@ appointment: AppointmentModel;
   }
 
   ionViewWillEnter(){
-    this.userService.userInformation$.subscribe(user => {
+    this.loadingSubscription.push(this.userService.userInformation$.subscribe(user => {
       this.user = user;
       this.getUserAppointments(user?.userId);
-    })
+    }))
 
   }
 
@@ -87,9 +89,9 @@ appointment: AppointmentModel;
   update(appointment: AppointmentModel, status: AppointmentStatusEnum){
     this.selectedAppointment = appointment;
     appointment.appointmentStatus = status;
-    this.appointmentService.update(appointment).subscribe((appointment) =>{
+    this.loadingSubscription.push(this.appointmentService.update(appointment).subscribe((appointment) =>{
       this.selectedAppointment.appointmentStatus = appointment.appointmentStatus;
-    });
+    }));
 
     let notificationModel: NotificationModel = {
       id:null,
@@ -98,7 +100,7 @@ appointment: AppointmentModel;
       notifiedUserId: appointment.doctor,
     }
 
-    this.notificationService.updateNotification(notificationModel, true).subscribe( );
+    this.loadingSubscription.push(this.notificationService.updateNotification(notificationModel, true).subscribe( ));
 
   }
 
@@ -245,4 +247,8 @@ appointment: AppointmentModel;
     return date < current;
   };
   protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
+
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
+  }
 }

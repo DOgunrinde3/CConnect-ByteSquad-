@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   notifications: NotificationModel[];
   user: UserModel;
 
-  loadingSubsription:Subscription
+  loadingSubscription:Subscription[] = [];
   notficationsSuscriptionScomplete  = false;
 
 
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.userInfoService.loadUserInformation();
         this.isStaff = this.authService.isStaff();
 
-        this.userInfoService.userNotifications$.subscribe((notifications) => {
+        this.loadingSubscription.push(this.userInfoService.userNotifications$.subscribe((notifications) => {
           this.notifications = notifications;
           this.notficationsSuscriptionScomplete = true;
 
@@ -64,10 +64,10 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           }, 0);
 
-        })
-        this.userInfoService.userInformation$.subscribe((user) => {
+        }))
+        this.loadingSubscription.push(this.userInfoService.userInformation$.subscribe((user) => {
           this.user = user;
-        })
+        }))
         this.checkForNewNotifications();
 
       }
@@ -166,7 +166,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
   ngOnDestroy(){
-    this.loadingSubsription.unsubscribe();
-    }
+    this.loadingSubscription.forEach(s => s.unsubscribe());
+  }
 
 }

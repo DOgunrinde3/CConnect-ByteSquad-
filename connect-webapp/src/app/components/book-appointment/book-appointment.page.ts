@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavController} from '@ionic/angular';
@@ -16,6 +16,7 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import {StaffService} from "../../services/staff.service";
 import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import * as moment from "moment/moment";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-book-appointment',
@@ -24,7 +25,7 @@ import * as moment from "moment/moment";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HeaderPage, NgCalendarModule, FooterPage, DatePipe]
 })
-export class BookAppointmentPage implements OnInit {
+export class BookAppointmentPage implements OnInit, OnDestroy {
 
   date: string;
   subscriptionComplete = true;
@@ -50,6 +51,7 @@ export class BookAppointmentPage implements OnInit {
   doctorAppointments: AppointmentModel[] = [];
   appointment: AppointmentModel;
   appointmentTypes = Object.values(AppointmentTypeEnum);
+  loadingSubscriptions: Subscription[] = [];
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
 
@@ -67,9 +69,9 @@ export class BookAppointmentPage implements OnInit {
 
   ngOnInit(){
 
-    this.userService.userInformation$.subscribe(user => {
+    this.loadingSubscriptions.push(this.userService.userInformation$.subscribe(user => {
       this.user = user;
-    })
+    }))
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours()
     if(this.route.snapshot.paramMap.get('date') === null ){
       return;
@@ -81,7 +83,7 @@ export class BookAppointmentPage implements OnInit {
 
   ionViewWillEnter(){
     this.selectedDoctor = null;
-    this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; });
+    this.loadingSubscriptions.push(this.staffService.getAllStaff().subscribe((value)=> {this.doctors = value; }));
 
   }
 
@@ -220,6 +222,11 @@ export class BookAppointmentPage implements OnInit {
       this.eventSource = {}
     }
 
+  }
+
+  ngOnDestroy(){
+    // prevent memory leak when component destroyed
+    this.loadingSubscriptions.forEach(s => s.unsubscribe());
   }
 
 }

@@ -24,4 +24,8 @@ export class HomePage implements OnInit {
     this.router.navigate(["/book"]);
   }
 
+  routeToServices() {
+    this.router.navigate(["/services"]);
+  }
+
 }

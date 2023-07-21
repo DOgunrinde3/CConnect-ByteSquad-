@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { IonCardContent, IonicModule, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
@@ -13,6 +13,7 @@ import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffRegistrationModel} from "../../model/staff-registration.model";
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-signup-client',
@@ -21,7 +22,7 @@ import { AnimationController, IonCard } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage, NgForOf]
 })
-export class StaffSignupClient implements OnInit {
+export class StaffSignupClient implements OnInit, OnDestroy {
 
 
   staffRegistrationForm: FormGroup;
@@ -29,6 +30,7 @@ export class StaffSignupClient implements OnInit {
   showPassword = false;
   emailValid: boolean = true;
   phoneNumberValid: boolean = true;
+  loadingSubscription: Subscription[] = [];
 
   @ViewChild(IonCardContent , { read: ElementRef }) card: ElementRef<HTMLIonCardElement>;
 
@@ -174,7 +176,7 @@ export class StaffSignupClient implements OnInit {
 
     const staffRegistrationInformation =  this.staffRegistrationForm.getRawValue() as StaffRegistrationModel;
 
-    this.authService.registerStaff(staffRegistrationInformation).subscribe(
+    this.loadingSubscription.push(this.authService.registerStaff(staffRegistrationInformation).subscribe(
       () =>{
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
@@ -192,7 +194,7 @@ export class StaffSignupClient implements OnInit {
           this.navCtrl.navigateRoot('/login-staff');
         });
       }
-    );
+    ));
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
@@ -208,5 +210,7 @@ export class StaffSignupClient implements OnInit {
     await toast.present();
   }
 
-
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
+  }
 }

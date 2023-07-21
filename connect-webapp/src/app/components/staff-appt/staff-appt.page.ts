@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import {FormsModule, Validators} from '@angular/forms';
 import {AlertController, IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
@@ -18,6 +18,7 @@ import {AppointmentTypeEnum} from "../../model/appointment-type.enum";
 import {StaffService} from "../../services/staff.service";
 import {NotificationModel} from "../../model/notification.model";
 import {NotificationService} from "../../services/notification.service";
+import {Subscription} from "rxjs";
 @Component({
   selector: 'app-staff-appt',
   templateUrl: './staff-appt.page.html',
@@ -25,7 +26,7 @@ import {NotificationService} from "../../services/notification.service";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, FooterPage, HeaderPage, NgCalendarModule]
 })
-export class ManageApptStaffPage implements OnInit {
+export class ManageApptStaffPage implements OnInit, OnDestroy {
 
   date: string;
   noAppointments = false;
@@ -50,6 +51,7 @@ export class ManageApptStaffPage implements OnInit {
   selectedDoctor: DoctorModel | null;
   doctorAppointments: AppointmentModel[] = [];
   appointmentTypes = Object.values(AppointmentTypeEnum);
+  loadingSubscription: Subscription[] = [];
 
   // @ts-ignore
   @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
@@ -82,7 +84,7 @@ export class ManageApptStaffPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    this.userService.userInformation$.subscribe(user => {
+    this.loadingSubscription.push(this.userService.userInformation$.subscribe(user => {
       this.currentDoctor = user;
       this.getDoctorAppointments(user?.userId);
       this.staffService.getAllStaff().subscribe((value)=> {
@@ -93,7 +95,7 @@ export class ManageApptStaffPage implements OnInit {
 
       });
 
-    })
+    }))
 
   }
 
@@ -101,9 +103,9 @@ export class ManageApptStaffPage implements OnInit {
   update(appointment: AppointmentModel, status: AppointmentStatusEnum){
     this.selectedAppointment = appointment;
     appointment.appointmentStatus = status;
-    this.appointmentService.update(appointment).subscribe((appointment) =>{
+    this.loadingSubscription.push(this.appointmentService.update(appointment).subscribe((appointment) =>{
       this.selectedAppointment.appointmentStatus = appointment.appointmentStatus;
-    });
+    }));
 
     let notificationModel: NotificationModel = {
       id:null,
@@ -112,7 +114,7 @@ export class ManageApptStaffPage implements OnInit {
       notifiedUserId: appointment.patient,
     }
 
-    this.notificationService.updateNotification(notificationModel, false).subscribe( );
+    this.loadingSubscription.push(this.notificationService.updateNotification(notificationModel, false).subscribe( ));
 
   }
 
@@ -228,4 +230,8 @@ export class ManageApptStaffPage implements OnInit {
     return date < current;
   };
   protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
+
+  ngOnDestroy(){
+    this.loadingSubscription.forEach(s => s.unsubscribe());
+  }
 }
