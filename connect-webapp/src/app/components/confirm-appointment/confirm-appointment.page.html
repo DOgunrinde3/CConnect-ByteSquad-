@@ -23,7 +23,7 @@
   <div class="doctor">
 
   <ion-label class="lbl-title" color="primary">{{ 'PLEASE CHOOSE A DOCTOR' }}</ion-label>
-  <ion-select [(ngModel)]="selectedDoctor" (ngModelChange)="filterSelect()" placeholder="Any">
+  <ion-select [(ngModel)]="selectedDoctor" (ngModelChange)="filterSelect()" placeholder="Select a doctor">
     <ion-select-option [value]="null"> Any </ion-select-option>
     <ion-select-option *ngFor="let doctor of doctors; let i = index"
                        [value]="doctor" >

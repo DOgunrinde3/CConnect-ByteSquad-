@@ -166,7 +166,6 @@ export class BookAppointmentPage implements OnInit {
   filterSelect(event) {
     this.selectedDoctor = event.detail.value;
     this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
-    console.log(this.selectedDoctor);
     if (this.selectedDoctor !== null) {
       this.subscriptionComplete = false;
       this.appointmentService.getAppointmentsByDoctor(this.selectedDoctor.userId)

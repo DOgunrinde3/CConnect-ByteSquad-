@@ -32,7 +32,7 @@ export class ConfirmAppointmentPage {
   selectedTime: any;
   selectedDateValue: Date;
   selectedService = null;
-  selectedDoctor: DoctorModel;
+  selectedDoctor: DoctorModel = null;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
 
@@ -55,7 +55,7 @@ export class ConfirmAppointmentPage {
       this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
       this.selectedDate = this.options.appointment.appointmentDate;
       this.selectedTime = this.options.appointment.appointmentTime;
-      this.selectedDoctor = this.options.selectedDoctor;
+      this.selectedDoctor = this.options?.selectedDoctor;
       this.selectedService = this.options.selectedService;
       this.doctors = this.options.doctors;
       this.selectedDateValue = this.options.selectedDateValue;
@@ -71,8 +71,6 @@ export class ConfirmAppointmentPage {
       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
     } else {
-
-      console.log(this.selectedDate);
 
       let bookAppointment: AppointmentModel = {
         id: null,
@@ -90,7 +88,7 @@ export class ConfirmAppointmentPage {
 
           let notificationModel: NotificationModel = {
             id: null,
-            appointment: value as AppointmentModel,
+            appointment: bookAppointment,
             notifiedFromId: this.user.userId,
             notifiedUserId: this.selectedDoctor?.userId,
           }
@@ -102,7 +100,7 @@ export class ConfirmAppointmentPage {
 
         },
         error => {
-          this.presentToast("top", error.message, 'danger', 'close-outline');
+          this.presentToast("top", 'Appointment already exists', 'danger', 'close-outline');
           // Handle errors if necessary
         }
       )
