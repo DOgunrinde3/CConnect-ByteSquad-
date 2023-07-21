@@ -119,7 +119,7 @@ export class ConfirmAppointmentPage {
   }
 
   filterSelect() {
-    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor?.services;
   }
 
 
