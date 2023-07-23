@@ -1,14 +1,9 @@
-<head>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBskB00czEFFzkHapONNb3vWwxihcNnfg&libraries=places"></script>
-  <link href="https://fonts.googleapis.com/css2?family=San+Francisco+Display&display=swap" rel="stylesheet">
-</head>
 
-
-  <ion-content>
+  <ion-content >
     <app-header></app-header>
-    <div class="welcome-section">
+    <div class="welcome-section" >
       <div class="welcome-container">
-        <div class="welcome-content">
+        <div class="welcome-content" >
           <h2>Connecting Care, Empowering Lives: Your <span style="color: #3880ff">Clinic Connect</span></h2>
         </div>
         <ion-button fill="outline" size="large" type="submit" (click)="routeToBook()" >Book Now</ion-button>
@@ -17,31 +12,29 @@
 
     <div class="about-section">
       <h2>About Us</h2>
-      <p>At Clinic Connect, our mission is to provide comprehensive and compassionate healthcare services to all patients.
+      <p >At Clinic Connect, our mission is to provide comprehensive and compassionate healthcare services to all patients.
         We are committed to promoting wellness, preventing illness, and offering prompt and effective treatments when needed.
         Our team of experienced healthcare professionals works tirelessly to ensure your comfort and satisfaction
         during your visit. We put our patients at the center of everything we do. Your health and well-being are our
         top priorities, and we strive to create a warm and welcoming environment where you feel valued and respected.</p>
     </div>
 
-<!--    <div class="services-section">-->
-<!--      <img src="assets/services1.jpg" alt="Services Photo">-->
-<!--      <div class="services-container">-->
-<!--        <ion-button fill="outline" size="large" type="submit" >View All Services </ion-button>-->
-<!--      </div>-->
-<!--    </div>-->
-
-    <div class="services-section">
+    <div class="services-section"  >
+      <video autoplay muted loop id="myVideo">
+        <source src="assets/services1.mp4" type="video/mp4">
+      </video>
       <div class="services-container">
-        <ion-button fill="outline" size="large" type="submit" >View ALl Services</ion-button>
+        <p class="description">Providing top-notch healthcare services.</p>
+        <ion-button fill="outline" size="large" type="submit" class="service-button" (click)="routeToServices()">View All Services</ion-button>
       </div>
     </div>
 
-    <ion-grid>
+    <ion-grid >
+<!--      <h1 class="testimonial-header">Client Testimonials: Hear What Our Patients Say</h1>-->
       <ion-row>
-        <ion-col size="12" size-sm="6" size-lg="4">
-          <div class="testimonial-card">
-            <img src="assets/test1.PNG" alt="Testimonial 1 Image">
+        <ion-col size-lg="3.9" size-sm="4" class="testimonial-card1">
+          <div>
+            <img src="assets/test3.PNG" alt="Testimonial 1 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">John Doe</h3>
               <p class="testimonial-designation">Patient</p>
@@ -52,8 +45,8 @@
           </div>
         </ion-col>
 
-        <ion-col size="12" size-sm="6" size-lg="4">
-          <div class="testimonial-card">
+        <ion-col size-lg="3.9" size-sm="4" class="testimonial-card2">
+          <div>
             <img src="assets/test2.PNG" alt="Testimonial 2 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">Jane Smith</h3>
@@ -65,9 +58,9 @@
           </div>
         </ion-col>
 
-        <ion-col size="12" size-sm="6" size-lg="4">
-          <div class="testimonial-card">
-            <img src="assets/test3.PNG" alt="Testimonial 3 Image">
+        <ion-col size-lg="3.9" size-sm="4" class="testimonial-card3">
+          <div>
+            <img src="assets/test1.PNG" alt="Testimonial 3 Image">
             <div class="testimonial-content">
               <h3 class="testimonial-name">Sarah Johnson</h3>
               <p class="testimonial-designation">Patient</p>
@@ -86,6 +79,7 @@
         <ion-card mode="ios">
           <ion-card-content>
             <h3 class="clinic-subtitle">Location & Hours</h3>
+            <div class="clinic-subsection">
             <ion-item>
               <ion-icon slot="start" name="location-outline"></ion-icon>
               <ion-label >3737 Wascana Pkwy </ion-label>
@@ -102,6 +96,7 @@
               <ion-icon slot="start" name="time-outline"></ion-icon>
               <ion-label>Sunday: Closed</ion-label>
             </ion-item>
+            </div>
             <div class="contactUs">
               <h4 class="contactHeader"> Contact Us: </h4>
             <a href="mailto:ask@cconnect.com">ask@cconnect.com</a>
@@ -111,34 +106,8 @@
       </div>
     </div>
 
-<!--    <div id="map" class="clinic-map"></div>-->
-
-<!--    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>-->
-
-
-<!--    <script>-->
-<!--function initMap() {-->
-<!--  // Define the coordinates of your clinic's location-->
-<!--  var clinicLocation = { lat: 50.451191, lng: -104.616623 };-->
-
-<!--  // Create a map centered at the clinic's location-->
-<!--  var map = new google.maps.Map(document.getElementById('map'), {-->
-<!--    center: clinicLocation,-->
-<!--    zoom: 15-->
-<!--  });-->
-
-<!--  // Add a marker for the clinic's location-->
-<!--  var marker = new google.maps.Marker({-->
-<!--    position: clinicLocation,-->
-<!--    map: map,-->
-<!--    title: 'Your Clinic'-->
-<!--  });-->
-<!--}-->
-<!-- // Call the function to initialize the map-->
-<!--</script>-->
-
-
   </ion-content>
+
 
 
 
