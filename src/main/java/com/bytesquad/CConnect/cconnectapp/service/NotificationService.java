@@ -66,7 +66,7 @@ public class NotificationService {
         try {
             Notification notification1 = mongoTemplate.findAndModify(query, update, options, Notification.class);
 
-            return ResponseEntity.ok(notification1);
+            return ResponseEntity.ok(notificationAssembler.assemble(notification1));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Appointment already exists");
         }

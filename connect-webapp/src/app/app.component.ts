@@ -27,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isStaff;
   pendingNotification = 0;
   getIcon = 'notifications-outline';
+  getColor = 'red';
+
   notifications: NotificationModel[];
   user: UserModel;
 
@@ -106,6 +108,8 @@ export class AppComponent implements OnInit, OnDestroy {
         if (newNotifications && newNotifications?.length !== this.notifications?.length) {
           this.userInfoService.setUserNotification(newNotifications);
           this.getIcon = 'notifications';
+          this.getColor = '#000000';
+
         }
 
       })
@@ -140,6 +144,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.getAppointments();
     this.getIcon = 'notifications-outline';
+    this.getColor = '#ffffff';
+
 
 
     const modal = await this.modalController.create({

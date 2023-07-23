@@ -13,6 +13,7 @@ import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
+import {async} from "rxjs";
 
 
 @Component({
@@ -83,12 +84,12 @@ export class ConfirmAppointmentPage {
       }
 
 
-      this.appointmentService.bookAppointment(bookAppointment).subscribe(
+       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         (value) => {
 
           let notificationModel: NotificationModel = {
             id: null,
-            appointment: bookAppointment,
+            appointment: value,
             notifiedFromId: this.user.userId,
             notifiedUserId: this.selectedDoctor?.userId,
           }

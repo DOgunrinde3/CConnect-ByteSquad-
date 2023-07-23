@@ -57,7 +57,7 @@ public class AppointmentService {
         try {
             Appointment createdAppointment = appointmentRepository.insert(appointment);
 
-            return ResponseEntity.ok(createdAppointment);
+            return ResponseEntity.ok(appointmentAssembler.assemble(createdAppointment));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Appointment already exists");
         }
@@ -75,6 +75,15 @@ public class AppointmentService {
         List<Appointment> appointmentDtos = mongoTemplate.find(query, Appointment.class);
 
         return appointmentDtos.stream().map(appointmentAssembler::assemble).collect(Collectors.toList());
+
+    }
+
+
+    public Appointment getAppointment(String appointmentId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(appointmentId));
+
+       return mongoTemplate.findOne(query, Appointment.class);
 
     }
 

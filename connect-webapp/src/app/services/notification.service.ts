@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NotificationModel} from "../model/notification.model";
 
-const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/notification';
+const BASE_URI = 'http://localhost:8080/api/v1/notification';
 
 @Injectable({
   providedIn: 'root'

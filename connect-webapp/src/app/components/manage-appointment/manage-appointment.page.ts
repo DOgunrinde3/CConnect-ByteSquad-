@@ -15,6 +15,7 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
 import {NotificationModel} from "../../model/notification.model";
 import {NotificationService} from "../../services/notification.service";
+import {async} from "rxjs";
 
 @Component({
   selector: 'app-book-appointment',
@@ -72,15 +73,23 @@ export class ManageAppointmentPage implements OnInit {
     } else {
       this.calendar.currentDate = new Date(Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
     }
+
   }
 
+
   ionViewWillEnter() {
+    this.subscriptionComplete = false;
     this.userService.userInformation$.subscribe(user => {
       this.user = user;
-      this.getUserAppointments(user?.userId);
+      if (user) {
+        this.getUserAppointments(user.userId);
+      }
+
     })
 
   }
+
+
 
   update(appointment: AppointmentModel, status: AppointmentStatusEnum) {
     this.selectedAppointment = appointment;
@@ -102,14 +111,18 @@ export class ManageAppointmentPage implements OnInit {
   }
 
   onDateSelected(date) {
+    this.subscriptionComplete = false;
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.formattedDate = this.datePipe.transform(this.selectedDate, 'mediumDate');
     this.filteredUserAppointments = this.userAppointments?.filter(appointment => appointment.appointmentDate === this.selectedDate);
 
     if (this.filteredUserAppointments?.length !== 0) {
       this.noAppointments = true;
+      this.subscriptionComplete = true;
     } else {
       this.noAppointments = false;
+      this.subscriptionComplete = true;
+
 
     }
 
@@ -128,7 +141,7 @@ export class ManageAppointmentPage implements OnInit {
     return "primary";
   }
 
-  getUserAppointments(userId: string) {
+   getUserAppointments(userId: string) {
     this.appointmentService.getUserAppointments(userId)
       .subscribe((userAppointments) => {
           this.userAppointments = userAppointments;
@@ -142,9 +155,13 @@ export class ManageAppointmentPage implements OnInit {
               allDay: false
             });
           })
-          this.onDateSelected(this.calendar.currentDate);
-          this.subscriptionComplete = true;
 
+        },
+
+        () =>{},
+
+        ()=> {
+          this.onDateSelected(this.calendar.currentDate);
         }
       )
 
