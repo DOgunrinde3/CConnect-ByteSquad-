@@ -13,14 +13,13 @@ import {NotificationModel} from "./model/notification.model";
 import {interval, Subscription, switchMap} from "rxjs";
 import {UserModel} from "./model/User.model";
 import {AppointmentStatusEnum} from "./model/appointment-status.enum";
-import {HeaderPage} from "./components/header/header.page";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule, FooterPage, HeaderPage],
+  imports: [IonicModule, CommonModule, FormsModule, FooterPage],
 })
 export class AppComponent implements OnInit, OnDestroy {
   public environmentInjector = inject(EnvironmentInjector);
@@ -28,11 +27,13 @@ export class AppComponent implements OnInit, OnDestroy {
   isStaff;
   pendingNotification = 0;
   getIcon = 'notifications-outline';
+  getColor = 'red';
+
   notifications: NotificationModel[];
   user: UserModel;
 
-  loadingSubscription:Subscription[] = [];
-  notficationsSuscriptionScomplete  = false;
+  loadingSubsription: Subscription
+  notficationsSuscriptionScomplete = false;
 
 
   constructor(private router: Router,
@@ -40,77 +41,60 @@ export class AppComponent implements OnInit, OnDestroy {
               private userInfoService: UserInformationService,
               private staffService: StaffService,
               private notificationService: NotificationService,
-              private modalController: ModalController){}
+              private modalController: ModalController) {
+  }
 
   ngOnInit() {
 
-  this.authService
-    .getAuthState()
-    .subscribe((value) => {
-      this.isAuthenticated = value
+    this.authService
+      .getAuthState()
+      .subscribe((value) => {
+          this.isAuthenticated = value
 
-      if (value === true) {
-        this.userInfoService.loadUserInformation();
-        this.isStaff = this.authService.isStaff();
+          if (value === true) {
+            this.userInfoService.loadUserInformation();
+            this.isStaff = this.authService.isStaff();
 
-        this.loadingSubscription.push(this.userInfoService.userNotifications$.subscribe((notifications) => {
-          this.notifications = notifications;
-          this.notficationsSuscriptionScomplete = true;
+            this.userInfoService.userNotifications$.subscribe((notifications) => {
+              this.notifications = notifications;
+              this.notficationsSuscriptionScomplete = true;
 
-          this.pendingNotification = this.notifications.reduce((acc, notification) => {
-            if (notification.appointment.appointmentStatus === AppointmentStatusEnum.PENDING) {
-              return acc + 1;
-            } else {
-              return acc;
-            }
-          }, 0);
+              this.pendingNotification = this.notifications?.reduce((acc, notification) => {
+                if (notification.appointment.appointmentStatus === AppointmentStatusEnum.PENDING) {
+                  return acc + 1;
+                } else {
+                  return acc;
+                }
+              }, 0);
 
-        }))
-        this.loadingSubscription.push(this.userInfoService.userInformation$.subscribe((user) => {
-          this.user = user;
-        }))
-        this.checkForNewNotifications();
+            })
+            this.userInfoService.userInformation$.subscribe((user) => {
+              this.user = user;
+            })
+            this.checkForNewNotifications();
 
-      }
+          }
 
-    }
-    );
+        }
+      );
 
 
   }
 
-  logout(){
-      this.authService.logout();
-    };
+  logout() {
+    this.authService.logout();
+  };
 
 
-
-  routeToBook(){
+  routeToBook() {
     this.router.navigate(["/book"]);
   }
 
 
-  onScroll(event: CustomEvent) {
-    const scrollElement = event.target as HTMLElement;
-    const scrollHeight = scrollElement.scrollHeight;
-    const scrollTop = scrollElement.scrollTop;
-    const clientHeight = scrollElement.clientHeight;
-
-    // Check if the user has scrolled to the bottom of the page
-    if (scrollHeight - scrollTop === clientHeight) {
-      document.getElementById('scrollFooter').style.display = 'block';
-    } else {
-      document.getElementById('scrollFooter').style.display = 'none';
-    }
-  }
-
-
-
-  routeToManage(){
-    if(this.isStaff){
+  routeToManage() {
+    if (this.isStaff) {
       this.router.navigate(["/staff-appointments"]);
-    }
-    else {
+    } else {
       this.router.navigate(["/manage-appointments"]);
     }
   }
@@ -121,9 +105,11 @@ export class AppComponent implements OnInit, OnDestroy {
         switchMap(() => this.notificationService.getUserNotification(this.user.userId))
       )
       .subscribe(newNotifications => {
-        if ( newNotifications && newNotifications?.length !== this.notifications?.length) {
+        if (newNotifications && newNotifications?.length !== this.notifications?.length) {
           this.userInfoService.setUserNotification(newNotifications);
-           this.getIcon = 'notifications';
+          this.getIcon = 'notifications';
+          this.getColor = '#000000';
+
         }
 
       })
@@ -132,25 +118,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  routeToBio(){
+  routeToBio() {
     this.router.navigate(["/bio"]);
   }
 
-  routeToDoctorBio(){
+  routeToDoctorBio() {
     this.router.navigate(["/doctor-bio"]);
   }
 
-  routeToHome(){
-      this.router.navigate(["/home"]);
-    }
+  routeToHome() {
+    this.router.navigate(["/home"]);
+  }
 
-  routeToSignup(){
+  routeToSignup() {
     this.router.navigate(["/signup"]);
 
   }
 
 
-  routeToLogin(){
+  routeToLogin() {
     this.router.navigate(["/login"]);
   }
 
@@ -158,31 +144,32 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.getAppointments();
     this.getIcon = 'notifications-outline';
+    this.getColor = '#ffffff';
+
 
 
     const modal = await this.modalController.create({
       component: NotificationsPage,
       mode: "ios",
-      componentProps:{
+      componentProps: {
         isStaff: this.isStaff
       }
     });
     await modal.present();
 
 
-
   }
 
-  routeToServices(){
-      this.router.navigate(["/services-page"]);
-    }
+  routeToServices() {
+    this.router.navigate(["/services-page"]);
+  }
 
-    getAppointments(){
+  getAppointments() {
     this.userInfoService.loadUserInformation()
-    }
+  }
 
-  ngOnDestroy(){
-    this.loadingSubscription.forEach(s => s.unsubscribe());
+  ngOnDestroy() {
+    this.loadingSubsription.unsubscribe();
   }
 
 }

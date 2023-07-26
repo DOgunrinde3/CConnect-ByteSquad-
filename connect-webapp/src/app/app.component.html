@@ -1,10 +1,8 @@
 
 <ion-app>
 
-  <main>
-  <ion-router-outlet id="main-content" >
+  <ion-router-outlet id="main-content">
   </ion-router-outlet>
-
 
 
     <ion-menu contentId="main-content" class="menu" side="end">
@@ -24,7 +22,7 @@
       <ion-list *ngIf="isAuthenticated ">
         <ion-menu-toggle auto-hide="true" >
           <ion-item (click)="routeToHome()"><ion-icon name="home-outline" mode="ios"></ion-icon>Home</ion-item>
-          <ion-item><ion-icon mode="ios" name="cog-outline"></ion-icon>Services</ion-item>
+          <ion-item (click)="routeToServices()"><ion-icon mode="ios" name="cog-outline"></ion-icon>Services</ion-item>
           <ion-item *ngIf="!isStaff" (click)="routeToBook()"><ion-icon mode="ios" name="calendar-outline"></ion-icon>Book Appointment</ion-item>
           <ion-item *ngIf="!isStaff" (click)="routeToManage()"><ion-icon mode="ios"name="file-tray-full-outline"></ion-icon>My Bookings</ion-item>
           <ion-item *ngIf="isStaff" (click)="routeToManage()"><ion-icon mode="ios"name="calendar-outline"></ion-icon>
@@ -44,10 +42,10 @@
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="isAuthenticated">
     <ion-fab-button (click)="openModal()" >
-      <ion-icon name="{{getIcon}}" id="noti"></ion-icon>
+      <ion-icon name="{{getIcon}}" color="{{getColor}}" id="noti"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   </div>
-</main>
+
 </ion-app>
