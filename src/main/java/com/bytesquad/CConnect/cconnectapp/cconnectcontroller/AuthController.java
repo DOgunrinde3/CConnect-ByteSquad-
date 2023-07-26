@@ -58,7 +58,7 @@ public class AuthController {
         return staffService.update(userId, staffDto);
     }
 
-    @GetMapping()
+    @GetMapping("/staff")
     public List<StaffDto> getAll(){
         return userService.getAllStaff();
     }
