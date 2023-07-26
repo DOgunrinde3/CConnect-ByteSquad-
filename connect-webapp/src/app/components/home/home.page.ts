@@ -9,6 +9,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import 'intersection-observer';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-home',
@@ -19,13 +20,20 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 })
 export class HomePage implements OnInit {
 
+  isStaff: boolean;
+
 constructor(private router: Router,
-              private elementRef: ElementRef) {
+              private elementRef: ElementRef,
+            private authService: AuthService) {
+
+  this.isStaff = this.authService.isStaff();
   }
 
   ngOnInit() {
     this.setupScrollTrigger();
   }
+
+
 
   setupScrollTrigger() {
     const welcomeSection = document.querySelectorAll('.welcome-content');

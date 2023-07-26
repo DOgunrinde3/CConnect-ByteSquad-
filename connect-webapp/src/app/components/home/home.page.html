@@ -6,7 +6,7 @@
         <div class="welcome-content" >
           <h2>Connecting Care, Empowering Lives: Your <span style="color: #3880ff">Clinic Connect</span></h2>
         </div>
-        <ion-button fill="outline" size="large" type="submit" (click)="routeToBook()" >Book Now</ion-button>
+        <ion-button *ngIf="isStaff" fill="outline" expand="block" size="large" mode="ios" type="submit" (click)="routeToBook()" >Book Now</ion-button>
       </div>
     </div>
 
@@ -19,10 +19,7 @@
         top priorities, and we strive to create a warm and welcoming environment where you feel valued and respected.</p>
     </div>
 
-    <div class="services-section"  >
-      <video autoplay muted loop id="myVideo">
-        <source src="assets/services1.mp4" type="video/mp4">
-      </video>
+    <div class="services-section">
       <div class="services-container">
         <p class="description">Providing top-notch healthcare services.</p>
         <ion-button fill="outline" size="large" type="submit" class="service-button" (click)="routeToServices()">View All Services</ion-button>
