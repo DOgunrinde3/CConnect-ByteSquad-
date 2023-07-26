@@ -14,7 +14,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping("/book")
-    public AppointmentDto login(@RequestBody AppointmentDto appointmentDto){
+    public AppointmentDto book(@RequestBody AppointmentDto appointmentDto){
         return appointmentService.book(appointmentDto);
     }
 
