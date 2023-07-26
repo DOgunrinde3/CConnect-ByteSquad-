@@ -170,7 +170,7 @@ export class SignupClient implements OnInit, OnDestroy {
         });
       },
       error => {
-        this.presentToast("top", error.error, 'danger', 'close-outline');
+        this.presentToast("top",'Email already exist', 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
 

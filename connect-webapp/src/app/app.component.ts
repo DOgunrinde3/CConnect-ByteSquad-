@@ -161,7 +161,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   routeToServices() {
-    this.router.navigate(["/services-page"]);
+    this.router.navigate(["/services"]);
   }
 
   getAppointments() {

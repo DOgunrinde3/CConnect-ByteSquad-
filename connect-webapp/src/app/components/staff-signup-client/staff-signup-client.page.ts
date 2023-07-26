@@ -177,20 +177,16 @@ export class StaffSignupClient implements OnInit, OnDestroy {
 
     this.loadingSubscription.push(this.authService.registerStaff(staffRegistrationInformation).subscribe(
       () =>{
-        this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
-        this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/login');
-        });
       },
       error => {
-        this.presentToast("top", error.error, 'danger', 'close-outline');
+        this.presentToast("top", 'Email already exist', 'danger', 'close-outline');
         // Handle errors if necessary
       }, () => {
         this.presentToast("top", 'Registration successful!', 'success', "checkmark-outline");
 
         this.platform.ready().then(() => {
-          this.navCtrl.navigateRoot('/login-staff');
+          this.navCtrl.navigateRoot('/login');
         });
       }
     ));
