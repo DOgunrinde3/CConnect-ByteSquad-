@@ -26,7 +26,6 @@ constructor(private router: Router,
               private elementRef: ElementRef,
             private authService: AuthService) {
 
-  this.isStaff = this.authService.isStaff();
   }
 
   ngOnInit() {
