@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {AppointmentModel} from "../model/appointment.model";
 import {AppointmentStatusEnum} from "../model/appointment-status.enum";
 
-const BASE_URI = 'http://localhost:8080/api/v1/appointment';
+const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/appointment';
 
 
 const appointmentHours = [
