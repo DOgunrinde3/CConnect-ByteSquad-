@@ -42,6 +42,7 @@ export class BookAppointmentPage implements OnInit, OnDestroy {
   selectedDate: string | null;
   selectedService = null;
   viewTitle: string;
+  formattedDate: string;
   selectedTime: string | undefined;
   user: UserModel;
   doctors: DoctorModel[];
@@ -91,6 +92,8 @@ export class BookAppointmentPage implements OnInit, OnDestroy {
     this.resetAvailableTime();
     this.selectedDateValue = date;
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+    this.formattedDate = this.datePipe.transform(this.selectedDate, 'mediumDate');
+
 
     this.selectedDoctor !== null ? this.filterUnavailableTimes() : this.resetAvailableTime()
     //this.getAvailableTimes(date);
