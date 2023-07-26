@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  height: 100%;
+  width: 100%;
+  padding: 10% 10% 10% 10%;
+
+}
+
+.info {
+  width: 100%;
+
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.doctor {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+
+ion-label {
+  width: 100%;
+  font-weight: 700;
+}
+
+.confirm {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-style {
+  --ion-background-color: #ffffff !important;
+}
+
+
+
+
