@@ -8,6 +8,7 @@ import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Staff;
 import com.bytesquad.CConnect.cconnectapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -48,7 +49,7 @@ public class AppointmentService {
         return appointmentAssembler.assemble(appointment);
 
     }
-
+    @Cacheable
     public List<AppointmentDto> getAllUserAppointments(String userid){
 
         if(userid.isEmpty() || userid == null){

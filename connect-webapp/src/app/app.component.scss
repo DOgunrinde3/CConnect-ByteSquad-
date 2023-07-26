@@ -10,10 +10,11 @@ ion-app{
   --ion-background-color: #f1f7fe !important;
 }
 
-
-ion-menu{
-  --ion-background-color: #ffffff;
-  --min-width: 25em;
+footer{
+  position:fixed;
+  bottom:0px;
+  background-color:pink;
+  width:100%;
 }
 
 ion-icon{

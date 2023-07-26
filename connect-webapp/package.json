@@ -33,6 +33,7 @@
     "@types/gsap": "^3.0.0",
     "cors": "^2.8.5",
     "gsap": "^3.12.2",
+    "intersection-observer": "^0.12.2",
     "ionic7-calendar": "^1.0.0",
     "ionicons": "^7.0.0",
     "jwt-decode": "^3.1.2",

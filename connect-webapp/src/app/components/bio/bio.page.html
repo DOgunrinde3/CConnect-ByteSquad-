@@ -1,4 +1,4 @@
- <ion-content  *ngIf="isAuthenticated" [fullscreen]="true">
+ <ion-content  *ngIf="isAuthenticated">
    <app-header></app-header>
   <div class="blank">
     <ion-toggle [(ngModel)]="editToggle" (ionChange)="editMode()">EDIT</ion-toggle>
@@ -85,7 +85,10 @@
     <div class="blank"></div>
 
   </ion-grid>
-   <app-footer></app-footer>
+
+
 </ion-content>
+ <app-footer></app-footer>
+
 
 

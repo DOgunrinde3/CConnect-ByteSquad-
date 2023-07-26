@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicModule, ToastController, ViewWillEnter} from '@ionic/angular';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {AuthService} from "../../services/auth.service";
@@ -20,7 +19,7 @@ import {async} from "rxjs";
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, FormsModule, ReactiveFormsModule, NgIf, HeaderPage, FooterPage],
+  imports: [IonicModule, FormsModule, ReactiveFormsModule, NgIf, HeaderPage, FooterPage],
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;

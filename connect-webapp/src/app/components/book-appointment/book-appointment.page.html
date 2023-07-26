@@ -1,8 +1,8 @@
 
-<app-header>
-  </app-header>
-  <ion-content [fullscreen]="true">
 
+  <ion-content>
+    <app-header>
+    </app-header>
     <ion-grid class="filter">
       <ion-row style="width: 100%" class="ion-justify-content-between">
         <ion-card sizeLg="6" class="select-filter ion-padding" mode="ios" style="width: 100%;">
@@ -103,7 +103,7 @@
       </div>
       <ion-row *ngIf="subscriptionComplete" class="ion-margin-vertical" >
 
-        <ion-col sizeSm="1" class="ion-text-center"  sizeLg="2" *ngFor="let time of appointmentTimeShifts ">
+        <ion-col sizeSm="2" class="ion-text-center"  sizeLg="2" *ngFor="let time of appointmentTimeShifts ">
           <ion-button color="primary" mode="ios" [disabled]="!isAvailable(time)" class="buttons" fill="outline" shape="round" size="small" (click)="timeOnClick(time)" >
             {{time}}
           </ion-button>
@@ -119,7 +119,8 @@
 
 
     </div>
-</ion-content>
-<app-footer></app-footer>
+    <app-footer></app-footer>
+
+  </ion-content>
 
 

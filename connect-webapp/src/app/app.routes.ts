@@ -1,7 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 import {LoginPage} from "./components/login/login.page";
 import {SignupClient} from "./components/signup-client/signup-client.page";
-import {Tab3Page} from "./components/tab3/tab3.page";
 import {HomePage} from "./components/home/home.page";
 
 import {NgModule} from "@angular/core";
@@ -17,6 +16,7 @@ import {ManageAppointmentPage} from "./components/manage-appointment/manage-appo
 import {NoAuthGuard} from "./services/guard/no-auth-guard";
 import {ManageApptStaffPage} from "./components/staff-appt/staff-appt.page";
 import {StaffAuthGuard} from "./services/guard/staff-auth.guard";
+import {ServicesPagePage} from "./components/services-page/services-page.page";
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginPage, canActivate: [NoAuthGuard]},
@@ -33,6 +33,9 @@ export const routes: Routes = [
   },
   {
     path: 'home', component: HomePage
+  },
+  {
+    path: 'services', component: ServicesPagePage
   },
 
   {

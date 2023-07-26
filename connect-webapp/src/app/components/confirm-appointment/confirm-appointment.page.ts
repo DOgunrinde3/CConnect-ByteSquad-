@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {IonicModule, ModalController, NavParams, ToastController,} from '@ionic/angular';
@@ -13,7 +13,7 @@ import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../model/notification.model";
 import {UserInformationService} from "../../services/user-information.service";
 import {UserModel} from "../../model/User.model";
-import {Subscription} from "rxjs";
+import {async} from "rxjs";
 
 
 @Component({
@@ -23,7 +23,7 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ConfirmAppointmentPage implements OnDestroy{
+export class ConfirmAppointmentPage {
 
   options: any;
   pageReady: boolean = false;
@@ -33,10 +33,9 @@ export class ConfirmAppointmentPage implements OnDestroy{
   selectedTime: any;
   selectedDateValue: Date;
   selectedService = null;
-  selectedDoctor: DoctorModel;
+  selectedDoctor: DoctorModel = null;
   doctors: DoctorModel[];
   appointmentTypes = Object.values(AppointmentTypeEnum);
-  loadingSubscription: Subscription[] =[];
 
 
   constructor(public navParams: NavParams,
@@ -48,18 +47,19 @@ export class ConfirmAppointmentPage implements OnDestroy{
               private userInfoService: UserInformationService,
               private toastController: ToastController,
               private notificationService: NotificationService) {
-    this.loadingSubscription.push(this.userInfoService.userInformation$.subscribe( (user) =>
-    {this.user = user}
-    ));
+    this.userInfoService.userInformation$.subscribe((user) => {
+        this.user = user
+      }
+    );
     if (navParams.data) {
       this.options = navParams.data;
-       this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
-       this.selectedDate = this.options.appointment.appointmentDate;
-       this.selectedTime = this.options.appointment.appointmentTime;
-       this.selectedDoctor = this.options.selectedDoctor;
+      this.formattedDate = this.datePipe.transform(this.options.appointment.appointmentDate, 'mediumDate');
+      this.selectedDate = this.options.appointment.appointmentDate;
+      this.selectedTime = this.options.appointment.appointmentTime;
+      this.selectedDoctor = this.options?.selectedDoctor;
       this.selectedService = this.options.selectedService;
-      this.doctors =this.options.doctors;
-       this.selectedDateValue = this.options.selectedDateValue;
+      this.doctors = this.options.doctors;
+      this.selectedDateValue = this.options.selectedDateValue;
       this.pageReady = true;
       this.filterSelect()
     }
@@ -67,14 +67,11 @@ export class ConfirmAppointmentPage implements OnDestroy{
 
 
   confirmOnClick() {
-    console.log(this.selectedService)
 
-    if(this.selectedService === null){
+    if (this.selectedService === null) {
       this.presentToast("top", "Please select a service", 'danger', 'close-outline');
 
-    }
-
-    else {
+    } else {
 
       let bookAppointment: AppointmentModel = {
         id: null,
@@ -87,28 +84,27 @@ export class ConfirmAppointmentPage implements OnDestroy{
       }
 
 
-
-      this.loadingSubscription.push(this.appointmentService.bookAppointment(bookAppointment).subscribe(
+       this.appointmentService.bookAppointment(bookAppointment).subscribe(
         (value) => {
 
           let notificationModel: NotificationModel = {
-            id:null,
-            appointment: value as AppointmentModel,
+            id: null,
+            appointment: value,
             notifiedFromId: this.user.userId,
             notifiedUserId: this.selectedDoctor?.userId,
           }
 
-          this.notificationService.createNotification(notificationModel).subscribe( );
+          this.notificationService.createNotification(notificationModel).subscribe();
 
           this.presentToast("top", 'Appointment Created', 'success', "checkmark-outline");
           this.router.navigate(['/manage-appointments', {date: this.selectedDateValue}]);
 
         },
         error => {
-          this.presentToast("top", error.message, 'danger', 'close-outline');
+          this.presentToast("top", 'Appointment already exists', 'danger', 'close-outline');
           // Handle errors if necessary
         }
-      ))
+      )
       this.viewController.dismiss({confirm: true});
 
 
@@ -121,10 +117,9 @@ export class ConfirmAppointmentPage implements OnDestroy{
     this.viewController.dismiss({confirm: false});
   }
 
-  filterSelect(){
-    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor.services;
+  filterSelect() {
+    this.appointmentTypes = this.selectedDoctor === null ? Object.values(AppointmentTypeEnum) : this.selectedDoctor?.services;
   }
-
 
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: any, color: any, icon) {
@@ -133,16 +128,11 @@ export class ConfirmAppointmentPage implements OnDestroy{
       duration: 1500,
       position: position,
       icon: icon,
-      color:color
+      color: color
 
     });
 
     await toast.present();
-  }
-
-  ngOnDestroy(){
-    // prevent memory leak when component destroyed
-    this.loadingSubscription.forEach(s => s.unsubscribe());
   }
 
 }

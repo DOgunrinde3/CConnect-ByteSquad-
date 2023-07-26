@@ -13,13 +13,14 @@ import {NotificationModel} from "./model/notification.model";
 import {interval, Subscription, switchMap} from "rxjs";
 import {UserModel} from "./model/User.model";
 import {AppointmentStatusEnum} from "./model/appointment-status.enum";
+import {HeaderPage} from "./components/header/header.page";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, FooterPage],
+    imports: [IonicModule, CommonModule, FormsModule, FooterPage, HeaderPage],
 })
 export class AppComponent implements OnInit, OnDestroy {
   public environmentInjector = inject(EnvironmentInjector);
@@ -86,6 +87,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routeToBook(){
     this.router.navigate(["/book"]);
+  }
+
+
+  onScroll(event: CustomEvent) {
+    const scrollElement = event.target as HTMLElement;
+    const scrollHeight = scrollElement.scrollHeight;
+    const scrollTop = scrollElement.scrollTop;
+    const clientHeight = scrollElement.clientHeight;
+
+    // Check if the user has scrolled to the bottom of the page
+    if (scrollHeight - scrollTop === clientHeight) {
+      document.getElementById('scrollFooter').style.display = 'block';
+    } else {
+      document.getElementById('scrollFooter').style.display = 'none';
+    }
   }
 
 

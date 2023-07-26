@@ -1,9 +1,8 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import {FormsModule, Validators} from '@angular/forms';
-import {AlertController, IonicModule, ModalController, NavController, NavParams} from '@ionic/angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {CommonModule, DatePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AlertController, IonicModule, ModalController, NavController} from '@ionic/angular';
 import {HeaderPage} from "../header/header.page";
-import {DoctorModel} from "../../model/doctor.model";
 import {AppointmentModel} from "../../model/appointment.model";
 import {CalendarComponent, CalendarMode, NgCalendarModule} from "ionic7-calendar";
 import {FooterPage} from "../footer/footer.page";
@@ -16,7 +15,8 @@ import {AppointmentStatusEnum} from "../../model/appointment-status.enum";
 import * as moment from 'moment';
 import {NotificationModel} from "../../model/notification.model";
 import {NotificationService} from "../../services/notification.service";
-import {Subscription} from "rxjs";
+import {async} from "rxjs";
+
 @Component({
   selector: 'app-book-appointment',
   templateUrl: './manage-appointment.page.html',
@@ -24,14 +24,14 @@ import {Subscription} from "rxjs";
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HeaderPage, NgCalendarModule, FooterPage, DatePipe]
 })
-export class ManageAppointmentPage implements OnInit, OnDestroy {
+export class ManageAppointmentPage implements OnInit {
 
   date: string;
   noAppointments = false;
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   calendar = {
     mode: 'month' as CalendarMode,
-    currentDate: new Date(Date.now() + ( 3600 * 1000 * 24))
+    currentDate: new Date(Date.now() + (3600 * 1000 * 24))
     ,
 
   };
@@ -47,11 +47,11 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
   filteredUserAppointments: AppointmentModel[];
   appointmentTimeShifts: string[];
   appointment: AppointmentModel;
-  loadingSubscription: Subscription[] =[];
 
   // @ts-ignore
-  @ViewChild(CalendarComponent) myCal: CalendarComponent; eventSource;
-
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  eventSource;
+  protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
 
   constructor(public navCtrl: NavController,
               public modalController: ModalController,
@@ -60,87 +60,93 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
               private userService: UserInformationService,
               private router: Router,
               private route: ActivatedRoute,
-              private alertController:AlertController,
+              private alertController: AlertController,
               private notificationService: NotificationService
-
   ) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.appointmentTimeShifts = this.appointmentService.getAllAppointmentHours();
-    if(this.route.snapshot.paramMap.get('date') === null ){
+    if (this.route.snapshot.paramMap.get('date') === null) {
       return;
+    } else {
+      this.calendar.currentDate = new Date(Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
     }
-    else{
-     this.calendar.currentDate =  new Date (Date.parse(this.route.snapshot.paramMap.get('date') || '{}'));
-    }
+
   }
 
-  ionViewWillEnter(){
-    this.loadingSubscription.push(this.userService.userInformation$.subscribe(user => {
+
+  ionViewWillEnter() {
+    this.subscriptionComplete = false;
+    this.userService.userInformation$.subscribe(user => {
       this.user = user;
-      this.getUserAppointments(user?.userId);
-    }))
+      if (user) {
+        this.getUserAppointments(user.userId);
+      }
+
+    })
 
   }
 
 
-  update(appointment: AppointmentModel, status: AppointmentStatusEnum){
+
+  update(appointment: AppointmentModel, status: AppointmentStatusEnum) {
     this.selectedAppointment = appointment;
-    appointment.appointmentStatus = status;
-    this.loadingSubscription.push(this.appointmentService.update(appointment).subscribe((appointment) =>{
+    this.appointmentService.update(appointment, status).subscribe((appointment) => {
       this.selectedAppointment.appointmentStatus = appointment.appointmentStatus;
-    }));
+      appointment.appointmentStatus = status;
+
+    });
 
     let notificationModel: NotificationModel = {
-      id:null,
+      id: null,
       appointment: appointment,
       notifiedFromId: this.user.userId,
       notifiedUserId: appointment.doctor,
     }
 
-    this.loadingSubscription.push(this.notificationService.updateNotification(notificationModel, true).subscribe( ));
+    this.notificationService.updateNotification(notificationModel, true).subscribe();
 
   }
-
 
   onDateSelected(date) {
+    this.subscriptionComplete = false;
     this.selectedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.formattedDate = this.datePipe.transform(this.selectedDate, 'mediumDate');
-    this.filteredUserAppointments = this.userAppointments?.filter( appointment => appointment.appointmentDate === this.selectedDate);
+    this.filteredUserAppointments = this.userAppointments?.filter(appointment => appointment.appointmentDate === this.selectedDate);
 
-    if (this.filteredUserAppointments?.length !== 0){
+    if (this.filteredUserAppointments?.length !== 0) {
       this.noAppointments = true;
-    }
-    else{
+      this.subscriptionComplete = true;
+    } else {
       this.noAppointments = false;
+      this.subscriptionComplete = true;
+
 
     }
 
   }
 
-  getColour(status:AppointmentStatusEnum){
+  getColour(status: AppointmentStatusEnum) {
 
-    if(status === AppointmentStatusEnum.PENDING){
+    if (status === AppointmentStatusEnum.PENDING) {
       return "warning";
-    }
-    else if(status === AppointmentStatusEnum.CONFIRMED){
+    } else if (status === AppointmentStatusEnum.CONFIRMED) {
       return "success";
-    }
-    else if(status === AppointmentStatusEnum.CANCELLED){
+    } else if (status === AppointmentStatusEnum.CANCELLED) {
       return "danger";
     }
 
     return "primary";
   }
-  getUserAppointments(userId: string){
+
+   getUserAppointments(userId: string) {
     this.appointmentService.getUserAppointments(userId)
-      .subscribe( (userAppointments)=>
-        {
+      .subscribe((userAppointments) => {
           this.userAppointments = userAppointments;
           this.eventSource = [];
-          userAppointments.forEach((appointment)=>{
+          userAppointments.forEach((appointment) => {
             const date = moment(appointment.appointmentDate, 'YYYY-MM-DD').toDate();
             this.eventSource?.push({
               title: appointment.appointmentType,
@@ -149,16 +155,17 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
               allDay: false
             });
           })
-          this.onDateSelected(this.calendar.currentDate);
-          this.subscriptionComplete = true;
 
+        },
+
+        () =>{},
+
+        ()=> {
+          this.onDateSelected(this.calendar.currentDate);
         }
       )
 
   }
-
-
-
 
   next() {
     this.myCal.slideNext();
@@ -167,35 +174,14 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
   back() {
     this.myCal.slidePrev();
   }
+
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
 
-  routeToBook(){
+  routeToBook() {
     let date = this.datePipe.transform(this.selectedDate);
     this.router.navigate(['/book', {date: date}]);
-  }
-
-
-  private openConfirmatModal(selectedDate: string, selectedTime: string) {
-
-
-    this.appointment = {
-      id: null,
-      doctor: null,
-      patient: this.user.userId,
-      appointmentDate: selectedDate,
-      appointmentTime: selectedTime,
-      appointmentType: "",
-      appointmentStatus: AppointmentStatusEnum.PENDING
-    };
-     this.openModal(this.appointment)
-
-    // confirmModal.onDidDismiss((data) => {
-    //   if (data.confirm) {
-    //     this.navCtrl.push(PageBookAppointmentConfirmationDetails, appointment);
-    //   }
-    // });
   }
 
   async openModal(appointment) {
@@ -204,16 +190,14 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: ConfirmAppointmentPage,
       componentProps: {
-       appointment: appointment
+        appointment: appointment
       },
       mode: "ios"
     });
     modal.present();
 
 
-
   }
-
 
 
   async showConfirmationModal(appointment, status) {
@@ -246,9 +230,6 @@ export class ManageAppointmentPage implements OnInit, OnDestroy {
     var current = new Date();
     return date < current;
   };
-  protected readonly AppointmentStatusEnum = AppointmentStatusEnum;
 
-  ngOnDestroy(){
-    this.loadingSubscription.forEach(s => s.unsubscribe());
-  }
+
 }

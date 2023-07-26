@@ -1,6 +1,5 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { IonCardContent, IonicModule, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import {UserInformationService} from "../../services/user-information.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
@@ -20,7 +19,7 @@ import {Subscription} from "rxjs";
   templateUrl: 'staff-signup-client.page.html',
   styleUrls: ['staff-signup-client.page.scss'],
   standalone: true,
-  imports: [IonicModule, ExploreContainerComponent, ReactiveFormsModule, NgIf, FooterPage, HeaderPage, NgForOf]
+  imports: [IonicModule, ReactiveFormsModule, NgIf, FooterPage, HeaderPage, NgForOf]
 })
 export class StaffSignupClient implements OnInit, OnDestroy {
 
