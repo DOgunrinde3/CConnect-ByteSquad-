@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
@@ -43,7 +45,7 @@ public class NotificationService {
 
     }
 
-    public NotificationDto updateNotification(NotificationDto notification, boolean toStaff, String notificationId) {
+    public ResponseEntity<?> updateNotification(NotificationDto notification, boolean toStaff, String notificationId) {
 
         Query query = new Query();
         query.addCriteria(Criteria.where("appointment.id").is(notificationId));
@@ -61,9 +63,15 @@ public class NotificationService {
                 .set("notifiedFromId", notification.getNotifiedFromId());
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
-        Notification updatedNotification = mongoTemplate.findAndModify(query, update, options, Notification.class);
+        try {
+            Notification notification1 = mongoTemplate.findAndModify(query, update, options, Notification.class);
 
-        return notificationAssembler.assemble(updatedNotification);
+            return ResponseEntity.ok(notificationAssembler.assemble(notification1));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Appointment already exists");
+        }
+
+
     }
 
     public List<NotificationDto> getUserNotifications(String userId) {
@@ -83,7 +91,7 @@ public class NotificationService {
                 Query delete = new Query();
                 delete.addCriteria(Criteria.where("notificationId").is(notification.getNotificationId()));
                 mongoTemplate.remove(delete, Notification.class);
-            iterator.remove(); // Remove the deleted notification from the list
+                iterator.remove(); // Remove the deleted notification from the list
             }
 
 
