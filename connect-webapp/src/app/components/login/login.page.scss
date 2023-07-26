@@ -44,6 +44,14 @@ ion-card{
 
 }
 
+ion-content {
+  --background: rgba(255, 255, 255, 0.8);
+  background-image: url('../../../assets/icon/bgSignup.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .cssbuttons-io-button {
   background: #639cd9;
   color: white;
