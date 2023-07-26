@@ -178,6 +178,20 @@ constructor(private router: Router,
   }
 
 
+  onScroll(event: CustomEvent) {
+    const scrollElement = event.target as HTMLElement;
+    const scrollHeight = scrollElement.scrollHeight;
+    const scrollTop = scrollElement.scrollTop;
+    const clientHeight = scrollElement.clientHeight;
+
+    // Check if the user has scrolled to the bottom of the page
+    if (scrollHeight - scrollTop === clientHeight) {
+      document.getElementById('scrollFooter').style.display = 'block';
+    } else {
+      document.getElementById('scrollFooter').style.display = 'none';
+    }
+  }
+
   routeToBook() {
     this.router.navigate(["/book"]);
   }
