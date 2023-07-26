@@ -3,6 +3,7 @@ package com.bytesquad.CConnect.cconnectapp.assembler;
 import com.bytesquad.CConnect.cconnectapp.dtos.NotificationDto;
 import com.bytesquad.CConnect.cconnectapp.entity.Appointment;
 import com.bytesquad.CConnect.cconnectapp.entity.Notification;
+import com.bytesquad.CConnect.cconnectapp.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 public class NotificationAssembler {
 
     private final AppointmentAssembler appointmentAssembler;
+    private final AppointmentService appointmentService;
+
 
     public NotificationDto assemble(Notification notification){
         return new NotificationDto()
@@ -26,6 +29,7 @@ public class NotificationAssembler {
     }
 
     public Notification disassembleInto(Notification notification, NotificationDto notificationDto) {
+
 
 
         return notification
