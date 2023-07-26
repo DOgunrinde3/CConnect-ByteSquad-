@@ -8,7 +8,7 @@ import {UserModel} from "../model/User.model";
 import {AuthService} from "./auth.service";
 import jwt_decode from "jwt-decode";
 
-const BASE_URI = 'http://localhost:8080/api/v1/auth/staff';
+const BASE_URI = 'https://cconnect-bytesquad-production.up.railway.app/api/v1/auth/staff';
 
 @Injectable({
   providedIn: 'root'
