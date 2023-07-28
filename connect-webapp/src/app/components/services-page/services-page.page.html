@@ -6,65 +6,110 @@
     </ion-card>
   </div>
 
-  <div class = "test">
+  <div class="content-overlay" *ngIf="showContent1" (click)="hideContent1()">
+    <div class="content" >
+      <p>At Clinic Connect, our comprehensive check-up services are designed to
+        keep your health in check. Our team of experienced healthcare professionals will conduct a thorough evaluation
+        to assess your overall well-being.</p>
+
+       <p>From blood pressure and cholesterol levels to various health screenings, we leave no stone unturned in ensuring
+        your health is in optimal condition. Our check-ups are personalized, and we take the time to address your concerns
+        and answer any questions you may have.</p>
+
+        <p>Regular check-ups are vital in maintaining good health and preventing potential health problems. Trust Clinic
+        Connect to provide top-notch check-up services, guiding you towards a healthier and happier life.</p>
+    </div>
+  </div>
+
+  <div class="content-overlay" *ngIf="showContent2" (click)="hideContent2()">
+    <div class="content">
+      <p>At Clinic Connect, we understand the importance of timely medical appointments
+        for your health and well-being. We strive to make the appointment process as seamless and convenient as possible.</p>
+
+      <p>With our user-friendly online booking system, you can easily schedule a medical appointment at your preferred
+      date and time. Rest assured that your health and privacy are our top priorities. When you book a medical appointment with
+      Clinic Connect, you can be confident that you are in safe hands.</p>
+
+      <p>Experience the ease and efficiency of booking medical appointments with Clinic Connect, and take a step towards
+        better health today.</p>
+    </div>
+  </div>
+
+  <div class="content-overlay" *ngIf="showContent3" (click)="hideContent3()">
+    <div class="content">
+      <p>At Clinic Connect, we offer convenient prescription refill services
+      to ensure you never run out of your essential medications. Simply provide us with the details of your prescription,
+        and our experienced team of healthcare professionals will take care of the rest.</p>
+
+      <p>Trust us to manage your prescription refills with precision and accuracy, so you can focus on what matters
+      most – your health and happiness. Let us be your partner in maintaining your well-being and providing you
+        with the care you deserve.</p>
+    </div>
+  </div>
+
+  <div class="content-overlay" *ngIf="showContent4" (click)="hideContent4()">
+    <div class="content">
+      <p>At Clinic Connect, we offer comprehensive medical exams to assess your
+      overall health and detect any potential health issues. Our medical exams are designed to provide a thorough
+        evaluation of your physical well-being and help you maintain optimal health.During the medical exam, our
+        experienced healthcare professionals will conduct a series of tests and
+      assessments, including vital sign measurements, physical examinations, and laboratory tests. These exams
+      allow us to identify any underlying health conditions or risk factors, even before symptoms manifest.</p>
+
+      <p>Our dedicated medical team takes the time to discuss your medical history, lifestyle, and any concerns you
+      may have. We believe in a patient-centered approach, and our goal is to empower you to make informed decisions
+        about your health. Regular medical exams are essential for preventive care and early detection of potential
+        health issues. By scheduling routine medical exams with Clinic Connect, you can take a proactive step towards
+        maintaining your well-being and enjoying a healthier, happier life.</p>
+
+     <p> Experience personalized care and a commitment to your health with our comprehensive medical exams at Clinic
+       Connect. Your health is our priority, and we are here to support you on your journey to wellness.</p>
+    </div>
+  </div>
+
+
+
+
+  <h1> HEALTHCARE SERVICES AT <span class="header"> CLINIC CONNECT</span></h1>
+
+  <div>
 
   </div>
   <ion-grid [fixed]="true">
     <ion-row>
-      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "4">
+      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "6">
         <div class = "img-center">
-          <img src="assets\xray.jpg" alt="Testimonial 1 Image" class = "test">
+          <img src="assets/check-up.jpg" alt="Check Up Image" (click)="viewContent1()" class = "test">
+          <div class="image-text" (click)="viewContent1()">Check Up</div>
         </div>
-        <ion-accordion-group>
-          <ion-accordion value="first">
-            <ion-item slot="header" color="dark">
-              <ion-label>Prescription Refill</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">First Content</div>
-          </ion-accordion>
-        </ion-accordion-group>
       </ion-col>
-      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "4">
+
+      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "6">
         <div class = "img-center">
-          <img src="assets\xray.jpg" alt="Testimonial 1 Image" class = "test">
+          <img src="assets/medical-exam.jpg" alt="Medical Exam Image" (click)="viewContent4()" class = "test">
+          <div class="image-text" (click)="viewContent4()">Medical Exam</div>
         </div>
-        <ion-accordion-group>
-          <ion-accordion value="second">
-            <ion-item slot="header" color="light">
-              <ion-label>X-Ray</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">At CConnect, we understand the importance of seamless healthcare experiences, which is why we are proud to offer our cutting-edge Prescription Refill Service. Say goodbye to the inconvenience of waiting in long pharmacy lines or scheduling multiple appointments with your healthcare provider for prescription renewals. With our Prescription Refill Service, managing your medications has never been easier or more efficient.</div>
-          </ion-accordion>
-        </ion-accordion-group>
       </ion-col>
-      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "4">
+
+      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "6">
         <div class = "img-center">
-          <img src="assets\xray.jpg" alt="Testimonial 1 Image" class = "test">
+          <img src="assets/prescription-request.jpg" alt="Prescription Request Image" (click)="viewContent3()" class = "test">
+          <div class="image-text" (click)="viewContent3()">Prescription Request</div>
         </div>
-        <ion-accordion-group>
-          <ion-accordion value="second">
-            <ion-item slot="header" color="light">
-              <ion-label>Checkup</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">First Content</div>
-          </ion-accordion>
-        </ion-accordion-group>
       </ion-col>
+
+      <ion-col size-xs = "10" size-sm = "6" size-md = "4" size-lg = "6">
+        <div class = "img-center">
+          <img src="assets/medical-appointment.jpg" alt="Medical Appointment Image" (click)="viewContent2()" class = "test" >
+          <div class="image-text" (click)="viewContent2()">Medical Appointment</div>
+        </div>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
-  <div class = "button-center" >
-    <button class="cssbuttons-io-button" type="submit"> Book An Appointment
-      <div class="icon">
-        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
-      </div>
-    </button>
-
-  </div>
-
-
-
+  <app-footer></app-footer>
 </ion-content>
-<app-footer></app-footer>
+
 
 
 
